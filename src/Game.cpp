@@ -92,7 +92,7 @@ void CGame::Draw() {
 
 CRect CGame::GetViewRect() const {
 	if(gameState == EGameState::INGAME) {
-		return CRect();
+		return CRect(CVector2f(), graphics->GetWidth(), graphics->GetHeight());
 	} else {
 		return CRect();
 	}

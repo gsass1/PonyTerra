@@ -33,10 +33,18 @@ set(PONYTERRA_SOURCES
 	src/Level.cpp
 	src/Level.h
 	src/main.cpp
+	src/Version.h
+	src/VersionNumber.h
 	src/Widget.cpp
 	src/Widget.h
 	src/Widget_Button.cpp
 	src/Widget_Button.h
 )
+
+if(WIN32)
+
+list(APPEND PONYTERRA_SOURCES src/version.rc)
+
+endif()
 
 add_library(PonyTerra SHARED ${PONYTERRA_SOURCES})

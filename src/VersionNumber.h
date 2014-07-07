@@ -1,0 +1,9 @@
+#ifndef VERSIONNUMBER_H
+#define VERSIONNUMBER_H
+
+#define PONYTERRA_MAJOR 0
+#define PONYTERRA_MINOR 0
+#define PONYTERRA_REV 0
+#define PONYTERRA_BUILD 0
+
+#endif

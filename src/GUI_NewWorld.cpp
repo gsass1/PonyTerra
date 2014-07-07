@@ -15,6 +15,10 @@ CGUI_NewWorld::CGUI_NewWorld() {
 }
 
 CGUI_NewWorld::~CGUI_NewWorld() {
+	delete btSmallWorld;
+	delete btMediumWorld;
+	delete btBigWorld;
+	delete btBack;
 }
 
 void CGUI_NewWorld::Initialize() {

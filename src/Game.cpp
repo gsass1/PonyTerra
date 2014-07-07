@@ -8,6 +8,7 @@
 #include "ITexture.h"
 
 #include "MutexLock.h"
+#include "VersionNumber.h"
 
 CGame game_local;
 
@@ -19,6 +20,8 @@ CGame::~CGame() {
 }
 
 void CGame::Initialize() {
+	common->Printf("PonyTerra %d.%d.%d.%d\n", PONYTERRA_MAJOR, PONYTERRA_MINOR, PONYTERRA_REV, PONYTERRA_BUILD);
+
 	gameState = EGameState::MENU;
 
 	PreloadMenuData();

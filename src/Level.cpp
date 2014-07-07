@@ -123,7 +123,7 @@ void CLevel::AllocTileData() {
 
 	for(int i = 0; i < width; i++) {
 		for(int j = 0; j < height; j++) {
-			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::AIR);
+			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::DIRT);
 		}
 	}
 

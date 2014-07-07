@@ -26,6 +26,9 @@ CGUI_MenuFront::CGUI_MenuFront() {
 
 CGUI_MenuFront::~CGUI_MenuFront() {
 	delete btNewWorld;
+	delete btLoadWorld;
+	delete btOptions;
+	delete btExit;
 }
 
 void CGUI_MenuFront::Initialize() {

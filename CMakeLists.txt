@@ -33,6 +33,10 @@ set(PONYTERRA_SOURCES
 	src/Level.cpp
 	src/Level.h
 	src/main.cpp
+	src/Entity.h
+	src/Entity.cpp
+	src/Player.h
+	src/Player.cpp
 	src/Version.h
 	src/VersionNumber.h
 	src/Widget.cpp

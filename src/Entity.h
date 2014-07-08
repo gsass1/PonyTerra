@@ -33,17 +33,17 @@ public:
 
 	virtual void		Initialize(CEntity *parent);
 
-	virtual void		Destroy() = 0;
+	virtual void		Destroy();
 
-	virtual void		Update(float dtTime) = 0;
+	virtual void		Update(float dtTime);
 
-	virtual void		Draw() = 0;
+	virtual void		Draw();
 
 	CEntity *			GetParent() const;
 
 	virtual const std::string &GetID() const = 0;
 
-	virtual void		HandleMessage(const CMessage *msg) = 0;
+	virtual void		HandleMessage(const CMessage *msg);
 
 protected:
 	CEntity *			parent;
@@ -98,7 +98,13 @@ public:
 	CComponentContainer *GetComponents();
 	const CComponentContainer *GetComponents() const;
 
+	unsigned int		GetID() const;
+
 private:
+	friend class		CEntityManager;
+
+	unsigned int		id;
+
 	CComponentContainer *componentContainer;
 };
 

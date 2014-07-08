@@ -29,9 +29,25 @@ void CComponentBase::Initialize(CEntity *parent)
 	this->parent = parent;
 }
 
+void CComponentBase::Destroy()
+{
+}
+
+void CComponentBase::Update(float dtTime)
+{
+}
+
+void CComponentBase::Draw()
+{
+}
+
 CEntity *CComponentBase::GetParent() const
 {
 	return parent;
+}
+
+void CComponentBase::HandleMessage(const CMessage *msg)
+{
 }
 
 //-------------------------------------------------
@@ -123,6 +139,7 @@ void CComponentContainer::HandleMessage(const CMessage *msg)
 
 CEntity::CEntity()
 {
+	id = 0;
 	componentContainer = new CComponentContainer(this);
 }
 
@@ -159,4 +176,9 @@ CComponentContainer *CEntity::GetComponents()
 const CComponentContainer *CEntity::GetComponents() const
 {
 	return componentContainer;
+}
+
+unsigned int CEntity::GetID() const
+{
+	return id;
 }

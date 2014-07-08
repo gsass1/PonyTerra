@@ -19,6 +19,16 @@ add_definitions("-D_CRT_SECURE_NO_WARNINGS -DPONYTERRA_EXPORTS")
 endif()
 
 set(PONYTERRA_SOURCES
+	src/Component_GameEntity.cpp
+	src/Component_GameEntity.h
+	src/DrawQuery.cpp
+	src/DrawQuery.h
+	src/Entity.h
+	src/Entity.cpp
+	src/EntityManager.h
+	src/EntityManager.cpp
+	src/EntityFactory.h
+	src/EntityFactory.cpp
 	src/Game.cpp
 	src/Game.h
 	src/GUI.h
@@ -33,8 +43,6 @@ set(PONYTERRA_SOURCES
 	src/Level.cpp
 	src/Level.h
 	src/main.cpp
-	src/Entity.h
-	src/Entity.cpp
 	src/Player.h
 	src/Player.cpp
 	src/Version.h

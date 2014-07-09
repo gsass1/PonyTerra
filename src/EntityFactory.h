@@ -12,6 +12,6 @@ public:
 	CEntity *CreatePlayer();
 };
 
-extern CEntityFactory *entityFactory;
+extern CEntityFactory entityFactory;
 
 #endif

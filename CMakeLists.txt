@@ -18,6 +18,12 @@ add_definitions("-D_CRT_SECURE_NO_WARNINGS -DPONYTERRA_EXPORTS")
 
 endif()
 
+if(NOT WIN32)
+
+add_definitions("-std=c++11")
+
+endif()
+
 set(PONYTERRA_SOURCES
 	src/Component_GameEntity.cpp
 	src/Component_GameEntity.h

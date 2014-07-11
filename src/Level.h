@@ -20,14 +20,16 @@
 
 //--------------------------------------------------
 
-enum class ETileType {
+enum class ETileType
+{
 	AIR = 0,
 	DIRT,
 };
 
 //--------------------------------------------------
 
-class CTile {
+class CTile
+{
 public:
 	int x;
 	int y;
@@ -47,7 +49,8 @@ public:
 
 //--------------------------------------------------
 
-class CLevelGenerate {
+class CLevelGenerate
+{
 public:
 	CLevelGenerate() { isGenerating = false; }
 
@@ -68,10 +71,11 @@ extern std::thread *levelGenThread;
 
 class ITexture;
 
-class CLevel {
+class CLevel
+{
 public:
-			CLevel();
-			~CLevel();
+				CLevel();
+				~CLevel();
 
 	void		Initialize();
 
@@ -82,8 +86,8 @@ public:
 
 	void		Draw();
 
-	int		width;
-	int		height;
+	int			width;
+	int			height;
 
 private:
 	friend class CLevelGenerate;

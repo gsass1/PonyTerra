@@ -1,4 +1,4 @@
-#include "Component_GameEntity.h"
+#include "Component_Physical.h"
 
 #include "Entity.h"
 #include "EntityFactory.h"
@@ -17,9 +17,12 @@ CEntity *CEntityFactory::CreatePlayer()
 {
 	CEntity *entity = new CEntity();
 
-	// add player components
+	CComponent_Physical *physical = new CComponent_Physical();
 
-	entity->GetComponents()->Add(new CComponent_GameEntity());
+	physical->rect.width = 190;
+	physical->rect.width = 60;
+
+	entity->GetComponents()->Add(physical);
 
 	entity->Initialize();
 

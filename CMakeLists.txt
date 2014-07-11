@@ -3,14 +3,8 @@ project(PonyTerra)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
-
-find_package(NSEngine REQUIRED)
-
-include_directories(${NSENGINE_INCLUDE_DIR}/NSEngine/include)
-include_directories(${NSENGINE_INCLUDE_DIR}/NSUtilLib/include)
+include_directories("${CMAKE_SOURCE_DIR}/nsengine/include/NSEngine")
+include_directories("${CMAKE_SOURCE_DIR}/nsengine/include/NSUtilLib")
 
 if(WIN32)
 
@@ -25,8 +19,8 @@ add_definitions("-std=c++11")
 endif()
 
 set(PONYTERRA_SOURCES
-	src/Component_GameEntity.cpp
-	src/Component_GameEntity.h
+	src/Component_Physical.cpp
+	src/Component_Physical.h
 	src/DrawQuery.cpp
 	src/DrawQuery.h
 	src/Entity.h
@@ -66,3 +60,5 @@ list(APPEND PONYTERRA_SOURCES src/version.rc)
 endif()
 
 add_library(PonyTerra SHARED ${PONYTERRA_SOURCES})
+
+target_link_libraries(PonyTerra "${CMAKE_SOURCE_DIR}/nsengine/lib/NSUtilLib.lib")

@@ -25,6 +25,8 @@ private:
 
 class CEntity;
 
+#define COMPONENT_PHYSICAL "Physics"
+
 class CComponentBase
 {
 public:
@@ -41,7 +43,7 @@ public:
 
 	CEntity *			GetParent() const;
 
-	virtual const std::string &GetID() const = 0;
+	virtual std::string GetID() const = 0;
 
 	virtual void		HandleMessage(const CMessage *msg);
 

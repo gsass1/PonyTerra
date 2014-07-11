@@ -8,6 +8,7 @@
 #include "IResourceManager.h"
 #include "ITexture.h"
 #include "Widget_Button.h"
+#include "IInput.h"
 
 CGUI_MenuFront::CGUI_MenuFront() {
 	bg = nullptr;
@@ -55,6 +56,10 @@ void CGUI_MenuFront::Update(float dtTime) {
 	btLoadWorld->Update(dtTime);
 	btOptions->Update(dtTime);
 	btExit->Update(dtTime);
+
+	if(input->KeyPressed(NSKey::NSK_ESCAPE, true)) {
+		common->Quit();
+	}
 
 	if(btNewWorld->IsClicked()) {
 		guiManager.Push(GetGUI("NewWorld"));

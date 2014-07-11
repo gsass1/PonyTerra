@@ -19,6 +19,7 @@
 
 #endif
 
+IConfig *config;
 ICommon *common;
 IFileSystem *fileSystem;
 IGame *game;
@@ -28,6 +29,7 @@ IResourceManager *resMgr;
 ISoundSystem *soundSystem;
 
 extern "C" GAMEAPI void GameDLLExchange(EngineGlobals *eg, GameGlobals *gg) {
+	::config = eg->config;
 	::common = eg->common;
 	::fileSystem = eg->filesystem;
 	::game = &game_local;

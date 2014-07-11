@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<Config>
+    <ScreenConfig Width="1280" Height="720" Fullscreen="false" Resizable="" />
+    <EngineConfig GameDLLPath="PonyTerra" />
+    <AudioConfig Rate="44100" Format="32784" Channels="2" BufferSize="4096" />
+</Config>

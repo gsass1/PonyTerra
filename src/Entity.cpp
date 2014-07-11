@@ -105,6 +105,19 @@ void CComponentContainer::DestroyAll()
 	components.clear();
 }
 
+CComponentBase *CComponentContainer::Get(const std::string &id)
+{
+	for (std::vector<CComponentBase *>::iterator itr = components.begin();
+		itr != components.end();
+		itr++)
+	{
+		if((*itr)->GetID() == id) {
+			return (*itr);
+		}
+	}
+	return NULL;
+}
+
 void CComponentContainer::UpdateAll(float dtTime)
 {
 	for (std::vector<CComponentBase *>::iterator itr = components.begin();

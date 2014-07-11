@@ -1,5 +1,7 @@
+#include "Component_Physical.h"
 #include "ICommon.h"
 #include "IFont.h"
+#include "EntityFactory.h"
 #include "Game.h"
 #include "IGraphics.h"
 #include "GUIManager.h"
@@ -12,43 +14,60 @@
 
 CGame game_local;
 
-CGame::CGame() {
+CGame::CGame()
+{
 	gameState = EGameState::NONE;
+	playerEntity = NULL;
 }
 
-CGame::~CGame() {
+CGame::~CGame()
+{
+	delete playerEntity;
 }
 
-void CGame::Initialize() {
-	common->Printf("PonyTerra %d.%d.%d.%d\n", PONYTERRA_MAJOR, PONYTERRA_MINOR, PONYTERRA_REV, PONYTERRA_BUILD);
-
+void CGame::Initialize()
+{
 	gameState = EGameState::MENU;
+
+	common->Printf("PonyTerra %d.%d.%d.%d\n", PONYTERRA_MAJOR, PONYTERRA_MINOR, PONYTERRA_REV, PONYTERRA_BUILD);
 
 	PreloadMenuData();
 
 	level.Initialize();
+
 	guiManager.Initialize();
 	guiManager.Push(GetGUI("MenuFront"));
 }
 
-void CGame::Quit() {
+void CGame::InitializeGame()
+{
+	gameState = EGameState::INGAME;
+	playerEntity = entityFactory.CreatePlayer();
 }
 
-const char *CGame::GetGameName() {
+void CGame::Quit()
+{
+}
+
+const char *CGame::GetGameName()
+{
 	return "PonyTerra";
 }
 
-void CGame::PreloadMenuData() {
+void CGame::PreloadMenuData()
+{
 	resMgr->GetTexture("data/res/tex/menu_bg.png");
 	resMgr->GetFont("data/res/font/menu.fnt");
 }
 
-void CGame::ReleaseMenuData() {
+void CGame::ReleaseMenuData()
+{
 	resMgr->ClearCache("data/res/tex/menu_bg.png");
 	resMgr->ClearCache("data/res/font/menu.fnt");
 }
 
-void CGame::Update(float dtTime) {
+void CGame::Update(float dtTime)
+{
 	bool generating = false;
 
 	{
@@ -68,7 +87,7 @@ void CGame::Update(float dtTime) {
             common->Error("%s\n", e.what());
 		}
 
-		gameState = EGameState::INGAME;
+		InitializeGame();
 	}
 
 	switch(gameState) {
@@ -78,7 +97,8 @@ void CGame::Update(float dtTime) {
 	}
 }
 
-void CGame::Draw() {
+void CGame::Draw()
+{
 	switch(gameState) {
 		case EGameState::MENU:
 			guiManager.Draw();
@@ -90,10 +110,23 @@ void CGame::Draw() {
 	}
 }
 
-CRect CGame::GetViewRect() const {
+CRect CGame::GetViewRect() const
+{
 	if(gameState == EGameState::INGAME) {
-		return CRect(CVector2f(), graphics->GetWidth(), graphics->GetHeight());
+
+		return CRect(
+			playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL)->rect.pos,
+			graphics->GetWidth(), 
+			graphics->GetHeight());
+
 	} else {
+
 		return CRect();
+
 	}
+}
+
+CEntity *CGame::GetPlayerEntity() const
+{
+	return playerEntity;
 }

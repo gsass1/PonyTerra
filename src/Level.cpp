@@ -18,10 +18,8 @@ std::thread *levelGenThread = NULL;
 
 CLevelGenerate levelGenerate;
 
-namespace
+static void StartGenerating()
 {
-
-void StartGenerating() {
 	level.Generate(level.width, level.height);
 
 	{
@@ -30,11 +28,11 @@ void StartGenerating() {
 	}
 }
 
-}
 
 //--------------------------------------------------
 
-void CLevelGenerate::StartGenerating() {
+void CLevelGenerate::StartGenerating()
+{
 	isGenerating = true;
 	levelGenThread = new std::thread(::StartGenerating);
 }
@@ -43,7 +41,8 @@ void CLevelGenerate::StartGenerating() {
 
 CLevel level;
 
-CLevel::CLevel() {
+CLevel::CLevel()
+{
 	width = height = 0;
 	tilesheetTex = nullptr;
 	tileData = nullptr;
@@ -53,14 +52,17 @@ CLevel::CLevel() {
 	isLoaded = false;
 }
 
-CLevel::~CLevel() {
+CLevel::~CLevel()
+{
 }
 
-void CLevel::Initialize() {
+void CLevel::Initialize()
+{
 	tilesheetTex = resMgr->GetTexture("data/res/tex/tilesheet.png");
 }
 
-void CLevel::Load(const char *filepath) {
+void CLevel::Load(const char *filepath)
+{
 	if(isLoaded) {
 		common->Error("%s", "Cannot load new level while a level is already loaded!\n");
 	}
@@ -85,7 +87,8 @@ void CLevel::Load(const char *filepath) {
 	isLoaded = true;
 }
 
-void CLevel::Generate(int width, int height) {
+void CLevel::Generate(int width, int height)
+{
 	this->width = width;
 	this->height = height;
 
@@ -94,11 +97,13 @@ void CLevel::Generate(int width, int height) {
 	isLoaded = true;
 }
 
-bool CLevel::IsLoaded() const {
+bool CLevel::IsLoaded() const
+{
 	return isLoaded;
 }
 
-void CLevel::Draw() {
+void CLevel::Draw()
+{
 	CRect viewRect = game_local.GetViewRect();
 	int viewX = (int)viewRect.pos.x;
 	int viewY = (int)viewRect.pos.y;
@@ -113,7 +118,8 @@ void CLevel::Draw() {
 	}
 }
 
-void CLevel::AllocTileData() {
+void CLevel::AllocTileData()
+{
 	SetLoadingText("Allocating tile data");
 
 	tileData = new CTile**[width];
@@ -130,7 +136,8 @@ void CLevel::AllocTileData() {
 	common->Printf("Done!\n");
 }
 
-void CLevel::DisposeTileData() {
+void CLevel::DisposeTileData()
+{
 	if(!tileData) {
 		return;
 	}
@@ -147,7 +154,8 @@ void CLevel::DisposeTileData() {
 	isLoaded = false;
 }
 
-void CLevel::SetLoadingText(const char *text) {
+void CLevel::SetLoadingText(const char *text)
+{
 	CGUI_Loading *guiLoading = NULL;
 	guiLoading = reinterpret_cast<CGUI_Loading *>(guiManager.Current());
 	//ASSERT(guiLoading);

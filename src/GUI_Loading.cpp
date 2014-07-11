@@ -5,7 +5,7 @@
 #include "MutexLock.h"
 #include "IResourceManager.h"
 #include "ITexture.h"
-#include <nserror.h>
+
 #include <string.h>
 
 CGUI_Loading::CGUI_Loading() {

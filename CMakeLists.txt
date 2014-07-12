@@ -20,7 +20,7 @@ endif()
 
 if(NOT WIN32)
 
-add_definitions("-std=c++11")
+add_definitions("-std=c++11 -fPIC")
 
 endif()
 

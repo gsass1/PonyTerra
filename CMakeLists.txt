@@ -71,4 +71,18 @@ endif()
 
 add_library(PonyTerra SHARED ${PONYTERRA_SOURCES})
 
-target_link_libraries(PonyTerra ${TINYXML_LIBRARIES} "${CMAKE_SOURCE_DIR}/nsengine/lib/NSUtilLib.lib")
+set(LIBRARIES
+	${TINYXML_LIBRARIES}
+)
+
+if(WIN32)
+
+list(APPEND LIBRARIES "${CMAKE_SOURCE_DIR}/nsengine/lib/NSUtilLib.lib")
+
+else()
+
+list(APPEND LIBRARIES "${CMAKE_SOURCE_DIR}/nsengine/lib/libNSUtilLib.a")
+
+endif()
+
+target_link_libraries(PonyTerra ${LIBRARIES})

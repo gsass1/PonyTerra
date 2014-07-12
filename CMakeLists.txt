@@ -3,8 +3,14 @@ project(PonyTerra)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
+find_package(TinyXML REQUIRED)
+
 include_directories("${CMAKE_SOURCE_DIR}/nsengine/include/NSEngine")
 include_directories("${CMAKE_SOURCE_DIR}/nsengine/include/NSUtilLib")
+
+if(WIN32)
+include_directories(C:/Include)
+endif()
 
 if(WIN32)
 
@@ -19,6 +25,8 @@ add_definitions("-std=c++11")
 endif()
 
 set(PONYTERRA_SOURCES
+	src/Component_Animation.cpp
+	src/Component_Animation.h
 	src/Component_Physical.cpp
 	src/Component_Physical.h
 	src/Component_PlayerInput.cpp
@@ -63,4 +71,4 @@ endif()
 
 add_library(PonyTerra SHARED ${PONYTERRA_SOURCES})
 
-target_link_libraries(PonyTerra "${CMAKE_SOURCE_DIR}/nsengine/lib/NSUtilLib.lib")
+target_link_libraries(PonyTerra ${TINYXML_LIBRARIES} "${CMAKE_SOURCE_DIR}/nsengine/lib/NSUtilLib.lib")

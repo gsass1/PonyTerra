@@ -110,6 +110,10 @@ void CLevel::Draw()
 
 	for (int x = viewX / TILE_SIZE; x < (viewX / TILE_SIZE) + (viewRect.width / TILE_SIZE) + 1; x++) {
 		for (int y = viewY / TILE_SIZE; y < (viewY / TILE_SIZE) + (viewRect.height / TILE_SIZE) + 1; y++) {
+			if (x < 0 || x >= width || y < 0 || y >= height) {
+				continue;
+			}
+			
 			CTile *tile = tileData[x][y];
 			if(tile != nullptr && tile->type != ETileType::AIR) {
 				graphics->DrawTilesheet(tilesheetTex, tile->GetPosition() - viewRect.pos, (int)tile->type, 16, 16, 64, 64, 64.0f, 64.0f);
@@ -129,7 +133,7 @@ void CLevel::AllocTileData()
 
 	for(int i = 0; i < width; i++) {
 		for(int j = 0; j < height; j++) {
-			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::AIR);
+			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::DIRT);
 		}
 	}
 
@@ -171,7 +175,7 @@ bool CLevel::IsCollidingWithTiles(const CRect &rect)
 
 	for (int x = (int)rect.pos.x / TILE_SIZE; x < ((int)rect.pos.x / TILE_SIZE) + (rect.width / TILE_SIZE) + 1; x++) {
 		for (int y = (int)rect.pos.y / TILE_SIZE; y < ((int)rect.pos.y / TILE_SIZE) + (rect.height / TILE_SIZE) + 1; y++) {
-			if(x < 0 || x > width || y < 0 || y > height) {
+			if(x < 0 || x >= width || y < 0 || y >= height) {
 				continue;
 			}
 

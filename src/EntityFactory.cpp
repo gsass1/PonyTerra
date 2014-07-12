@@ -20,7 +20,7 @@ CEntity *CEntityFactory::CreatePlayer()
 
 	CComponent_Physical *physical = new CComponent_Physical();
 
-	physical->rect.width = 190;
+	physical->rect.width = 120;
 	physical->rect.height = 60;
 
 	entity->GetComponents()->Add(physical);

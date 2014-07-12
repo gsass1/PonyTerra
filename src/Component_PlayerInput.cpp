@@ -18,11 +18,19 @@ void CComponent_PlayerInput::Update(float dtTime)
 {
 	if(input->KeyPressed(NSKey::NSK_a)) {
 
-		physical->AddVelocity(CVector2f(-1000.0f, 0.0f));
+		physical->AddVelocity(CVector2f(-100.0f, 0.0f));
 
 	} else if (input->KeyPressed(NSKey::NSK_d)) {
 
-		physical->AddVelocity(CVector2f(1000.0f, 0.0f));
+		physical->AddVelocity(CVector2f(100.0f, 0.0f));
+
+	}
+
+	if(input->KeyPressed(NSKey::NSK_SPACE)) {
+		
+		if(!physical->isInAir) {
+			physical->AddVelocity(CVector2f(0.0f, 2000.0f));
+		}
 
 	}
 }

@@ -17,6 +17,7 @@ public:
 
 	CRect		rect;
 	CVector2f	velocity;
+	bool		isInAir;
 };
 
 #endif

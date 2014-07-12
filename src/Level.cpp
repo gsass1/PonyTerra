@@ -176,6 +176,11 @@ bool CLevel::IsCollidingWithTiles(const CRect &rect)
 			}
 
 			CTile *tile = tileData[x][y];
+
+			if(tile->type == ETileType::AIR) {
+				continue;
+			}
+
 			if(CRect(tile->GetPosition(), TILE_SIZE, TILE_SIZE).Collides(rect)) {
 				return true;
 			}

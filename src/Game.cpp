@@ -85,13 +85,12 @@ void CGame::Update(float dtTime)
                 levelGenThread->join();
                 //delete levelGenThread;
 				levelGenerate.isGenerating = false;
+				InitializeGame();
 			}
 		}
         catch(std::exception &e) {
             common->Error("%s\n", e.what());
 		}
-
-		InitializeGame();
 	}
 
 	switch(gameState) {

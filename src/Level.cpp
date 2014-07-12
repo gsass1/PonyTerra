@@ -129,7 +129,7 @@ void CLevel::AllocTileData()
 
 	for(int i = 0; i < width; i++) {
 		for(int j = 0; j < height; j++) {
-			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::DIRT);
+			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::AIR);
 		}
 	}
 
@@ -161,4 +161,26 @@ void CLevel::SetLoadingText(const char *text)
 	//ASSERT(guiLoading);
 
 	guiLoading->SetStatusText(text);
+}
+
+bool CLevel::IsCollidingWithTiles(const CRect &rect)
+{
+	if(!isLoaded) {
+		return false;
+	}
+
+	for (int x = (int)rect.pos.x / TILE_SIZE; x < ((int)rect.pos.x / TILE_SIZE) + (rect.width / TILE_SIZE) + 1; x++) {
+		for (int y = (int)rect.pos.y / TILE_SIZE; y < ((int)rect.pos.y / TILE_SIZE) + (rect.height / TILE_SIZE) + 1; y++) {
+			if(x < 0 || x > width || y < 0 || y > height) {
+				continue;
+			}
+
+			CTile *tile = tileData[x][y];
+			if(CRect(tile->GetPosition(), TILE_SIZE, TILE_SIZE).Collides(rect)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

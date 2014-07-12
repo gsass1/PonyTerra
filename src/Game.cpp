@@ -2,6 +2,7 @@
 #include "ICommon.h"
 #include "IFont.h"
 #include "EntityFactory.h"
+#include "EntityManager.h"
 #include "Game.h"
 #include "IGraphics.h"
 #include "GUIManager.h"
@@ -11,6 +12,8 @@
 
 #include "MutexLock.h"
 #include "VersionNumber.h"
+
+#include "StringUtils.h"
 
 CGame game_local;
 
@@ -43,6 +46,7 @@ void CGame::InitializeGame()
 {
 	gameState = EGameState::INGAME;
 	playerEntity = entityFactory.CreatePlayer();
+	entityMgr.AddEntity(playerEntity);
 }
 
 void CGame::Quit()
@@ -93,7 +97,11 @@ void CGame::Update(float dtTime)
 	switch(gameState) {
 		case EGameState::MENU:
 			guiManager.Update(dtTime);
-		break;
+			break;
+
+		case EGameState::INGAME:
+			entityMgr.UpdateAll(dtTime);
+			break;
 	}
 }
 
@@ -106,6 +114,17 @@ void CGame::Draw()
 
 		case EGameState::INGAME:
 			level.Draw();
+
+			CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL);
+
+			graphics->DrawText(
+				resMgr->GetFont("data/res/font/sys.fnt"), 
+				CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f), 
+				CColor::white, 
+				StrUtl::FormatString("Player pos: %f:%f",
+				playerPhysical->rect.pos.x,
+				playerPhysical->rect.pos.y).c_str());
+
 			break;
 	}
 }

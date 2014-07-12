@@ -26,6 +26,7 @@ private:
 class CEntity;
 
 #define COMPONENT_PHYSICAL "Physics"
+#define COMPONENT_PLAYERINPUT "PlayerInput"
 
 class CComponentBase
 {

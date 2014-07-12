@@ -21,6 +21,8 @@ endif()
 set(PONYTERRA_SOURCES
 	src/Component_Physical.cpp
 	src/Component_Physical.h
+	src/Component_PlayerInput.cpp
+	src/Component_PlayerInput.h
 	src/DrawQuery.cpp
 	src/DrawQuery.h
 	src/Entity.h

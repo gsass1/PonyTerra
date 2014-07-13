@@ -93,6 +93,12 @@ endif()
 
 target_link_libraries(Game ${LIBRARIES})
 
+if(NOT WIN32)
+
+set_target_properties(Game PROPERTIES PREFIX "")
+
+endif()
+
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION .)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/nsengine/bin/ DESTINATION .)
 install(TARGETS Game DESTINATION .)

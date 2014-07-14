@@ -11,7 +11,7 @@ void CComponent_PlayerInput::Initialize(CEntity *parent)
 {
 	CComponentBase::Initialize(parent);
 
-	physical = parent->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL);
+	physical = parent->GetComponents()->Get<CComponent_Physical>();
 }
 
 void CComponent_PlayerInput::Update(float dtTime)
@@ -33,9 +33,4 @@ void CComponent_PlayerInput::Update(float dtTime)
 		}
 
 	}
-}
-
-std::string CComponent_PlayerInput::GetID() const
-{
-	return COMPONENT_PLAYERINPUT;
 }

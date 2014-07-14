@@ -49,11 +49,6 @@ void CComponent_Physical::Update(float dtTime)
 	}
 }
 
-std::string CComponent_Physical::GetID() const
-{
-	return COMPONENT_PHYSICAL;
-}
-
 void CComponent_Physical::AddVelocity(const CVector2f &v)
 {
 	velocity += v;

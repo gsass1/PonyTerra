@@ -64,87 +64,79 @@ CComponentContainer::~CComponentContainer()
 
 void CComponentContainer::CoupleAll()
 {
-	for (std::vector<CComponentBase *>::iterator itr = components.begin();
-		itr != components.end();
+	for (componentListItr_t itr = componentList.begin();
+		itr != componentList.end();
 		itr++)
 	{
-		(*itr)->Initialize(parent);
+		itr->second->Initialize(parent);
 	}
 }
 
-void CComponentContainer::Add(CComponentBase *component)
+void CComponentContainer::Add(CComponentBase *component, std::string id)
 {
-	components.push_back(component);
+	componentList.insert(componentPair_t(id, component));
 }
 
 void CComponentContainer::Remove(const std::string &id)
 {
-	for (std::vector<CComponentBase *>::iterator itr = components.begin();
-		itr != components.end();
-		itr++)
-	{
-		if((*itr)->GetID() == id) {
-			(*itr)->Destroy();
-			delete (*itr);
-			components.erase(itr);
-			return;
-		}
+	componentListItr_t itr = componentList.find(id);
+	if(itr != componentList.end()) {
+		itr->second->Destroy();
+		delete itr->second;
+		componentList.erase(itr);
 	}
 }
 
 void CComponentContainer::DestroyAll()
 {
-	for (std::vector<CComponentBase *>::iterator itr = components.begin();
-		itr != components.end();
+	for (componentListItr_t itr = componentList.begin();
+		itr != componentList.end();
 		itr++)
 	{
-		(*itr)->Destroy();
-		delete (*itr);
-		return;
+		itr->second->Destroy();
+		delete itr->second;
 	}
-	components.clear();
+	componentList.clear();
 }
 
 CComponentBase *CComponentContainer::Get(const std::string &id)
 {
-	for (std::vector<CComponentBase *>::iterator itr = components.begin();
-		itr != components.end();
-		itr++)
-	{
-		if((*itr)->GetID() == id) {
-			return (*itr);
-		}
+	componentListItr_t itr = componentList.find(id);
+	if(itr != componentList.end()) {
+		return itr->second;
 	}
-	return NULL;
+	else {
+		return NULL;
+	}
 }
 
 void CComponentContainer::UpdateAll(float dtTime)
 {
-	for (std::vector<CComponentBase *>::iterator itr = components.begin();
-		itr != components.end();
+	for (componentListItr_t itr = componentList.begin();
+		itr != componentList.end();
 		itr++)
 	{
-		(*itr)->Update(dtTime);
+		itr->second->Update(dtTime);
 	}
 }
 
 void CComponentContainer::DrawAll()
 {
-	for (std::vector<CComponentBase *>::iterator itr = components.begin();
-		itr != components.end();
+	for (componentListItr_t itr = componentList.begin();
+		itr != componentList.end();
 		itr++)
 	{
-		(*itr)->Draw();
+		itr->second->Draw();
 	}
 }
 
 void CComponentContainer::HandleMessage(const CMessage *msg)
 {
-	for (std::vector<CComponentBase *>::iterator itr = components.begin();
-		itr != components.end();
+	for (componentListItr_t itr = componentList.begin();
+		itr != componentList.end();
 		itr++)
 	{
-		(*itr)->HandleMessage(msg);
+		itr->second->HandleMessage(msg);
 	}
 }
 

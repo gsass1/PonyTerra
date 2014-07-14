@@ -11,8 +11,6 @@ public:
 
 	void		Update(float dtTime);
 
-	std::string GetID() const;
-
 	void		AddVelocity(const CVector2f &v);
 
 	CRect		rect;

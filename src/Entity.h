@@ -2,7 +2,7 @@
 #define ENTITY_H
 
 #include <string>
-#include <vector>
+#include <map>
 
 class IEntity;
 
@@ -25,9 +25,6 @@ private:
 
 class CEntity;
 
-#define COMPONENT_PHYSICAL "Physics"
-#define COMPONENT_PLAYERINPUT "PlayerInput"
-
 class CComponentBase
 {
 public:
@@ -44,8 +41,6 @@ public:
 
 	CEntity *			GetParent() const;
 
-	virtual std::string GetID() const = 0;
-
 	virtual void		HandleMessage(const CMessage *msg);
 
 protected:
@@ -60,18 +55,30 @@ public:
 
 	void				CoupleAll();
 
-	void				Add(CComponentBase *component);
+	template<class T>
+	void				Add(T *component)
+	{
+		Add(component, typeid(component).name());
+	}
+
+	void				Add(CComponentBase *component, std::string key);
+
+	template<class T>
+	void				Remove()
+	{
+		Remove(typeid(component).name());
+	}
 
 	void				Remove(const std::string &id);
 
 	void				DestroyAll();
 
-	CComponentBase *	Get(const std::string &id);
-
-	template<class T> T *Get(const std::string &id)
+	template<class T> T *Get()
 	{
-		return (T *)Get(id);
+		return dynamic_cast<T *>(Get(typeid(T).name()));
 	}
+
+	CComponentBase *	Get(const std::string &id);
 
 	void				UpdateAll(float dtTime);
 
@@ -81,7 +88,10 @@ public:
 
 private:
 	CEntity *			parent;
-	std::vector<CComponentBase *> components;
+	typedef std::map<std::string, CComponentBase *> componentList_t;
+	typedef componentList_t::iterator componentListItr_t;
+	typedef std::pair<std::string, CComponentBase *> componentPair_t;
+	componentList_t		componentList;
 };
 
 class CEntity

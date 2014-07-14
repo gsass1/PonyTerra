@@ -14,8 +14,6 @@ public:
 
 	void Update(float dtTime);
 
-	std::string GetID() const;
-
 private:
 	CComponent_Physical *physical;
 };

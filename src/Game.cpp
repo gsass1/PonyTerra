@@ -47,7 +47,7 @@ void CGame::InitializeGame()
 	gameState = EGameState::INGAME;
 	playerEntity = entityFactory.CreatePlayer();
 	entityMgr.AddEntity(playerEntity);
-	playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL)->rect.pos.Set(0.0f, 500.0f);
+	playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.Set(0.0f, 500.0f);
 }
 
 void CGame::Quit()
@@ -101,7 +101,7 @@ void CGame::Update(float dtTime)
 
 		case EGameState::INGAME:
 			entityMgr.UpdateAll(dtTime);
-			LookAt(playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL)->rect);
+			LookAt(playerEntity->GetComponents()->Get<CComponent_Physical>()->rect);
 			break;
 	}
 }
@@ -116,7 +116,7 @@ void CGame::Draw()
 		case EGameState::INGAME:
 			level.Draw();
 
-			CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL);
+			CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>();
 
 			CRect drawRect = playerPhysical->rect;
 			drawRect.pos -= viewRect.pos;

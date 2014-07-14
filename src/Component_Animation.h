@@ -7,12 +7,6 @@
 #include <string>
 #include <vector>
 
-enum EAnimationState {
-	IDLE,
-	WALK_LEFT,
-	WALK_RIGHT,
-};
-
 class ITexture;
 
 class CComponent_Animation : public CComponentBase
@@ -21,20 +15,38 @@ public:
 					CComponent_Animation();
 
 	void			Load(const std::string &filepath);
-	void			Destroy();
 
 	void			AdvanceFrame();
-	void			ChangeAnimationState(EAnimationState newAnimState);
+	void			ChangeAnimationState(const std::string &name);
 
-	EAnimationState animState;
+	void			Draw();
+
+	std::string		currentAnimState;
 	int				currentFrame;
 
-	struct animation_t {
-		std::vector<ITexture *>	frames;
-		int						maxFrames;
+	struct frame_t
+	{
+		frame_t()
+		{
+			id = 0;
+			texture = NULL;
+			hrev = false;
+		}
+
+		int id;
+		ITexture *texture;
+		bool hrev;
 	};
 
-	typedef std::map<EAnimationState, animation_t> animMap_t;
+	struct animation_t
+	{
+		typedef std::pair<int, frame_t> framePair_t;
+		std::map<int, frame_t> frames;
+		int			maxFrames;
+	};
+
+	typedef std::pair<std::string, animation_t> animMapPair_t;
+	typedef std::map<std::string, animation_t> animMap_t;
 	animMap_t animMap;
 };
 

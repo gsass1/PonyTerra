@@ -86,6 +86,8 @@ public:
 
 	void		Draw();
 
+	bool		IsCollidingWithTiles(const CRect &rect);
+
 	int			width;
 	int			height;
 

@@ -2,6 +2,7 @@
 #include "ICommon.h"
 #include "IFont.h"
 #include "EntityFactory.h"
+#include "EntityManager.h"
 #include "Game.h"
 #include "IGraphics.h"
 #include "GUIManager.h"
@@ -11,6 +12,8 @@
 
 #include "MutexLock.h"
 #include "VersionNumber.h"
+
+#include "StringUtils.h"
 
 CGame game_local;
 
@@ -43,6 +46,8 @@ void CGame::InitializeGame()
 {
 	gameState = EGameState::INGAME;
 	playerEntity = entityFactory.CreatePlayer();
+	entityMgr.AddEntity(playerEntity);
+	playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL)->rect.pos.Set(0.0f, 500.0f);
 }
 
 void CGame::Quit()
@@ -81,19 +86,23 @@ void CGame::Update(float dtTime)
                 levelGenThread->join();
                 //delete levelGenThread;
 				levelGenerate.isGenerating = false;
+				InitializeGame();
 			}
 		}
         catch(std::exception &e) {
             common->Error("%s\n", e.what());
 		}
-
-		InitializeGame();
 	}
 
 	switch(gameState) {
 		case EGameState::MENU:
 			guiManager.Update(dtTime);
-		break;
+			break;
+
+		case EGameState::INGAME:
+			entityMgr.UpdateAll(dtTime);
+			LookAt(playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL)->rect);
+			break;
 	}
 }
 
@@ -106,24 +115,38 @@ void CGame::Draw()
 
 		case EGameState::INGAME:
 			level.Draw();
+
+			CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL);
+
+			CRect drawRect = playerPhysical->rect;
+			drawRect.pos -= viewRect.pos;
+
+			graphics->DrawRect(drawRect, CColor(255, 0, 0));
+
+			graphics->DrawText(
+				resMgr->GetFont("data/res/font/sys.fnt"), 
+				CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f), 
+				CColor::white, 
+				StrUtl::FormatString("Player pos: %f:%f",
+				playerPhysical->rect.pos.x,
+				playerPhysical->rect.pos.y).c_str());
+
 			break;
 	}
 }
 
+void CGame::LookAt(const CRect &rect)
+{
+	viewRect.width = graphics->GetWidth();
+	viewRect.height = graphics->GetHeight();
+
+	viewRect.pos.x = rect.pos.x + (float)rect.width / 2.0f - (float)viewRect.width / 2.0f;
+	viewRect.pos.y = rect.pos.y + (float)rect.height / 2.0f - (float)viewRect.height / 2.0f;
+}
+
 CRect CGame::GetViewRect() const
 {
-	if(gameState == EGameState::INGAME) {
-
-		return CRect(
-			playerEntity->GetComponents()->Get<CComponent_Physical>(COMPONENT_PHYSICAL)->rect.pos,
-			graphics->GetWidth(), 
-			graphics->GetHeight());
-
-	} else {
-
-		return CRect();
-
-	}
+	return viewRect;
 }
 
 CEntity *CGame::GetPlayerEntity() const

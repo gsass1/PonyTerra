@@ -49,8 +49,8 @@ void CGUI_NewWorld::Update(float dtTime) {
 	if(btSmallWorld->IsClicked()) {
 		guiManager.Push(GetGUI("Loading"));
 
-		level.width = 250;
-		level.height = 250;
+		level.width = 1000;
+		level.height = 1000;
 		levelGenerate.StartGenerating();
 	}
 

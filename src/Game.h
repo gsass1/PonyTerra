@@ -32,11 +32,13 @@ public:
 
 	CEntity *	GetPlayerEntity() const;
 
+	void		LookAt(const CRect &rect);
 	CRect		GetViewRect() const;
 
 	EGameState	gameState;
 
 private:
+	CRect		viewRect;
 	CEntity *	playerEntity;
 };
 

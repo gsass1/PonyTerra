@@ -76,7 +76,7 @@ public:
 
 	template<class T> T *Get()
 	{
-		return dynamic_cast<T *>(Get(typeid(T).name()));
+		return dynamic_cast<T *>(Get(typeid(T*).name()));
 	}
 
 	CComponentBase *	Get(const std::string &id);

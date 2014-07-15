@@ -1,3 +1,4 @@
+#include "Component_Animation.h"
 #include "Component_Physical.h"
 #include "Component_PlayerInput.h"
 
@@ -26,6 +27,12 @@ CEntity *CEntityFactory::CreatePlayer()
 	entity->GetComponents()->Add(physical);
 
 	entity->GetComponents()->Add(new CComponent_PlayerInput());
+
+	CComponent_Animation *animation = new CComponent_Animation();
+
+	animation->Load("twilight_sparkle");
+
+	entity->GetComponents()->Add(animation);
 
 	entity->Initialize();
 

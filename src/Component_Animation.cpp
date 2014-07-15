@@ -11,10 +11,10 @@ CComponent_Animation::CComponent_Animation()
 	currentFrame = 0;
 }
 
-void CComponent_Animation::Load(const std::string &animName)
+void CComponent_Animation::Load(const std::string &filepath)
 {
 	TiXmlDocument doc;
-	if(!doc.LoadFile(StrUtl::FormatString("data/res/tex/%s/%s", animName, ANIMCONF_DEFAULT_NAME).c_str())) {
+	if (!doc.LoadFile(StrUtl::FormatString("data/res/tex/%s/%s", filepath.c_str(), ANIMCONF_DEFAULT_NAME).c_str())) {
 		// ASSERT pls
 		return;
 	}

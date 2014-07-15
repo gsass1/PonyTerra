@@ -67,7 +67,7 @@ public:
 	template<class T>
 	void				Remove()
 	{
-		Remove(typeid(component).name());
+		Remove(typeid(T).name());
 	}
 
 	void				Remove(const std::string &id);

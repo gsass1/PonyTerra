@@ -5,7 +5,7 @@
 </Sequence>
 
 <Sequence Name="Idle_Right">
-	<Frame ID="0" Path="idle/IMG00000.bmp Flags="hrev" />
+	<Frame ID="0" Path="idle/IMG00000.bmp" Flags="hrev" />
 </Sequence>
 
 <Sequence Name="Walk_Left">

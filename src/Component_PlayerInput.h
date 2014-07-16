@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 
+class CComponent_Animation;
 class CComponent_Physical;
 
 class CComponent_PlayerInput : public CComponentBase
@@ -15,6 +16,7 @@ public:
 	void Update(float dtTime);
 
 private:
+	CComponent_Animation *animation;
 	CComponent_Physical *physical;
 };
 

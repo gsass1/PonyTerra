@@ -1,4 +1,8 @@
 #include "Component_Animation.h"
+#include "Component_Physical.h"
+#include "Game.h"
+#include "IFilesystem.h"
+#include "IGraphics.h"
 #include "ITexture.h"
 #include "IResourceManager.h"
 #include "StringUtils.h"
@@ -9,12 +13,22 @@
 CComponent_Animation::CComponent_Animation()
 {
 	currentFrame = 0;
+	physical = NULL;
+}
+
+void CComponent_Animation::Initialize(CEntity *parent)
+{
+	CComponentBase::Initialize(parent);
+
+	physical = parent->GetComponents()->Get<CComponent_Physical>();
 }
 
 void CComponent_Animation::Load(const std::string &filepath)
 {
 	TiXmlDocument doc;
-	if (!doc.LoadFile(StrUtl::FormatString("data/res/tex/%s/%s", filepath.c_str(), ANIMCONF_DEFAULT_NAME).c_str())) {
+	//fileSystem->GetBasePath();
+	//if (!doc.LoadFile((fileSystem->GetBasePath() + "data/res/tex/twilight_sparkle/animConf").c_str())) {
+	if (!doc.LoadFile((StrUtl::FormatString("%s/data/res/tex/%s/%s", fileSystem->GetBasePath().c_str(), filepath.c_str(), ANIMCONF_DEFAULT_NAME)).c_str())) {
 		// ASSERT pls
 		return;
 	}
@@ -36,7 +50,7 @@ void CComponent_Animation::Load(const std::string &filepath)
 
 			frame_t frame;
 			frame.id = id;
-			frame.texture = resMgr->GetTexture(path);
+			frame.texture = resMgr->GetTexture(StrUtl::FormatString("data/res/tex/%s/%s", filepath.c_str(), path.c_str()));
 
 			std::string flags;
 
@@ -60,18 +74,22 @@ void CComponent_Animation::Load(const std::string &filepath)
 void CComponent_Animation::AdvanceFrame()
 {
 	currentFrame++;
-	if(currentFrame > animMap[currentAnimState].maxFrames) {
+	if(currentFrame == animMap[currentAnimState].maxFrames) {
 		currentFrame = 0;
 	}
 }
 
 void CComponent_Animation::ChangeAnimationState(const std::string &name)
 {
+	if(currentAnimState == name) {
+		return;
+	}
 	currentFrame = 0;
 	currentAnimState = name;
 }
 
 void CComponent_Animation::Draw()
 {
-	// TODO
+	ITexture *texture = animMap[currentAnimState].frames[currentFrame].texture;
+	graphics->DrawTexture(texture, physical->rect.pos - game_local.GetViewRect().pos);
 }

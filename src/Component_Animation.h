@@ -7,12 +7,15 @@
 #include <string>
 #include <vector>
 
+class CComponent_Physical;
 class ITexture;
 
 class CComponent_Animation : public CComponentBase
 {
 public:
 					CComponent_Animation();
+
+	void			Initialize(CEntity *parent);
 
 	void			Load(const std::string &filepath);
 
@@ -23,6 +26,8 @@ public:
 
 	std::string		currentAnimState;
 	int				currentFrame;
+
+	CComponent_Physical *physical;
 
 	struct frame_t
 	{

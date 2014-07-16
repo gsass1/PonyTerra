@@ -116,13 +116,15 @@ void CGame::Draw()
 		case EGameState::INGAME:
 			level.Draw();
 
+			entityMgr.DrawAll();
+			
 			CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>();
-
+			/*
 			CRect drawRect = playerPhysical->rect;
 			drawRect.pos -= viewRect.pos;
 
 			graphics->DrawRect(drawRect, CColor(255, 0, 0));
-
+			*/
 			graphics->DrawText(
 				resMgr->GetFont("data/res/font/sys.fnt"), 
 				CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f), 
@@ -130,7 +132,7 @@ void CGame::Draw()
 				StrUtl::FormatString("Player pos: %f:%f",
 				playerPhysical->rect.pos.x,
 				playerPhysical->rect.pos.y).c_str());
-
+				
 			break;
 	}
 }

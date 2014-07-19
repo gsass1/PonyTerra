@@ -15,6 +15,8 @@ void CComponent_PlayerInput::Initialize(CEntity *parent)
 
 	animation = parent->GetComponents()->Get<CComponent_Animation>();
 	physical = parent->GetComponents()->Get<CComponent_Physical>();
+	
+	animation->ChangeAnimationState("Idle_Left");
 }
 
 void CComponent_PlayerInput::Update(float dtTime)
@@ -33,7 +35,11 @@ void CComponent_PlayerInput::Update(float dtTime)
 
 	} else {
 		
-		animation->ChangeAnimationState("Idle_Left");
+		if (animation->currentAnimState == "Walk_Left") {
+			animation->ChangeAnimationState("Idle_Left");
+		} else if (animation->currentAnimState == "Walk_Right") {
+			animation->ChangeAnimationState("Idle_Right");
+		}
 
 	}
 

@@ -26,8 +26,6 @@ void CComponent_Animation::Initialize(CEntity *parent)
 void CComponent_Animation::Load(const std::string &filepath)
 {
 	TiXmlDocument doc;
-	//fileSystem->GetBasePath();
-	//if (!doc.LoadFile((fileSystem->GetBasePath() + "data/res/tex/twilight_sparkle/animConf").c_str())) {
 	if (!doc.LoadFile((StrUtl::FormatString("%s/data/res/tex/%s/%s", fileSystem->GetBasePath().c_str(), filepath.c_str(), ANIMCONF_DEFAULT_NAME)).c_str())) {
 		// ASSERT pls
 		return;
@@ -50,7 +48,7 @@ void CComponent_Animation::Load(const std::string &filepath)
 
 			frame_t frame;
 			frame.id = id;
-			frame.texture = resMgr->GetTexture(StrUtl::FormatString("data/res/tex/%s/%s", filepath.c_str(), path.c_str()));
+			frame.texture = resMgr->GetTexture(StrUtl::FormatString("data/res/tex/%s/%s", filepath.c_str(), path.c_str()), CColor(255, 0, 255));
 
 			std::string flags;
 
@@ -91,5 +89,15 @@ void CComponent_Animation::ChangeAnimationState(const std::string &name)
 void CComponent_Animation::Draw()
 {
 	ITexture *texture = animMap[currentAnimState].frames[currentFrame].texture;
+	bool hrev = animMap[currentAnimState].frames[currentFrame].hrev;
+
+	if (hrev) {
+		graphics->SetOrtho(graphics->GetWidth(), 0, 0, graphics->GetHeight());
+	}
+
 	graphics->DrawTexture(texture, physical->rect.pos - game_local.GetViewRect().pos);
+
+	if (hrev) {
+		graphics->ResetOrtho();
+	}
 }

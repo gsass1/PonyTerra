@@ -1,14 +1,14 @@
 <AnimConf Name="TwilightSparkle">
 
-<Sequence Name="Idle_Left">
+<Sequence Name="Idle_Left" FrameInterval="0">
 	<Frame ID="0" Path="idle/IMG00000.bmp" OffsetX="-30" OffsetY="-32" />
 </Sequence>
 
-<Sequence Name="Idle_Right">
+<Sequence Name="Idle_Right" FrameInterval="0">
 	<Frame ID="0" Path="idle/IMG00000.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
 </Sequence>
 
-<Sequence Name="Walk_Left">
+<Sequence Name="Walk_Left" FrameInterval="30">
 	<Frame ID="0" Path="walk/IMG00000.bmp" OffsetX="-30" OffsetY="-32" />
 	<Frame ID="1" Path="walk/IMG00001.bmp" OffsetX="-30" OffsetY="-32" />
 	<Frame ID="2" Path="walk/IMG00002.bmp" OffsetX="-30" OffsetY="-32" />
@@ -27,7 +27,7 @@
 	<Frame ID="15" Path="walk/IMG00015.bmp" OffsetX="-30" OffsetY="-32" />
 </Sequence>
 
-<Sequence Name="Walk_Right">
+<Sequence Name="Walk_Right" FrameInterval="30">
 	<Frame ID="0" Path="walk/IMG00000.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
 	<Frame ID="1" Path="walk/IMG00001.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
 	<Frame ID="2" Path="walk/IMG00002.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />

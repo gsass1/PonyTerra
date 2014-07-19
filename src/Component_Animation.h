@@ -36,11 +36,16 @@ public:
 			id = 0;
 			texture = NULL;
 			hrev = false;
+			offsetX = 0.0f;
+			offsetY = 0.0f;
 		}
 
 		int id;
 		ITexture *texture;
 		bool hrev;
+
+		float offsetX;
+		float offsetY;
 	};
 
 	struct animation_t

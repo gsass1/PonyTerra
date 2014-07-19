@@ -60,6 +60,14 @@ void CComponent_Animation::Load(const std::string &filepath)
 				frame.hrev = true;
 			}
 
+			if (frameElem->Attribute("OffsetX") != NULL) {
+				frame.offsetX = (float)atoi(frameElem->Attribute("OffsetX"));
+			}
+
+			if (frameElem->Attribute("OffsetY") != NULL) {
+				frame.offsetY = (float)atoi(frameElem->Attribute("OffsetY"));
+			}
+
 			animation_t::framePair_t framePair(id, frame);
 			animation.frames.insert(framePair);
 		}
@@ -88,16 +96,17 @@ void CComponent_Animation::ChangeAnimationState(const std::string &name)
 
 void CComponent_Animation::Draw()
 {
-	ITexture *texture = animMap[currentAnimState].frames[currentFrame].texture;
-	bool hrev = animMap[currentAnimState].frames[currentFrame].hrev;
+	frame_t frame = animMap[currentAnimState].frames[currentFrame];
 
-	if (hrev) {
+	if (frame.hrev) {
 		graphics->SetOrtho(graphics->GetWidth(), 0, 0, graphics->GetHeight());
 	}
 
-	graphics->DrawTexture(texture, physical->rect.pos - game_local.GetViewRect().pos);
+	CVector2f pos = (physical->rect.pos + CVector2f(frame.offsetX, frame.offsetY)) - game_local.GetViewRect().pos;
 
-	if (hrev) {
+	graphics->DrawTexture(frame.texture, pos);
+
+	if (frame.hrev) {
 		graphics->ResetOrtho();
 	}
 }

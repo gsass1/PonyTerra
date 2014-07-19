@@ -2,6 +2,7 @@
 #include "Component_Physical.h"
 #include "Game.h"
 #include "IFilesystem.h"
+#include "ICommon.h"
 #include "IGraphics.h"
 #include "ITexture.h"
 #include "IResourceManager.h"
@@ -13,6 +14,7 @@
 CComponent_Animation::CComponent_Animation()
 {
 	currentFrame = 0;
+	lastFrameTicks = 0;
 	physical = NULL;
 }
 
@@ -26,10 +28,10 @@ void CComponent_Animation::Initialize(CEntity *parent)
 void CComponent_Animation::Load(const std::string &filepath)
 {
 	TiXmlDocument doc;
-	if (!doc.LoadFile((StrUtl::FormatString("%s/data/res/tex/%s/%s", fileSystem->GetBasePath().c_str(), filepath.c_str(), ANIMCONF_DEFAULT_NAME)).c_str())) {
-		// ASSERT pls
-		return;
-	}
+	
+	bool load = doc.LoadFile((StrUtl::FormatString("%s/data/res/tex/%s/%s", fileSystem->GetBasePath().c_str(), filepath.c_str(), ANIMCONF_DEFAULT_NAME)).c_str());
+
+	ASSERT(load);
 
 	TiXmlElement *animRoot = (TiXmlElement *)doc.FirstChild();
 
@@ -40,6 +42,8 @@ void CComponent_Animation::Load(const std::string &filepath)
 		animation_t animation;
 
 		std::string sequenceName = sequence->Attribute("Name");
+
+		animation.frameInterval = atoi(sequence->Attribute("FrameInterval"));
 
 		TiXmlElement *frameElem;
 		FOR_EACH_ELEM(sequence, frameElem) {
@@ -79,9 +83,12 @@ void CComponent_Animation::Load(const std::string &filepath)
 
 void CComponent_Animation::AdvanceFrame()
 {
-	currentFrame++;
-	if(currentFrame == animMap[currentAnimState].maxFrames) {
-		currentFrame = 0;
+	if (common->GetTicks() - lastFrameTicks >= (unsigned int)animMap[currentAnimState].frameInterval) {
+		currentFrame++;
+		if (currentFrame == animMap[currentAnimState].maxFrames) {
+			currentFrame = 0;
+		}
+		lastFrameTicks = common->GetTicks();
 	}
 }
 
@@ -92,6 +99,7 @@ void CComponent_Animation::ChangeAnimationState(const std::string &name)
 	}
 	currentFrame = 0;
 	currentAnimState = name;
+	lastFrameTicks = common->GetTicks();
 }
 
 void CComponent_Animation::Draw()

@@ -50,14 +50,22 @@ public:
 
 	struct animation_t
 	{
+		animation_t()
+		{
+			maxFrames = 0;
+			frameInterval = 0;
+		}
+
 		typedef std::pair<int, frame_t> framePair_t;
 		std::map<int, frame_t> frames;
 		int			maxFrames;
+		int			frameInterval;
 	};
 
 	typedef std::pair<std::string, animation_t> animMapPair_t;
 	typedef std::map<std::string, animation_t> animMap_t;
 	animMap_t animMap;
+	unsigned int lastFrameTicks;
 };
 
 #endif

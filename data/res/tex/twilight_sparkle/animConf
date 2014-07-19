@@ -1,49 +1,49 @@
 <AnimConf Name="TwilightSparkle">
 
 <Sequence Name="Idle_Left">
-	<Frame ID="0" Path="idle/IMG00000.bmp" />
+	<Frame ID="0" Path="idle/IMG00000.bmp" OffsetX="-30" OffsetY="-32" />
 </Sequence>
 
 <Sequence Name="Idle_Right">
-	<Frame ID="0" Path="idle/IMG00000.bmp" Flags="hrev" />
+	<Frame ID="0" Path="idle/IMG00000.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
 </Sequence>
 
 <Sequence Name="Walk_Left">
-	<Frame ID="0" Path="walk/IMG00000.bmp" />
-	<Frame ID="1" Path="walk/IMG00001.bmp" />
-	<Frame ID="2" Path="walk/IMG00002.bmp" />
-	<Frame ID="3" Path="walk/IMG00003.bmp" />
-	<Frame ID="4" Path="walk/IMG00004.bmp" />
-	<Frame ID="5" Path="walk/IMG00005.bmp" />
-	<Frame ID="6" Path="walk/IMG00006.bmp" />
-	<Frame ID="7" Path="walk/IMG00007.bmp" />
-	<Frame ID="8" Path="walk/IMG00008.bmp" />
-	<Frame ID="9" Path="walk/IMG00009.bmp" />
-	<Frame ID="10" Path="walk/IMG00010.bmp" />
-	<Frame ID="11" Path="walk/IMG00011.bmp" />
-	<Frame ID="12" Path="walk/IMG00012.bmp" />
-	<Frame ID="13" Path="walk/IMG00013.bmp" />
-	<Frame ID="14" Path="walk/IMG00014.bmp" />
-	<Frame ID="15" Path="walk/IMG00015.bmp" />
+	<Frame ID="0" Path="walk/IMG00000.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="1" Path="walk/IMG00001.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="2" Path="walk/IMG00002.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="3" Path="walk/IMG00003.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="4" Path="walk/IMG00004.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="5" Path="walk/IMG00005.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="6" Path="walk/IMG00006.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="7" Path="walk/IMG00007.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="8" Path="walk/IMG00008.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="9" Path="walk/IMG00009.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="10" Path="walk/IMG00010.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="11" Path="walk/IMG00011.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="12" Path="walk/IMG00012.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="13" Path="walk/IMG00013.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="14" Path="walk/IMG00014.bmp" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="15" Path="walk/IMG00015.bmp" OffsetX="-30" OffsetY="-32" />
 </Sequence>
 
 <Sequence Name="Walk_Right">
-	<Frame ID="0" Path="walk/IMG00000.bmp" Flags="hrev" />
-	<Frame ID="1" Path="walk/IMG00001.bmp" Flags="hrev" />
-	<Frame ID="2" Path="walk/IMG00002.bmp" Flags="hrev" />
-	<Frame ID="3" Path="walk/IMG00003.bmp" Flags="hrev" />
-	<Frame ID="4" Path="walk/IMG00004.bmp" Flags="hrev" />
-	<Frame ID="5" Path="walk/IMG00005.bmp" Flags="hrev" />
-	<Frame ID="6" Path="walk/IMG00006.bmp" Flags="hrev" />
-	<Frame ID="7" Path="walk/IMG00007.bmp" Flags="hrev" />
-	<Frame ID="8" Path="walk/IMG00008.bmp" Flags="hrev" />
-	<Frame ID="9" Path="walk/IMG00009.bmp" Flags="hrev" />
-	<Frame ID="10" Path="walk/IMG00010.bmp" Flags="hrev" />
-	<Frame ID="11" Path="walk/IMG00011.bmp" Flags="hrev" />
-	<Frame ID="12" Path="walk/IMG00012.bmp" Flags="hrev" />
-	<Frame ID="13" Path="walk/IMG00013.bmp" Flags="hrev" />
-	<Frame ID="14" Path="walk/IMG00014.bmp" Flags="hrev" />
-	<Frame ID="15" Path="walk/IMG00015.bmp" Flags="hrev" />
+	<Frame ID="0" Path="walk/IMG00000.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="1" Path="walk/IMG00001.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="2" Path="walk/IMG00002.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="3" Path="walk/IMG00003.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="4" Path="walk/IMG00004.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="5" Path="walk/IMG00005.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="6" Path="walk/IMG00006.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="7" Path="walk/IMG00007.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="8" Path="walk/IMG00008.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="9" Path="walk/IMG00009.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="10" Path="walk/IMG00010.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="11" Path="walk/IMG00011.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="12" Path="walk/IMG00012.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="13" Path="walk/IMG00013.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="14" Path="walk/IMG00014.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
+	<Frame ID="15" Path="walk/IMG00015.bmp" Flags="hrev" OffsetX="-30" OffsetY="-32" />
 </Sequence>
 
 </AnimConf>

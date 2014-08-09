@@ -7,6 +7,7 @@ CComponent_PlayerInput::CComponent_PlayerInput()
 {
 	animation = NULL;
 	physical = NULL;
+	noclip = false;
 }
 
 void CComponent_PlayerInput::Initialize(CEntity *parent)
@@ -21,6 +22,11 @@ void CComponent_PlayerInput::Initialize(CEntity *parent)
 
 void CComponent_PlayerInput::Update(float dtTime)
 {
+	if(noclip) {
+		UpdateNoClip(dtTime);
+		return;
+	}
+
 	if(input->KeyPressed(NSKey::NSK_a)) {
 
 		physical->AddVelocity(CVector2f(-100.0f, 0.0f));
@@ -49,5 +55,31 @@ void CComponent_PlayerInput::Update(float dtTime)
 			physical->AddVelocity(CVector2f(0.0f, 2000.0f));
 		}
 
+	}
+}
+
+void CComponent_PlayerInput::SetNoClip(bool noclip)
+{
+	this->noclip = noclip;
+    physical->disableMotion = noclip;
+}
+
+bool CComponent_PlayerInput::ToggleNoClip() {
+	SetNoClip(!noclip);
+	return noclip;
+}
+
+void CComponent_PlayerInput::UpdateNoClip(float dtTime)
+{
+	if(input->KeyPressed(NSKey::NSK_a)) {
+		physical->rect.pos += CVector2f(-2500.0f * dtTime, 0.0f);
+	} else if(input->KeyPressed(NSKey::NSK_d)) {
+		physical->rect.pos += CVector2f(2500.0f * dtTime, 0.0f);
+	}
+
+	if(input->KeyPressed(NSKey::NSK_w)) {
+		physical->rect.pos += CVector2f(0.0f, 2500.0f * dtTime);
+	} else if(input->KeyPressed(NSKey::NSK_s)) {
+		physical->rect.pos += CVector2f(0.0f, -2500.0f * dtTime);
 	}
 }

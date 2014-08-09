@@ -5,12 +5,13 @@
 #include "IResourceManager.h"
 #include "ITexture.h"
 #include "Widget_Button.h"
+#include "StringUtils.h"
 
 CGUI_NewWorld::CGUI_NewWorld() {
 	bg = nullptr;
-	btSmallWorld = new CWidget_Button("Small World (2000x1200)", CVector2f((float)graphics->GetWidth() / 2.0f, 380.0f));
-	btMediumWorld = new CWidget_Button("Medium World (4200x1200)", CVector2f((float)graphics->GetWidth() / 2.0f, 320.0f));
-	btBigWorld = new CWidget_Button("Big World (6000x2000)", CVector2f((float)graphics->GetWidth() / 2.0f, 260.0f));
+    btSmallWorld = new CWidget_Button(StrUtl::FormatString("Small World (%dx%d)", SMALL_WORLD_SIZE_W, SMALL_WORLD_SIZE_H).c_str(), CVector2f((float)graphics->GetWidth() / 2.0f, 380.0f));
+    btMediumWorld = new CWidget_Button(StrUtl::FormatString("Medium World (%dx%d)", MEDIUM_WORLD_SIZE_W, MEDIUM_WORLD_SIZE_H).c_str(), CVector2f((float)graphics->GetWidth() / 2.0f, 320.0f));
+    btBigWorld = new CWidget_Button(StrUtl::FormatString("Big World (%dx%d)", BIG_WORLD_SIZE_W, BIG_WORLD_SIZE_H).c_str(), CVector2f((float)graphics->GetWidth() / 2.0f, 260.0f));
 	btBack = new CWidget_Button("Back", CVector2f((float)graphics->GetWidth() / 2.0f, 200.0f));
 }
 
@@ -48,11 +49,24 @@ void CGUI_NewWorld::Update(float dtTime) {
 
 	if(btSmallWorld->IsClicked()) {
 		guiManager.Push(GetGUI("Loading"));
-
-		level.width = 1000;
-		level.height = 1000;
+        level.width = SMALL_WORLD_SIZE_W;
+        level.height = SMALL_WORLD_SIZE_H;
 		levelGenerate.StartGenerating();
 	}
+
+    if(btMediumWorld->IsClicked()) {
+        guiManager.Push(GetGUI("Loading"));
+        level.width = MEDIUM_WORLD_SIZE_W;
+        level.height = MEDIUM_WORLD_SIZE_H;
+        levelGenerate.StartGenerating();
+    }
+
+    if(btBigWorld->IsClicked()) {
+        guiManager.Push(GetGUI("Loading"));
+        level.width = BIG_WORLD_SIZE_W;
+        level.height = BIG_WORLD_SIZE_H;
+        levelGenerate.StartGenerating();
+    }
 
 	if(btBack->IsClicked()) {
 		guiManager.Pop();

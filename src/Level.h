@@ -4,6 +4,7 @@
 #include "MutexLock.h"
 #include "Vector2.h"
 #include <thread>
+#include <atomic>
 
 //--------------------------------------------------
 
@@ -24,6 +25,7 @@ enum class ETileType
 {
 	AIR = 0,
 	DIRT,
+    GRASS,
 };
 
 //--------------------------------------------------
@@ -52,7 +54,7 @@ public:
 class CLevelGenerate
 {
 public:
-	CLevelGenerate() { isGenerating = false; }
+    CLevelGenerate() { isGenerating = false; curStatusPerc = 0.0; }
 
 	void StartGenerating();
 
@@ -60,6 +62,7 @@ public:
 
 	std::mutex stateLock;
 	bool isGenerating;
+    double curStatusPerc;
 };
 
 extern CLevelGenerate levelGenerate;
@@ -81,6 +84,8 @@ public:
 
 	void		Load(const char *filepath);
 	void		Generate(int width, int height);
+
+    bool        PlaceGrass(int x, int y);
 	
 	bool		IsLoaded() const;
 

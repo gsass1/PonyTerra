@@ -1,10 +1,12 @@
 #include "Component_Physical.h"
+#include "Component_PlayerInput.h"
 #include "ICommon.h"
 #include "IFont.h"
 #include "EntityFactory.h"
 #include "EntityManager.h"
 #include "Game.h"
 #include "IGraphics.h"
+#include "IInput.h"
 #include "GUIManager.h"
 #include "Level.h"
 #include "IResourceManager.h"
@@ -14,6 +16,12 @@
 #include "VersionNumber.h"
 
 #include "StringUtils.h"
+
+static bool IsLevelGenerating()
+{
+    CMutexLock lock(&levelGenerate.stateLock);
+    return levelGenerate.isGenerating;
+}
 
 CGame game_local;
 
@@ -73,68 +81,82 @@ void CGame::ReleaseMenuData()
 
 void CGame::Update(float dtTime)
 {
-	bool generating = false;
-
-	{
-		CMutexLock lock(&levelGenerate.stateLock);
-		generating = levelGenerate.isGenerating;
-	}
-
-	if (!generating && level.IsLoaded()) {
-		try {
+    //
+    // Stop the level gen thread
+    //
+	if (!IsLevelGenerating() && level.IsLoaded()) {
 			if (levelGenThread->joinable()) {
                 levelGenThread->join();
                 //delete levelGenThread;
 				levelGenerate.isGenerating = false;
 				InitializeGame();
 			}
-		}
-        catch(std::exception &e) {
-            common->Error("%s\n", e.what());
-		}
 	}
 
 	switch(gameState) {
 		case EGameState::MENU:
-			guiManager.Update(dtTime);
+            UpdateMenu(dtTime);
 			break;
 
 		case EGameState::INGAME:
-			entityMgr.UpdateAll(dtTime);
-			LookAt(playerEntity->GetComponents()->Get<CComponent_Physical>()->rect);
+            UpdateGame(dtTime);
 			break;
 	}
+}
+
+void CGame::UpdateMenu(float dtTime)
+{
+    guiManager.Update(dtTime);
+}
+
+void CGame::UpdateGame(float dtTime)
+{
+    entityMgr.UpdateAll(dtTime);
+    LookAt(GetComponent<CComponent_Physical>(playerEntity)->rect);
+
+    if(input->KeyPressed(NSKey::NSK_F1, true)) {
+        GetComponent<CComponent_PlayerInput>(playerEntity)->ToggleNoClip();
+    }
 }
 
 void CGame::Draw()
 {
 	switch(gameState) {
 		case EGameState::MENU:
-			guiManager.Draw();
+            DrawMenu();
 			break;
 
 		case EGameState::INGAME:
-			level.Draw();
-
-			entityMgr.DrawAll();
-			
-			CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>();
-			/*
-			CRect drawRect = playerPhysical->rect;
-			drawRect.pos -= viewRect.pos;
-
-			graphics->DrawRect(drawRect, CColor(255, 0, 0));
-			*/
-			graphics->DrawText(
-				resMgr->GetFont("data/res/font/sys.fnt"), 
-				CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f), 
-				CColor::white, 
-				StrUtl::FormatString("Player pos: %f:%f",
-				playerPhysical->rect.pos.x,
-				playerPhysical->rect.pos.y).c_str());
-				
+            DrawGame();
 			break;
 	}
+}
+
+void CGame::DrawMenu()
+{
+    guiManager.Draw();
+}
+
+void CGame::DrawGame()
+{
+    level.Draw();
+
+    entityMgr.DrawAll();
+
+    CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>();
+    /*
+    CRect drawRect = playerPhysical->rect;
+    drawRect.pos -= viewRect.pos;
+
+    graphics->DrawRect(drawRect, CColor(255, 0, 0));
+    */
+    graphics->DrawText(
+        resMgr->GetFont("data/res/font/sys.fnt"),
+        CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f),
+        CColor::white,
+        StrUtl::FormatString("Pos: (x: %f y:%f)",
+        playerPhysical->rect.pos.x,
+        playerPhysical->rect.pos.y).c_str());
 }
 
 void CGame::LookAt(const CRect &rect)

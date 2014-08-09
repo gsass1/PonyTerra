@@ -59,6 +59,8 @@ set(PONYTERRA_SOURCES
 	src/Level.cpp
 	src/Level.h
 	src/main.cpp
+	src/NoiseGenerator.cpp
+	src/NoiseGenerator.h
 	src/Player.h
 	src/Player.cpp
 	src/Version.h

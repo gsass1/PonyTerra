@@ -7,14 +7,20 @@ CComponent_Physical::CComponent_Physical()
 {
 	velocity.Zero();
 	isInAir = false;
+	disableMotion = false;
 }
 
 void CComponent_Physical::Update(float dtTime)
 {
+	if(disableMotion) {
+		return;
+	}
+
 	float xVel = velocity.x * dtTime;
 	rect.pos.x += xVel;
 	if(level.IsCollidingWithTiles(rect)) {
 		rect.pos.x -= xVel;
+		velocity.x = 0.0f;
 	} else {
 		velocity.x *= 0.9f;
 	}

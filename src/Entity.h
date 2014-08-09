@@ -122,4 +122,10 @@ private:
 	CComponentContainer *componentContainer;
 };
 
+template<typename T>
+T *GetComponent(CEntity *entity)
+{
+	return entity->GetComponents()->Get<T>();
+}
+
 #endif

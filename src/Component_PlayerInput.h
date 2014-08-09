@@ -15,9 +15,15 @@ public:
 
 	void Update(float dtTime);
 
+	void SetNoClip(bool noclip);
+	bool ToggleNoClip();
+
 private:
 	CComponent_Animation *animation;
 	CComponent_Physical *physical;
+	bool noclip;
+
+	void UpdateNoClip(float dtTime);
 };
 
 #endif

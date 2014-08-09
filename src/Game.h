@@ -28,7 +28,12 @@ public:
 	void		ReleaseMenuData();
 
 	void		Update(float dtTime);
+    void        UpdateMenu(float dtTime);
+    void        UpdateGame(float dtTime);
+
 	void		Draw();
+    void        DrawMenu();
+    void        DrawGame();
 
 	CEntity *	GetPlayerEntity() const;
 

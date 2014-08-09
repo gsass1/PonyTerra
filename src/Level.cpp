@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "IGraphics.h"
 #include "Level.h"
+#include "NoiseGenerator.h"
 #include "IResourceManager.h"
 #include "ITexture.h"
 
@@ -94,6 +95,54 @@ void CLevel::Generate(int width, int height)
 
 	AllocTileData();
 
+	CNoiseGenerator noiseGen;
+
+	noiseGen.Set(16, 22, 0.085, 0.3);
+	int groundLevel = 200;
+
+	for (int x = 0; x < width; x++) {
+		for(int y = 0; y < height; y++) {
+			if(y < groundLevel) {
+				tileData[x][y]->type = ETileType::DIRT;
+			}
+		}
+	}
+
+	SetLoadingText("Generating Overworld");
+
+	int lheight = groundLevel / 2;
+	for (int x = 0; x < width; x++) {
+		if(Math::Random(7) == 0) {
+			if(Math::Random(2) == 1) {
+				lheight += 1 + Math::Random(2);
+			} else {
+				lheight -= 1 + Math::Random(2);
+			}
+		}
+
+		lheight = Math::Clamp(lheight, groundLevel / 4, groundLevel);
+
+		for(int y = 0; y < height; y++) {
+			if(y < height - lheight && y > groundLevel - 1) {
+                PlaceGrass(x, y);
+				//tileData[x][y]->type = ETileType::DIRT;
+			}
+		}
+
+		for(int y = 0; y < height; y++) {
+			int h = lheight + Math::Random(30) + 10;
+			int l = Math::Random(5) - h;
+
+			if(y < lheight && y < l) {
+				for(int y1 = 0; y1 < lheight; y1++) {
+					if(y1 > h && y1 < l) {
+						//tileData[x][y1]->type = 10;
+					}
+				}
+			}
+		}
+	}
+
 	isLoaded = true;
 }
 
@@ -108,9 +157,9 @@ void CLevel::Draw()
 	int viewX = (int)viewRect.pos.x;
 	int viewY = (int)viewRect.pos.y;
 
-	for (int x = viewX / TILE_SIZE; x < (viewX / TILE_SIZE) + (viewRect.width / TILE_SIZE) + 1; x++) {
-		for (int y = viewY / TILE_SIZE; y < (viewY / TILE_SIZE) + (viewRect.height / TILE_SIZE) + 1; y++) {
-			if (x < 0 || x >= width || y < 0 || y >= height) {
+	for(int x = viewX / TILE_SIZE; x < (viewX / TILE_SIZE) + (viewRect.width / TILE_SIZE) + 1; x++) {
+		for(int y = viewY / TILE_SIZE; y < (viewY / TILE_SIZE) + (viewRect.height / TILE_SIZE) + 1; y++) {
+			if(x < 0 || x >= width || y < 0 || y >= height) {
 				continue;
 			}
 			
@@ -120,6 +169,20 @@ void CLevel::Draw()
 			}
 		}
 	}
+}
+
+bool CLevel::PlaceGrass(int x, int y)
+{
+    if(y == height) {
+        tileData[x][y]->type = ETileType::GRASS;
+        return false;
+    } else if(tileData[x][y - 1]->type == ETileType::AIR) {
+        tileData[x][y]->type = ETileType::GRASS;
+        return true;
+    } else {
+        tileData[x][y]->type = ETileType::DIRT;
+        return false;
+    }
 }
 
 void CLevel::AllocTileData()
@@ -133,7 +196,7 @@ void CLevel::AllocTileData()
 
 	for(int i = 0; i < width; i++) {
 		for(int j = 0; j < height; j++) {
-			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::DIRT);
+			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::AIR);
 		}
 	}
 
@@ -160,11 +223,10 @@ void CLevel::DisposeTileData()
 
 void CLevel::SetLoadingText(const char *text)
 {
-	CGUI_Loading *guiLoading = NULL;
-	guiLoading = reinterpret_cast<CGUI_Loading *>(guiManager.Current());
-	//ASSERT(guiLoading);
-
-	guiLoading->SetStatusText(text);
+	CGUI_Loading *guiLoading = reinterpret_cast<CGUI_Loading *>(guiManager.Current());
+    if(guiLoading) {
+        guiLoading->SetStatusText(text);
+    }
 }
 
 bool CLevel::IsCollidingWithTiles(const CRect &rect)

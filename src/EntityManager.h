@@ -13,6 +13,8 @@ public:
 
 	void	AddEntity(CEntity *entity);
 
+    void    RemoveAll();
+
 	void	RemoveEntity(unsigned int id);
 
 	void	UpdateAll(float dtTime);

@@ -40,11 +40,17 @@ public:
 	void		LookAt(const CRect &rect);
 	CRect		GetViewRect() const;
 
+    void        BeginLevelGenProccess(int levelWidth, int levelHeight);
+    void        UnloadLevel();
+
+    void        ToggleShowIngameMenu();
+
 	EGameState	gameState;
 
 private:
 	CRect		viewRect;
 	CEntity *	playerEntity;
+    bool        showIngameMenu;
 };
 
 extern CGame game_local;

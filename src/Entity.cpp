@@ -59,7 +59,7 @@ CComponentContainer::CComponentContainer(CEntity *parent)
 
 CComponentContainer::~CComponentContainer()
 {
-	DestroyAll();
+    DestroyAll();
 }
 
 void CComponentContainer::CoupleAll()
@@ -150,7 +150,6 @@ CEntity::CEntity()
 
 CEntity::~CEntity()
 {
-	Destroy();
 }
 
 void CEntity::Initialize()
@@ -160,7 +159,7 @@ void CEntity::Initialize()
 
 void CEntity::Destroy()
 {
-	delete componentContainer;
+    delete componentContainer;
 }
 
 void CEntity::Update(float dtTime)

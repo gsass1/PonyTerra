@@ -25,6 +25,17 @@ void CEntityManager::AddEntity(CEntity *entity)
 	}
 }
 
+void CEntityManager::RemoveAll()
+{
+    for(unsigned int i = 0; i < MAX_ENTITIES; i++) {
+        if(entities[i] != NULL) {
+            entities[i]->Destroy();
+            delete entities[i];
+            entities[i] = NULL;
+        }
+    }
+}
+
 void CEntityManager::RemoveEntity(unsigned int id)
 {
 	if(entities[id] != NULL)

@@ -1,4 +1,5 @@
 #include "IGraphics.h"
+#include "Game.h"
 #include "GUIManager.h"
 #include "GUI_NewWorld.h"
 #include "Level.h"
@@ -48,24 +49,15 @@ void CGUI_NewWorld::Update(float dtTime) {
 	btBack->Update(dtTime);
 
 	if(btSmallWorld->IsClicked()) {
-		guiManager.Push(GetGUI("Loading"));
-        level.width = SMALL_WORLD_SIZE_W;
-        level.height = SMALL_WORLD_SIZE_H;
-		levelGenerate.StartGenerating();
+        game_local.BeginLevelGenProccess(SMALL_WORLD_SIZE_W, SMALL_WORLD_SIZE_H);
 	}
 
     if(btMediumWorld->IsClicked()) {
-        guiManager.Push(GetGUI("Loading"));
-        level.width = MEDIUM_WORLD_SIZE_W;
-        level.height = MEDIUM_WORLD_SIZE_H;
-        levelGenerate.StartGenerating();
+        game_local.BeginLevelGenProccess(MEDIUM_WORLD_SIZE_W, MEDIUM_WORLD_SIZE_H);
     }
 
     if(btBigWorld->IsClicked()) {
-        guiManager.Push(GetGUI("Loading"));
-        level.width = BIG_WORLD_SIZE_W;
-        level.height = BIG_WORLD_SIZE_H;
-        levelGenerate.StartGenerating();
+        game_local.BeginLevelGenProccess(BIG_WORLD_SIZE_W, BIG_WORLD_SIZE_H);
     }
 
 	if(btBack->IsClicked()) {

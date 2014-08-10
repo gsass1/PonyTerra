@@ -13,6 +13,7 @@ public:
 					~CGUIManager();
 	
 	void			Initialize();
+    void            ClearStack();
 
 	void			Push(IGUI *gui);
 	void			Pop();

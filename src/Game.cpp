@@ -1,5 +1,6 @@
 #include "Component_Physical.h"
 #include "Component_PlayerInput.h"
+#include "Console.h"
 #include "ICommon.h"
 #include "IFont.h"
 #include "EntityFactory.h"
@@ -29,6 +30,7 @@ CGame::CGame()
 {
 	gameState = EGameState::NONE;
 	playerEntity = NULL;
+    showIngameMenu = false;
 }
 
 CGame::~CGame()
@@ -87,11 +89,21 @@ void CGame::Update(float dtTime)
 	if (!IsLevelGenerating() && level.IsLoaded()) {
 			if (levelGenThread->joinable()) {
                 levelGenThread->join();
-                //delete levelGenThread;
+
 				levelGenerate.isGenerating = false;
+
+                guiManager.ClearStack();
+                guiManager.Push(GetGUI("MenuFront"));
+
 				InitializeGame();
 			}
 	}
+
+    if(input->KeyPressed(NSKey::NSK_F1, true)) {
+        console.ToggleFocus();
+    }
+
+    console.Update(dtTime);
 
 	switch(gameState) {
 		case EGameState::MENU:
@@ -114,7 +126,7 @@ void CGame::UpdateGame(float dtTime)
     entityMgr.UpdateAll(dtTime);
     LookAt(GetComponent<CComponent_Physical>(playerEntity)->rect);
 
-    if(input->KeyPressed(NSKey::NSK_F1, true)) {
+    if(input->KeyPressed(NSKey::NSK_F2, true)) {
         GetComponent<CComponent_PlayerInput>(playerEntity)->ToggleNoClip();
     }
 }
@@ -130,6 +142,8 @@ void CGame::Draw()
             DrawGame();
 			break;
 	}
+
+    console.Draw();
 }
 
 void CGame::DrawMenu()
@@ -176,4 +190,28 @@ CRect CGame::GetViewRect() const
 CEntity *CGame::GetPlayerEntity() const
 {
 	return playerEntity;
+}
+
+void CGame::BeginLevelGenProccess(int levelWidth, int levelHeight)
+{
+    if(gameState == EGameState::INGAME) {
+        UnloadLevel();
+    }
+    gameState = EGameState::MENU;
+    guiManager.Push(GetGUI("Loading"));
+    level.width = levelWidth;
+    level.height = levelHeight;
+    levelGenerate.StartGenerating();
+}
+
+void CGame::UnloadLevel()
+{
+    entityMgr.RemoveAll();
+    level.Clear();
+    gameState = EGameState::MENU;
+}
+
+void CGame::ToggleShowIngameMenu()
+{
+    showIngameMenu = !showIngameMenu;
 }

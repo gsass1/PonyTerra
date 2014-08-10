@@ -38,13 +38,22 @@ public:
 
 	ETileType type;
 
-	CTile(int x, int y, ETileType type) {
+    CTile()
+    {
+        x = 0;
+        y = 0;
+        type = ETileType::AIR;
+    }
+
+	CTile(int x, int y, ETileType type)
+    {
 		this->x = x;
 		this->y = y;
 		this->type = type;
 	}
 
-	CVector2f GetPosition() const {
+	CVector2f GetPosition() const
+    {
 		return CVector2f((float)x, (float)y);
 	}
 };
@@ -82,6 +91,8 @@ public:
 
 	void		Initialize();
 
+    void        Clear();
+
 	void		Load(const char *filepath);
 	void		Generate(int width, int height);
 
@@ -101,8 +112,7 @@ private:
 
 	ITexture *	tilesheetTex;
 
-	/* Holds all tiles */
-	CTile ***	tileData;
+    CTile *tileMemPool;
 
 	double		time;
 	bool		isBossSummoned;
@@ -115,6 +125,11 @@ private:
 	void		DisposeTileData();
 
 	void		SetLoadingText(const char * text);
+
+    inline     CTile *GetTile(int x, int y)
+    {
+        return &(tileMemPool[width * y + x]);
+    }
 };
 
 extern CLevel level;

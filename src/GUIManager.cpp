@@ -58,6 +58,11 @@ void CGUIManager::Initialize() {
 	InitStaticGUIs();
 }
 
+void CGUIManager::ClearStack()
+{
+    guiStack.clear();
+}
+
 void CGUIManager::Push(IGUI *gui) {
 	guiStack.push_back(gui);
 }

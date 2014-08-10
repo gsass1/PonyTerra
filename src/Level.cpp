@@ -46,7 +46,7 @@ CLevel::CLevel()
 {
 	width = height = 0;
 	tilesheetTex = nullptr;
-	tileData = nullptr;
+	tileMemPool = nullptr;
 	time = 0;
 	isBossSummoned = false;
 
@@ -60,6 +60,11 @@ CLevel::~CLevel()
 void CLevel::Initialize()
 {
 	tilesheetTex = resMgr->GetTexture("data/res/tex/tilesheet.png");
+}
+
+void CLevel::Clear()
+{
+    DisposeTileData();
 }
 
 void CLevel::Load(const char *filepath)
@@ -103,7 +108,7 @@ void CLevel::Generate(int width, int height)
 	for (int x = 0; x < width; x++) {
 		for(int y = 0; y < height; y++) {
 			if(y < groundLevel) {
-				tileData[x][y]->type = ETileType::DIRT;
+				GetTile(x, y)->type = ETileType::DIRT;
 			}
 		}
 	}
@@ -163,7 +168,7 @@ void CLevel::Draw()
 				continue;
 			}
 			
-			CTile *tile = tileData[x][y];
+            CTile *tile = GetTile(x, y);
 			if(tile != nullptr && tile->type != ETileType::AIR) {
 				graphics->DrawTilesheet(tilesheetTex, tile->GetPosition() - viewRect.pos, (int)tile->type, 16, 16, 64, 64, 64.0f, 64.0f);
 			}
@@ -174,13 +179,13 @@ void CLevel::Draw()
 bool CLevel::PlaceGrass(int x, int y)
 {
     if(y == height) {
-        tileData[x][y]->type = ETileType::GRASS;
+        GetTile(x, y)->type = ETileType::GRASS;
         return false;
-    } else if(tileData[x][y - 1]->type == ETileType::AIR) {
-        tileData[x][y]->type = ETileType::GRASS;
+    } else if(GetTile(x, y - 1)->type == ETileType::AIR) {
+        GetTile(x, y)->type = ETileType::GRASS;
         return true;
     } else {
-        tileData[x][y]->type = ETileType::DIRT;
+        GetTile(x, y)->type = ETileType::DIRT;
         return false;
     }
 }
@@ -189,35 +194,26 @@ void CLevel::AllocTileData()
 {
 	SetLoadingText("Allocating tile data");
 
-	tileData = new CTile**[width];
-	for(int i = 0; i < width; i++) {
-		tileData[i] = new CTile*[height];
-	}
+    tileMemPool = new CTile[width * height]();
 
-	for(int i = 0; i < width; i++) {
-		for(int j = 0; j < height; j++) {
-			tileData[i][j] = new CTile(i * TILE_SIZE, j * TILE_SIZE, ETileType::AIR);
-		}
-	}
-
+    for(int i = 0; i < width; i++) {
+        for(int j = 0; j < height; j++) {
+            (&tileMemPool[width * j + i])->x = i * TILE_SIZE;
+            (&tileMemPool[width * j + i])->y = j * TILE_SIZE;
+        }
+    }
 	common->Printf("Done!\n");
 }
 
 void CLevel::DisposeTileData()
 {
-	if(!tileData) {
+    if(!tileMemPool) {
 		return;
 	}
 
-	for(int i = 0; i < width; i++) {
-		for(int j = 0; j < height; j++) {
-			delete tileData[i][j];
-		}
-		delete tileData[height];
-	}
-	delete tileData[width];
+    delete[] tileMemPool;
 
-	tileData = nullptr;
+    tileMemPool = nullptr;
 	isLoaded = false;
 }
 
@@ -241,7 +237,7 @@ bool CLevel::IsCollidingWithTiles(const CRect &rect)
 				continue;
 			}
 
-			CTile *tile = tileData[x][y];
+			CTile *tile = GetTile(x, y);
 
 			if(tile->type == ETileType::AIR) {
 				continue;

@@ -4,6 +4,7 @@
 #include "IGame.h"
 #include "Entity.h"
 #include "Rect.h"
+#include "IInput.h"
 
 enum class EGameState {
 	NONE = 0,
@@ -44,6 +45,8 @@ public:
     void        UnloadLevel();
 
     void        ToggleShowIngameMenu();
+
+    bool        KeyPressedIngame(NSKey key, bool once = false);
 
 	EGameState	gameState;
 

@@ -29,6 +29,16 @@ static void StartGenerating()
 	}
 }
 
+static void StartUnloading()
+{
+    level.Clear();
+
+    {
+        CMutexLock lock(&levelGenerate.stateLock);
+        levelGenerate.isUnloading = false;
+    }
+}
+
 
 //--------------------------------------------------
 
@@ -36,6 +46,13 @@ void CLevelGenerate::StartGenerating()
 {
 	isGenerating = true;
 	levelGenThread = new std::thread(::StartGenerating);
+}
+
+void CLevelGenerate::StartUnloading()
+{
+    isGenerating = false;
+    isUnloading = true;
+    levelGenThread = new std::thread(::StartUnloading);
 }
 
 //--------------------------------------------------

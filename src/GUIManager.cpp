@@ -1,7 +1,7 @@
 #include "ICommon.h"
 #include "GUI.h"
 #include "GUIManager.h"
-
+#include "GUI_IngameMenu.h"
 #include "GUI_Loading.h"
 #include "GUI_MenuFront.h"
 #include "GUI_NewWorld.h"
@@ -26,6 +26,9 @@ void InitStaticGUIs() {
 
 	staticGUIs[2] = new CGUI_Loading();
 	staticGUIs[2]->Initialize();
+
+    staticGUIs[3] = new CGUI_IngameMenu();
+    staticGUIs[3]->Initialize();
 }
 
 }
@@ -43,7 +46,11 @@ IGUI *GetGUI(const char *name) {
 		return staticGUIs[2];
 	}
 
-//	ASSERT(false);
+    if(strcmp(name, "IngameMenu") == 0) {
+        return staticGUIs[3];
+    }
+
+    ASSERT(false);
 
 	return NULL;
 }

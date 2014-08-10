@@ -2,6 +2,7 @@
 #include "Component_PlayerInput.h"
 #include "Component_Physical.h"
 #include "IInput.h"
+#include "Game.h"
 
 CComponent_PlayerInput::CComponent_PlayerInput()
 {
@@ -27,13 +28,13 @@ void CComponent_PlayerInput::Update(float dtTime)
 		return;
 	}
 
-	if(input->KeyPressed(NSKey::NSK_a)) {
+	if(game_local.KeyPressedIngame(NSKey::NSK_a)) {
 
 		physical->AddVelocity(CVector2f(-100.0f, 0.0f));
 		animation->ChangeAnimationState("Walk_Left");
 		animation->AdvanceFrame();
 
-	} else if (input->KeyPressed(NSKey::NSK_d)) {
+    } else if(game_local.KeyPressedIngame(NSKey::NSK_d)) {
 
 		physical->AddVelocity(CVector2f(100.0f, 0.0f));
 		animation->ChangeAnimationState("Walk_Right");
@@ -49,7 +50,7 @@ void CComponent_PlayerInput::Update(float dtTime)
 
 	}
 
-	if(input->KeyPressed(NSKey::NSK_SPACE)) {
+    if(game_local.KeyPressedIngame(NSKey::NSK_SPACE)) {
 		
 		if(!physical->isInAir) {
 			physical->AddVelocity(CVector2f(0.0f, 2000.0f));
@@ -71,15 +72,15 @@ bool CComponent_PlayerInput::ToggleNoClip() {
 
 void CComponent_PlayerInput::UpdateNoClip(float dtTime)
 {
-	if(input->KeyPressed(NSKey::NSK_a)) {
+    if(game_local.KeyPressedIngame(NSKey::NSK_a)) {
 		physical->rect.pos += CVector2f(-2500.0f * dtTime, 0.0f);
-	} else if(input->KeyPressed(NSKey::NSK_d)) {
+    } else if(game_local.KeyPressedIngame(NSKey::NSK_d)) {
 		physical->rect.pos += CVector2f(2500.0f * dtTime, 0.0f);
 	}
 
-	if(input->KeyPressed(NSKey::NSK_w)) {
+    if(game_local.KeyPressedIngame(NSKey::NSK_w)) {
 		physical->rect.pos += CVector2f(0.0f, 2500.0f * dtTime);
-	} else if(input->KeyPressed(NSKey::NSK_s)) {
+    } else if(game_local.KeyPressedIngame(NSKey::NSK_s)) {
 		physical->rect.pos += CVector2f(0.0f, -2500.0f * dtTime);
 	}
 }

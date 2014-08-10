@@ -123,6 +123,23 @@ void CGame::UpdateMenu(float dtTime)
 
 void CGame::UpdateGame(float dtTime)
 {
+    if(input->KeyPressed(NSKey::NSK_ESCAPE, true)) {
+        ToggleShowIngameMenu();
+    }
+
+    if(showIngameMenu) {
+        guiManager.Update(dtTime);
+
+        //
+        // Ingame menu may have unloaded the level
+        // so check this and return immediately
+        //
+        if(gameState == EGameState::MENU) {
+            return;
+        }
+
+    }
+
     entityMgr.UpdateAll(dtTime);
     LookAt(GetComponent<CComponent_Physical>(playerEntity)->rect);
 
@@ -158,12 +175,7 @@ void CGame::DrawGame()
     entityMgr.DrawAll();
 
     CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>();
-    /*
-    CRect drawRect = playerPhysical->rect;
-    drawRect.pos -= viewRect.pos;
 
-    graphics->DrawRect(drawRect, CColor(255, 0, 0));
-    */
     graphics->DrawText(
         resMgr->GetFont("data/res/font/sys.fnt"),
         CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f),
@@ -171,6 +183,10 @@ void CGame::DrawGame()
         StrUtl::FormatString("Pos: (x: %f y:%f)",
         playerPhysical->rect.pos.x,
         playerPhysical->rect.pos.y).c_str());
+
+    if(showIngameMenu) {
+        guiManager.Draw();
+    }
 }
 
 void CGame::LookAt(const CRect &rect)
@@ -197,6 +213,11 @@ void CGame::BeginLevelGenProccess(int levelWidth, int levelHeight)
     if(gameState == EGameState::INGAME) {
         UnloadLevel();
     }
+
+    if(showIngameMenu) {
+        ToggleShowIngameMenu();
+    }
+
     gameState = EGameState::MENU;
     guiManager.Push(GetGUI("Loading"));
     level.width = levelWidth;
@@ -209,9 +230,27 @@ void CGame::UnloadLevel()
     entityMgr.RemoveAll();
     level.Clear();
     gameState = EGameState::MENU;
+    guiManager.ClearStack();
+    guiManager.Push(GetGUI("MenuFront"));
 }
 
 void CGame::ToggleShowIngameMenu()
 {
     showIngameMenu = !showIngameMenu;
+    if(showIngameMenu) {
+        guiManager.ClearStack();
+        guiManager.Push(GetGUI("IngameMenu"));
+    } else {
+        guiManager.ClearStack();
+    }
+}
+
+bool CGame::KeyPressedIngame(NSKey key, bool once)
+{
+    if(gameState == EGameState::INGAME && !console.HasFocus() && !showIngameMenu) {
+
+        return input->KeyPressed(key, once);
+    } else {
+        return false;
+    }
 }

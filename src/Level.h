@@ -63,14 +63,16 @@ public:
 class CLevelGenerate
 {
 public:
-    CLevelGenerate() { isGenerating = false; curStatusPerc = 0.0; }
+    CLevelGenerate() { isGenerating = false; isUnloading = false;  curStatusPerc = 0.0; }
 
 	void StartGenerating();
+    void StartUnloading();
 
 	bool IsGenerating() const { return isGenerating; }
 
 	std::mutex stateLock;
 	bool isGenerating;
+    bool isUnloading;
     double curStatusPerc;
 };
 
@@ -126,7 +128,7 @@ private:
 
 	void		SetLoadingText(const char * text);
 
-    inline     CTile *GetTile(int x, int y)
+    inline CTile *GetTile(int x, int y)
     {
         return &(tileMemPool[width * y + x]);
     }

@@ -34,7 +34,7 @@ void CGUI_Loading::Update(float dtTime) {
 void CGUI_Loading::SetStatusText(const char *text) {
 	{
 		CMutexLock lock(&statusTextSetMtx);
-		strcpy(statusText, text);
+		strncpy(statusText, text, 256);
 	}
 }
 

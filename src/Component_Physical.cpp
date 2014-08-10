@@ -1,7 +1,7 @@
 #include "Component_Physical.h"
 #include "Level.h"
 
-#define MAX_GRAVITY 300.0f
+#define MAX_GRAVITY 1000.0f
 
 CComponent_Physical::CComponent_Physical()
 {

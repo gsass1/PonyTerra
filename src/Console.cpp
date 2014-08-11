@@ -8,15 +8,51 @@
 #include <sstream>
 #include <iterator>
 #include "Game.h"
+#include "Level.h"
+
+CONSOLE_COMMAND(loadlevel)
+{
+    if(args.size() != 2) {
+        console.Print("Usage: loadlevel <filename>");
+        return 1;
+    }
+
+    game_local.LoadLevel(args[1]);
+    return 0;
+}
+
+CONSOLE_COMMAND(savelevel)
+{
+    if(!level.IsLoaded()) {
+        console.Print("Level must be loaded!");
+        return 1;
+    }
+
+    game_local.SaveLevel(levelFilename);
+    return 0;
+}
+
+CONSOLE_COMMAND(savelevelandexit)
+{
+   if(!level.IsLoaded()) {
+        console.Print("Level must be loaded!");
+        return 1;
+    }
+
+    game_local.SaveLevelAndExit(levelFilename);
+    return 0;
+}
 
 CONSOLE_COMMAND(genlevel)
 {
-    if(args.size() != 3) {
-        console.Print("Usage: genlevel <width> <height>");
+    if(args.size() != 4) {
+        console.Print("Usage: genlevel <name> <width> <height>");
         return 1;
     }
-    int levelWidth = atoi(args[1].c_str());
-    int levelHeight = atoi(args[2].c_str());
+
+    levelFilename = args[1];
+    int levelWidth = atoi(args[2].c_str());
+    int levelHeight = atoi(args[3].c_str());
 
     if(levelWidth == 0 || levelHeight == 0) {
         console.Print("Invalid size!");
@@ -66,6 +102,9 @@ CConsole::CConsole()
     RegisterCommand("exit", Cmd_exit);
     RegisterCommand("genlevel", Cmd_genlevel);
     RegisterCommand("exitlevel", Cmd_exitlevel);
+    RegisterCommand("savelevel", Cmd_savelevel);
+    RegisterCommand("savelevelandexit", Cmd_savelevelandexit);
+    RegisterCommand("loadlevel", Cmd_loadlevel);
 }
 
 CConsole::~CConsole()
@@ -74,6 +113,7 @@ CConsole::~CConsole()
 
 void CConsole::Clear()
 {
+    promptBufferIndex = 0;
     for(unsigned int i = 0; i < CONSOLE_BUFFER_H; i++) {
        textBuffer[i][0] = '\0';
     }
@@ -89,10 +129,10 @@ bool CConsole::HasFocus()
     return hasFocus;
 }
 
-void CConsole::Exec(const std::string &cmd)
+bool CConsole::Exec(const std::string &cmd)
 {
     if(cmd.size() == 0) {
-        return;
+        return false;
     }
 
     Print(cmd);
@@ -113,9 +153,10 @@ void CConsole::Exec(const std::string &cmd)
 
     cmdMap_t::iterator itr = cmdMap.find(args[0]);
     if(itr != cmdMap.end()) {
-        (*itr->second)(args);
+        return (*itr->second)(args) == 0;
     } else {
         Print("Could not find that command.");
+        return false;
     }
 }
 
@@ -142,8 +183,25 @@ void CConsole::Update(float dtTime)
         }
     }
 
+    if(input->KeyPressed(NSKey::NSK_UP, true)) {
+        if(promptBuffer.size() != 0 && promptBufferIndex != 0) {
+            promptBufferIndex--;
+            prompt = "";
+            prompt = promptBuffer[promptBufferIndex];
+        }
+    } else if(input->KeyPressed(NSKey::NSK_DOWN, true)) {
+        if(promptBufferIndex != promptBuffer.size() - 1) {
+            promptBufferIndex++;
+            prompt = "";
+            prompt = promptBuffer[promptBufferIndex];
+        }
+    }
+
     if(input->KeyPressed(NSKey::NSK_RETURN, true)) {
-        Exec(prompt);
+        if(Exec(prompt)) {
+            promptBuffer.push_back(prompt);
+            promptBufferIndex++;
+        }
         prompt = "";
     }
 

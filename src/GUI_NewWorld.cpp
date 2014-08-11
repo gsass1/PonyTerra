@@ -48,6 +48,8 @@ void CGUI_NewWorld::Update(float dtTime) {
 	btBigWorld->Update(dtTime);
 	btBack->Update(dtTime);
 
+    levelFilename = "noname";
+
 	if(btSmallWorld->IsClicked()) {
         game_local.BeginLevelGenProccess(SMALL_WORLD_SIZE_W, SMALL_WORLD_SIZE_H);
 	}

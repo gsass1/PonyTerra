@@ -9,12 +9,13 @@
 #include "Widget_Button.h"
 #include <string.h>
 #include "Game.h"
+#include "Level.h"
 
 CGUI_IngameMenu::CGUI_IngameMenu() {
     bgTex = nullptr;
     font = nullptr;
     btResume = new CWidget_Button("Resume", CVector2f((float)graphics->GetWidth() / 2.0f, 480.0f));
-    btExit = new CWidget_Button("Exit", CVector2f((float)graphics->GetWidth() / 2.0f, 380.0f));
+    btExit = new CWidget_Button("Save and Exit", CVector2f((float)graphics->GetWidth() / 2.0f, 380.0f));
 }
 
 CGUI_IngameMenu::~CGUI_IngameMenu() {
@@ -43,7 +44,7 @@ void CGUI_IngameMenu::Update(float dtTime) {
 
     if(btExit->IsClicked()) {
         game_local.ToggleShowIngameMenu();
-        game_local.UnloadLevel();
+        game_local.SaveLevelAndExit(levelFilename);
     }
 }
 

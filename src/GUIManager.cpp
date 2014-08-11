@@ -75,7 +75,7 @@ void CGUIManager::Push(IGUI *gui) {
 }
 
 void CGUIManager::Pop() {
-//	ASSERT(guiStack.size() != 0);
+	ASSERT(guiStack.size() != 0);
 	guiStack.pop_back();
 }
 
@@ -92,7 +92,7 @@ void CGUIManager::Draw() {
 }
 
 IGUI *CGUIManager::Current() {
-//	ASSERT(guiStack.size() != 0);
+	ASSERT(guiStack.size() != 0);
 	return guiStack.back();
 }
 

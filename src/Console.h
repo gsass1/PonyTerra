@@ -66,7 +66,7 @@ public:
     void ToggleFocus();
     bool HasFocus();
 
-    void Exec(const std::string &cmd);
+    bool Exec(const std::string &cmd);
     void Print(const std::string &msg);
 
     void Update(float dtTime);
@@ -76,9 +76,10 @@ public:
 
 private:
     bool hasFocus;
-    char textBuffer[CONSOLE_BUFFER_W][CONSOLE_BUFFER_H];
+    char textBuffer[CONSOLE_BUFFER_H][CONSOLE_BUFFER_W];
     std::string prompt;
-    std::string promptBuffer[CONSOLE_PROMPT_BUFFER_SIZE];
+    std::vector<std::string> promptBuffer;
+    unsigned int promptBufferIndex;
 
     typedef std::map<std::string, consoleCmd_t> cmdMap_t;
     cmdMap_t cmdMap;

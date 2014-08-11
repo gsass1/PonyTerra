@@ -20,7 +20,7 @@ public:
 	void		Update(float dtTime);
 	void		Draw();
 
-	void		SetStatusText(const char *text);
+	void		SetStatusText(const char *text, double procPerc = 0.0);
 	const char *GetStatusText();
 
 private:
@@ -29,6 +29,7 @@ private:
 
 	char		statusText[256];
 	std::mutex	statusTextSetMtx;
+    double      procPerc;
 };
 
 #endif

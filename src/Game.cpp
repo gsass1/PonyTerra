@@ -18,12 +18,6 @@
 
 #include "StringUtils.h"
 
-static bool IsLevelGenerating()
-{
-    CMutexLock lock(&levelGenerate.stateLock);
-    return levelGenerate.isGenerating;
-}
-
 CGame game_local;
 
 CGame::CGame()
@@ -57,7 +51,6 @@ void CGame::InitializeGame()
 	gameState = EGameState::INGAME;
 	playerEntity = entityFactory.CreatePlayer();
 	entityMgr.AddEntity(playerEntity);
-	playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.Set(0.0f, 500.0f);
 }
 
 void CGame::Quit()
@@ -84,20 +77,36 @@ void CGame::ReleaseMenuData()
 void CGame::Update(float dtTime)
 {
     //
-    // Stop the level gen thread
+    // Stop the level thread
     //
-	if (!IsLevelGenerating() && level.IsLoaded()) {
-			if (levelGenThread->joinable()) {
-                levelGenThread->join();
-
-				levelGenerate.isGenerating = false;
-
+    if(levelProcess.GetStatus() != ELevelProcessType::NONE) {
+        ELevelProcessType curProcType = levelProcess.StopThreadIfFinished();
+        if(curProcType != ELevelProcessType::NONE) {
+            if(curProcType == ELevelProcessType::GENERATE) {
                 guiManager.ClearStack();
                 guiManager.Push(GetGUI("MenuFront"));
+                InitializeGame();
+            } else if(curProcType == ELevelProcessType::UNLOAD) {
+                gameState = EGameState::MENU;
+                guiManager.ClearStack();
+                guiManager.Push(GetGUI("MenuFront"));
+            } else if(curProcType == ELevelProcessType::SAVE) {
+                gameState = EGameState::INGAME;
+                guiManager.ClearStack();
+                guiManager.Push(GetGUI("MenuFront"));
+            } else if(curProcType == ELevelProcessType::SAVE_UNLOAD) {
+                gameState = EGameState::MENU;
+                guiManager.ClearStack();
+                guiManager.Push(GetGUI("MenuFront"));
+            } else if(curProcType == ELevelProcessType::LOAD || curProcType == ELevelProcessType::UNLOAD_LOAD) {
+                gameState = EGameState::INGAME;
+                guiManager.ClearStack();
+                guiManager.Push(GetGUI("MenuFront"));
+                InitializeGame();
+            }
+        }
+    }
 
-				InitializeGame();
-			}
-	}
 
     if(input->KeyPressed(NSKey::NSK_F1, true)) {
         console.ToggleFocus();
@@ -180,9 +189,11 @@ void CGame::DrawGame()
         resMgr->GetFont("data/res/font/sys.fnt"),
         CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f),
         CColor::white,
-        StrUtl::FormatString("Pos: (x: %f y:%f)",
+        StrUtl::FormatString("Pos: (x: %f y: %f) Cam Pos: (x: %f y: %f)",
         playerPhysical->rect.pos.x,
-        playerPhysical->rect.pos.y).c_str());
+        playerPhysical->rect.pos.y,
+        viewRect.pos.x,
+        viewRect.pos.y).c_str());
 
     if(showIngameMenu) {
         guiManager.Draw();
@@ -196,6 +207,9 @@ void CGame::LookAt(const CRect &rect)
 
 	viewRect.pos.x = rect.pos.x + (float)rect.width / 2.0f - (float)viewRect.width / 2.0f;
 	viewRect.pos.y = rect.pos.y + (float)rect.height / 2.0f - (float)viewRect.height / 2.0f;
+
+    viewRect.pos.x = Math::Clamp(viewRect.pos.x, 0.0f, (float)level.width * (float)TILE_SIZE);
+    viewRect.pos.y = Math::Clamp(viewRect.pos.y, 0.0f, (float)level.height * (float)TILE_SIZE);
 }
 
 CRect CGame::GetViewRect() const
@@ -222,16 +236,45 @@ void CGame::BeginLevelGenProccess(int levelWidth, int levelHeight)
     guiManager.Push(GetGUI("Loading"));
     level.width = levelWidth;
     level.height = levelHeight;
-    levelGenerate.StartGenerating();
+    levelProcess.StartProcess(ELevelProcessType::GENERATE);
 }
 
 void CGame::UnloadLevel()
 {
-    entityMgr.RemoveAll();
-    level.Clear();
     gameState = EGameState::MENU;
-    guiManager.ClearStack();
-    guiManager.Push(GetGUI("MenuFront"));
+    guiManager.Push(GetGUI("Loading"));
+    entityMgr.RemoveAll();
+    levelProcess.StartProcess(ELevelProcessType::UNLOAD);
+}
+
+void CGame::LoadLevel(const std::string &filepath)
+{
+    gameState = EGameState::MENU;
+    guiManager.Push(GetGUI("Loading"));
+    levelFilename = filepath;
+
+    if(level.IsLoaded()) {
+        levelProcess.StartProcess(ELevelProcessType::UNLOAD_LOAD);
+    } else {
+        levelProcess.StartProcess(ELevelProcessType::LOAD);
+    }
+}
+
+void CGame::SaveLevel(const std::string &filepath)
+{
+    gameState = EGameState::MENU;
+    guiManager.Push(GetGUI("Loading"));
+    levelFilename = filepath;
+    levelProcess.StartProcess(ELevelProcessType::SAVE);
+}
+
+void CGame::SaveLevelAndExit(const std::string &filepath)
+{
+    entityMgr.RemoveAll();
+    gameState = EGameState::MENU;
+    guiManager.Push(GetGUI("Loading"));
+    levelFilename = filepath;
+    levelProcess.StartProcess(ELevelProcessType::SAVE_UNLOAD);
 }
 
 void CGame::ToggleShowIngameMenu()
@@ -248,7 +291,6 @@ void CGame::ToggleShowIngameMenu()
 bool CGame::KeyPressedIngame(NSKey key, bool once)
 {
     if(gameState == EGameState::INGAME && !console.HasFocus() && !showIngameMenu) {
-
         return input->KeyPressed(key, once);
     } else {
         return false;

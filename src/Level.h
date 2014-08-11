@@ -38,10 +38,13 @@ public:
 
 	ETileType type;
 
+    int flags;
+
     CTile()
     {
         x = 0;
         y = 0;
+        flags = 0;
         type = ETileType::AIR;
     }
 
@@ -58,28 +61,50 @@ public:
 	}
 };
 
+
+
 //--------------------------------------------------
 
-class CLevelGenerate
+extern std::string levelFilename;
+
+enum class ELevelProcessType
+{
+    NONE,
+    GENERATE,
+    UNLOAD,
+    SAVE,
+    SAVE_UNLOAD,
+    LOAD,
+    UNLOAD_LOAD,
+};
+
+class CLevelProcess
 {
 public:
-    CLevelGenerate() { isGenerating = false; isUnloading = false;  curStatusPerc = 0.0; }
+    CLevelProcess() { processType = ELevelProcessType::NONE; curStatusPerc = 0.0; finishSignal = false;  }
 
-	void StartGenerating();
-    void StartUnloading();
+    void StartProcess(ELevelProcessType type);
 
-	bool IsGenerating() const { return isGenerating; }
+    ELevelProcessType StopThreadIfFinished();
 
-	std::mutex stateLock;
-	bool isGenerating;
-    bool isUnloading;
+    void SetStatus(ELevelProcessType type) {
+        CMutexLock lock(&statusLock);
+        processType = type;
+    }
+
+    ELevelProcessType GetStatus() {
+        CMutexLock lock(&statusLock);
+        return processType;
+    }
+
+    bool finishSignal;
+	std::mutex statusLock;
+    std::thread *thread;
+    ELevelProcessType processType;
     double curStatusPerc;
 };
 
-extern CLevelGenerate levelGenerate;
-
-// The Level Generation thread
-extern std::thread *levelGenThread;
+extern CLevelProcess levelProcess;
 
 //--------------------------------------------------
 
@@ -96,6 +121,9 @@ public:
     void        Clear();
 
 	void		Load(const char *filepath);
+
+    void        Save(const char *filepath);
+
 	void		Generate(int width, int height);
 
     bool        PlaceGrass(int x, int y);
@@ -126,7 +154,7 @@ private:
 	void		AllocTileData();
 	void		DisposeTileData();
 
-	void		SetLoadingText(const char * text);
+	void		SetLoadingText(const char * text, double perc = 0.0);
 
     inline CTile *GetTile(int x, int y)
     {

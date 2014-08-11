@@ -15,44 +15,110 @@
 
 //--------------------------------------------------
 
-std::thread *levelGenThread = NULL;
+CLevelProcess levelProcess;
 
-CLevelGenerate levelGenerate;
+std::string levelFilename;
 
-static void StartGenerating()
+static void ThreadBeginStartGenerating()
 {
-	level.Generate(level.width, level.height);
+    level.Generate(level.width, level.height);
 
-	{
-		CMutexLock lock(&levelGenerate.stateLock);
-		levelGenerate.isGenerating = false;
-	}
+    {
+        CMutexLock lock(&levelProcess.statusLock);
+        levelProcess.finishSignal = true;
+    }
 }
 
-static void StartUnloading()
+static void ThreadBeginStartUnloading()
 {
     level.Clear();
 
     {
-        CMutexLock lock(&levelGenerate.stateLock);
-        levelGenerate.isUnloading = false;
+        CMutexLock lock(&levelProcess.statusLock);
+        levelProcess.finishSignal = true;
     }
 }
 
+static void ThreadBeginStartSaving()
+{
+    level.Save(levelFilename.c_str());
+
+    {
+        CMutexLock lock(&levelProcess.statusLock);
+        levelProcess.finishSignal = true;
+    }
+}
+
+static void ThreadBeginStartSaving_Unload()
+{
+    level.Save(levelFilename.c_str());
+    level.Clear();
+
+    {
+        CMutexLock lock(&levelProcess.statusLock);
+        levelProcess.finishSignal = true;
+    }
+}
+
+static void ThreadBeginStartLoading()
+{
+    level.Load(levelFilename.c_str());
+
+    {
+        CMutexLock lock(&levelProcess.statusLock);
+        levelProcess.finishSignal = true;
+    }
+}
+
+static void ThreadBeginStartUnload_Load()
+{
+    level.Clear();
+    level.Load(levelFilename.c_str());
+
+    {
+        CMutexLock lock(&levelProcess.statusLock);
+        levelProcess.finishSignal = true;
+    }
+}
 
 //--------------------------------------------------
 
-void CLevelGenerate::StartGenerating()
+void CLevelProcess::StartProcess(ELevelProcessType type)
 {
-	isGenerating = true;
-	levelGenThread = new std::thread(::StartGenerating);
+    this->processType = type;
+    if(type == ELevelProcessType::GENERATE) {
+        thread = new std::thread(::ThreadBeginStartGenerating);
+    } else if(type == ELevelProcessType::UNLOAD) {
+        thread = new std::thread(::ThreadBeginStartUnloading);
+    } else if(type == ELevelProcessType::SAVE) {
+        thread = new std::thread(::ThreadBeginStartSaving);
+    } else if(type == ELevelProcessType::SAVE_UNLOAD) {
+        thread = new std::thread(::ThreadBeginStartSaving_Unload);
+    } else if(type == ELevelProcessType::LOAD) {
+        thread = new std::thread(::ThreadBeginStartLoading);
+    } else if(type == ELevelProcessType::UNLOAD_LOAD) {
+        thread = new std::thread(::ThreadBeginStartUnload_Load);
+    }
 }
 
-void CLevelGenerate::StartUnloading()
+ELevelProcessType CLevelProcess::StopThreadIfFinished()
 {
-    isGenerating = false;
-    isUnloading = true;
-    levelGenThread = new std::thread(::StartUnloading);
+    bool hasFinished;
+    {
+        CMutexLock lock(&levelProcess.statusLock);
+        hasFinished = levelProcess.finishSignal;
+    }
+
+    if(hasFinished && levelProcess.GetStatus() != ELevelProcessType::NONE) {
+        if(levelProcess.thread->joinable()) {
+            levelProcess.thread->join();
+            ELevelProcessType typeBefore = levelProcess.GetStatus();
+            levelProcess.SetStatus(ELevelProcessType::NONE);
+            levelProcess.finishSignal = false;
+            return typeBefore;
+        }
+    }
+    return ELevelProcessType::NONE;
 }
 
 //--------------------------------------------------
@@ -92,6 +158,8 @@ void CLevel::Load(const char *filepath)
 
 	IFile *file = fileSystem->OpenFile(filepath, EFileMode::READ);
 
+    ASSERT(file);
+
 	width = file->ReadInt32();
 	height = file->ReadInt32();
 
@@ -101,13 +169,49 @@ void CLevel::Load(const char *filepath)
 
 	AllocTileData();
 
-	time = file->ReadDouble();
-	isBossSummoned = file->ReadByte() == 1;
+    SetLoadingText("Loading level");
 
-	//file->ReadVector2f(player.pos);
-	file->ReadVector2f(spawnPos);
+    double perc = 0.0;
+
+    for(int i = 0; i < width; i++) {
+
+        perc = (double)i / (double)width;
+        SetLoadingText("Loading tiles", perc);
+
+        for(int j = 0; j < height; j++) {
+            GetTile(i, j)->type = (ETileType)file->ReadInt32();
+            GetTile(i, j)->flags = file->ReadInt32();
+        }
+    }
 
 	isLoaded = true;
+}
+
+void CLevel::Save(const char *filepath)
+{
+    ASSERT(isLoaded);
+
+    SetLoadingText("Saving level");
+
+    IFile *file = fileSystem->OpenFile(filepath, EFileMode::WRITE);
+
+    ASSERT(file);
+
+    file->WriteInt32(width);
+    file->WriteInt32(height);
+    
+    double perc = 0.0;
+
+    for(int i = 0; i < width; i++) {
+
+        perc = (double)i / (double)width;
+        SetLoadingText("Saving tiles", perc);
+
+        for(int j = 0; j < height; j++) {
+            file->WriteInt32((int)GetTile(i, j)->type);
+            file->WriteInt32(GetTile(i, j)->flags);
+        }
+    }
 }
 
 void CLevel::Generate(int width, int height)
@@ -132,8 +236,13 @@ void CLevel::Generate(int width, int height)
 
 	SetLoadingText("Generating Overworld");
 
+    double perc = 0.0;
+
 	int lheight = groundLevel / 2;
 	for (int x = 0; x < width; x++) {
+        perc = (double)x / (double)width;
+        SetLoadingText("Generating Overworld", perc);
+
 		if(Math::Random(7) == 0) {
 			if(Math::Random(2) == 1) {
 				lheight += 1 + Math::Random(2);
@@ -213,7 +322,11 @@ void CLevel::AllocTileData()
 
     tileMemPool = new CTile[width * height]();
 
+    double perc = 0.0;
+
     for(int i = 0; i < width; i++) {
+        perc = (double)i / (double)width;
+        SetLoadingText("Allocating tile data", perc);
         for(int j = 0; j < height; j++) {
             (&tileMemPool[width * j + i])->x = i * TILE_SIZE;
             (&tileMemPool[width * j + i])->y = j * TILE_SIZE;
@@ -234,11 +347,11 @@ void CLevel::DisposeTileData()
 	isLoaded = false;
 }
 
-void CLevel::SetLoadingText(const char *text)
+void CLevel::SetLoadingText(const char *text, double perc)
 {
 	CGUI_Loading *guiLoading = reinterpret_cast<CGUI_Loading *>(guiManager.Current());
     if(guiLoading) {
-        guiLoading->SetStatusText(text);
+        guiLoading->SetStatusText(text, perc);
     }
 }
 

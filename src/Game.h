@@ -43,6 +43,9 @@ public:
 
     void        BeginLevelGenProccess(int levelWidth, int levelHeight);
     void        UnloadLevel();
+    void        LoadLevel(const std::string &filepath);
+    void        SaveLevel(const std::string &filepath);
+    void        SaveLevelAndExit(const std::string &filepath);
 
     void        ToggleShowIngameMenu();
 

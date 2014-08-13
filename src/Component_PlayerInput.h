@@ -2,11 +2,12 @@
 #define COMPONENT_PLAYERINPUT_H
 
 #include "Entity.h"
+#include "Game.h"
 
 class CComponent_Animation;
 class CComponent_Physical;
 
-class CComponent_PlayerInput : public CComponentBase
+class CComponent_PlayerInput : public CComponentBase, public CRTTIObject<CComponent_PlayerInput>
 {
 public:
 	CComponent_PlayerInput();

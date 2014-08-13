@@ -82,26 +82,18 @@ void CGame::Update(float dtTime)
     if(levelProcess.GetStatus() != ELevelProcessType::NONE) {
         ELevelProcessType curProcType = levelProcess.StopThreadIfFinished();
         if(curProcType != ELevelProcessType::NONE) {
+            guiManager.ClearStack();
+            guiManager.Push(GetGUI("MenuFront"));
             if(curProcType == ELevelProcessType::GENERATE) {
-                guiManager.ClearStack();
-                guiManager.Push(GetGUI("MenuFront"));
                 InitializeGame();
             } else if(curProcType == ELevelProcessType::UNLOAD) {
                 gameState = EGameState::MENU;
-                guiManager.ClearStack();
-                guiManager.Push(GetGUI("MenuFront"));
             } else if(curProcType == ELevelProcessType::SAVE) {
                 gameState = EGameState::INGAME;
-                guiManager.ClearStack();
-                guiManager.Push(GetGUI("MenuFront"));
             } else if(curProcType == ELevelProcessType::SAVE_UNLOAD) {
                 gameState = EGameState::MENU;
-                guiManager.ClearStack();
-                guiManager.Push(GetGUI("MenuFront"));
             } else if(curProcType == ELevelProcessType::LOAD || curProcType == ELevelProcessType::UNLOAD_LOAD) {
                 gameState = EGameState::INGAME;
-                guiManager.ClearStack();
-                guiManager.Push(GetGUI("MenuFront"));
                 InitializeGame();
             }
         }

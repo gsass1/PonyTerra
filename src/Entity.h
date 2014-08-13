@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "Game.h"
 #include <string>
 #include <map>
 #include <typeinfo>
@@ -95,7 +96,7 @@ private:
 	componentList_t		componentList;
 };
 
-class CEntity
+class CEntity : public ISaveable
 {
 public:
 						CEntity();
@@ -113,6 +114,10 @@ public:
 	const CComponentContainer *GetComponents() const;
 
 	unsigned int		GetID() const;
+
+    void                Load(IFile *file);
+
+    void                Save(IFile *file);
 
 private:
 	friend class		CEntityManager;

@@ -1,4 +1,4 @@
-#include "MathUtil.h"
+#include "Precompiled.h"
 #include "NoiseGenerator.h"
 
 CNoiseGenerator::CNoiseGenerator()

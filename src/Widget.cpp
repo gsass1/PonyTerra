@@ -1,3 +1,5 @@
+#include "Precompiled.h"
+
 #include "IInput.h"
 #include "Widget.h"
 

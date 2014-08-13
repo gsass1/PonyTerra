@@ -1,3 +1,6 @@
+#include "Precompiled.h"
+
+
 #include "IGraphics.h"
 #include "Game.h"
 #include "GUIManager.h"

@@ -1,3 +1,6 @@
+#include "Precompiled.h"
+
+
 #include "Component_Physical.h"
 #include "Level.h"
 

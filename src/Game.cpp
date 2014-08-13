@@ -1,3 +1,6 @@
+#include "Precompiled.h"
+
+
 #include "Component_Physical.h"
 #include "Component_PlayerInput.h"
 #include "Console.h"

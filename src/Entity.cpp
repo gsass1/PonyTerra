@@ -1,3 +1,6 @@
+#include "Precompiled.h"
+
+
 #include "Entity.h"
 
 CMessage::CMessage()
@@ -186,7 +189,7 @@ unsigned int CEntity::GetID() const
 {
 	return id;
 }
-
+/*
 void CEntity::Load(IFile *file)
 {
 }
@@ -195,3 +198,4 @@ void CEntity::Save(IFile *file)
 {
     
 }
+*/

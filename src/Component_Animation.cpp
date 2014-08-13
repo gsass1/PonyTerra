@@ -1,3 +1,5 @@
+#include "Precompiled.h"
+
 #include "Component_Animation.h"
 #include "Component_Physical.h"
 #include "Game.h"

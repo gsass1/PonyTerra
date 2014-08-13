@@ -8,24 +8,6 @@
 
 class IFile;
 
-template<typename T>
-class CRTTIObject
-{
-public:
-    CRTTIObject()
-    {
-        classHash = type_info(T).hash_code();
-    }
-
-    inline unsigned int GetTypeHash()
-    {
-        return classHash;
-    }
-
-protected:
-    unsigned int gameObjectHash;
-};
-
 class ISaveable
 {
 public:

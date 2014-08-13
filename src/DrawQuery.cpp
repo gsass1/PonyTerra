@@ -1,3 +1,6 @@
+#include "Precompiled.h"
+
+
 #include "DrawQuery.h"
 #include "IGraphics.h"
 #include "ITexture.h"

@@ -6,35 +6,6 @@
 #include "Rect.h"
 #include "IInput.h"
 
-class IFile;
-
-template<typename T>
-class CRTTIObject
-{
-public:
-    CRTTIObject()
-    {
-        classHash = type_info(T).hash_code();
-    }
-
-    inline unsigned int GetTypeHash()
-    {
-        return classHash;
-    }
-
-protected:
-    unsigned int gameObjectHash;
-};
-
-class ISaveable
-{
-public:
-    virtual ~ISaveable() {}
-
-    virtual void Load(IFile *file) = 0;
-    virtual void Save(IFile *file) = 0;
-};
-
 enum class EGameState {
 	NONE = 0,
 	MENU,
@@ -53,6 +24,8 @@ public:
 	void		Quit();
 
 	const char *GetGameName();
+
+    void        OnPrint(const char *msg);
 
 	void		PreloadMenuData();
 	void		ReleaseMenuData();

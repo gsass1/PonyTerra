@@ -29,12 +29,13 @@ CGame::CGame()
 
 CGame::~CGame()
 {
-	delete playerEntity;
 }
 
 void CGame::Initialize()
 {
 	gameState = EGameState::MENU;
+
+    console.Initialize();
 
 	common->Printf("PonyTerra %d.%d.%d.%d\n", PONYTERRA_MAJOR, PONYTERRA_MINOR, PONYTERRA_REV, PONYTERRA_BUILD);
 
@@ -62,6 +63,13 @@ const char *CGame::GetGameName()
 	return "PonyTerra";
 }
 
+void CGame::OnPrint(const char *msg)
+{
+    if(console.IsInitialized()) {
+        console.Print(msg);
+    }
+}
+
 void CGame::PreloadMenuData()
 {
 	resMgr->GetTexture("data/res/tex/menu_bg.png");
@@ -77,7 +85,7 @@ void CGame::ReleaseMenuData()
 void CGame::Update(float dtTime)
 {
     //
-    // Stop the level thread
+    // What to do after the level proc thread
     //
     if(levelProcess.GetStatus() != ELevelProcessType::NONE) {
         ELevelProcessType curProcType = levelProcess.StopThreadIfFinished();
@@ -200,8 +208,8 @@ void CGame::LookAt(const CRect &rect)
 	viewRect.pos.x = rect.pos.x + (float)rect.width / 2.0f - (float)viewRect.width / 2.0f;
 	viewRect.pos.y = rect.pos.y + (float)rect.height / 2.0f - (float)viewRect.height / 2.0f;
 
-    viewRect.pos.x = Math::Clamp(viewRect.pos.x, 0.0f, (float)level.width * (float)TILE_SIZE);
-    viewRect.pos.y = Math::Clamp(viewRect.pos.y, 0.0f, (float)level.height * (float)TILE_SIZE);
+    //viewRect.pos.x = Math::Clamp(viewRect.pos.x, 0.0f, (float)level.width * (float)TILE_SIZE);
+    //viewRect.pos.y = Math::Clamp(viewRect.pos.y, 0.0f, (float)level.height * (float)TILE_SIZE);
 }
 
 CRect CGame::GetViewRect() const

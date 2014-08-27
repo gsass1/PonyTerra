@@ -1,6 +1,11 @@
 #include "Game.h"
 #include "ICommon.h"
 
+#ifdef STANDALONE
+
+#define GAMEAPI
+
+#else
 #ifdef _WIN32
 
 #ifdef PONYTERRA_EXPORTS
@@ -19,6 +24,9 @@
 
 #endif
 
+#endif
+
+#ifndef STANDALONE
 IConfig *config;
 ICommon *common;
 IFileSystem *fileSystem;
@@ -27,8 +35,10 @@ IGraphics *graphics;
 IInput *input;
 IResourceManager *resMgr;
 ISoundSystem *soundSystem;
+#endif
 
 extern "C" GAMEAPI void GameDLLExchange(EngineGlobals *eg, GameGlobals *gg) {
+#ifndef STANDALONE
 	::config = eg->config;
 	::common = eg->common;
 	::fileSystem = eg->filesystem;
@@ -37,6 +47,6 @@ extern "C" GAMEAPI void GameDLLExchange(EngineGlobals *eg, GameGlobals *gg) {
 	::input = eg->input;
 	::resMgr = eg->resMgr;
 	::soundSystem = eg->soundSys;
-
+#endif
 	gg->game = &game_local;
 }

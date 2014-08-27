@@ -14,8 +14,8 @@
 
 typedef std::vector<std::string> cmdArgs_t;
 typedef int(*consoleCmd_t)(cmdArgs_t);
-
-enum class CVarType
+/*
+enum class ECVarType
 {
     FLOAT,
     INT,
@@ -26,34 +26,52 @@ template<typename _type>
 class CCVar
 {
 public:
-    CCVar(CVarType type);
-    CCVar(CVarType type, _type defaultValue);
-    CCVar(CVarType type, _type defaultValue, _type minValue, _type maxValue);
+    CCVar();
+    CCVar(ECVarType type, _type defaultValue);
+    CCVar(ECVarType type, _type defaultValue, _type minValue, _type maxValue);
 
-    CVarType type;
+    ECVarType type;
     _type value;
     _type minValue;
     _type maxValue;
 };
 
 template<typename _type>
-inline CCVar<_type>::CCVar(CVarType type)
+inline CCVar<_type>::CCVar()
 {
-    this->type = type;
+    this->type = ECVarType::INT;
+}
+
+template<>
+inline CCVar<int>::CCVar()
+{
+    this->type = ECVarType::INT;
+}
+
+template<>
+inline CCVar<float>::CCVar()
+{
+    this->type = ECVarType::FLOAT;
+}
+
+template<>
+inline CCVar<std::string>::CCVar()
+{
+    this->type = ECVarType::STRING;
 }
 
 template<typename _type>
-inline CCVar<_type>::CCVar(CVarType type, _type defaultValue) : CCVar(type)
+inline CCVar<_type>::CCVar(_type defaultValue) : CCVar()
 {
     value = defaultValue;
 }
 
 template<typename _type>
-inline CCVar<_type>::CCVar(CVarType type, _type defaultValue, _type minValue, _type maxValue) : CCVar(type, defaultValue)
+inline CCVar<_type>::CCVar(_type defaultValue, _type minValue, _type maxValue) : CCVar(defaultValue)
 {
     this->minValue = minValue;
     this->maxValue = maxValue;
-}
+}*/
 
 class CConsole
 {
@@ -61,7 +79,11 @@ public:
     CConsole();
     ~CConsole();
 
+    void Initialize();
+
     void Clear();
+
+    bool IsInitialized() const;
 
     void ToggleFocus();
     bool HasFocus();
@@ -75,6 +97,7 @@ public:
     void RegisterCommand(const std::string &name, consoleCmd_t cmd);
 
 private:
+    bool isInitialized;
     bool hasFocus;
     char textBuffer[CONSOLE_BUFFER_H][CONSOLE_BUFFER_W];
     std::string prompt;

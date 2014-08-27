@@ -9,6 +9,7 @@
 #include <iterator>
 #include "Game.h"
 #include "Level.h"
+#include <vector>
 
 CONSOLE_COMMAND(loadlevel)
 {
@@ -65,6 +66,11 @@ CONSOLE_COMMAND(genlevel)
 
 CONSOLE_COMMAND(exitlevel)
 {
+    if(!level.IsLoaded()) {
+        console.Print("No level to be unloaded");
+        return 1;
+    }
+
     game_local.UnloadLevel();
     return 0;
 }
@@ -95,8 +101,16 @@ CConsole console;
 
 CConsole::CConsole()
 {
-    Clear();
+    isInitialized = false;
+}
 
+CConsole::~CConsole()
+{
+}
+
+void CConsole::Initialize()
+{
+    Clear();
     RegisterCommand("clear", Cmd_clear);
     RegisterCommand("say", Cmd_say);
     RegisterCommand("exit", Cmd_exit);
@@ -105,10 +119,12 @@ CConsole::CConsole()
     RegisterCommand("savelevel", Cmd_savelevel);
     RegisterCommand("savelevelandexit", Cmd_savelevelandexit);
     RegisterCommand("loadlevel", Cmd_loadlevel);
+    isInitialized = true;
 }
 
-CConsole::~CConsole()
+bool CConsole::IsInitialized() const
 {
+    return isInitialized;
 }
 
 void CConsole::Clear()

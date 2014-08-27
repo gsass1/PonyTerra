@@ -7,7 +7,7 @@
 class CComponent_Animation;
 class CComponent_Physical;
 
-class CComponent_PlayerInput : public CComponentBase, public CRTTIObject<CComponent_PlayerInput>
+class CComponent_PlayerInput : public CComponentBase
 {
 public:
 	CComponent_PlayerInput();

@@ -1,12 +1,9 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "Game.h"
 #include <string>
 #include <map>
 #include <typeinfo>
-
-class IEntity;
 
 enum class EMessageType
 {
@@ -96,7 +93,7 @@ private:
 	componentList_t		componentList;
 };
 
-class CEntity : public ISaveable
+class CEntity
 {
 public:
 						CEntity();
@@ -114,10 +111,6 @@ public:
 	const CComponentContainer *GetComponents() const;
 
 	unsigned int		GetID() const;
-
-    void                Load(IFile *file);
-
-    void                Save(IFile *file);
 
 private:
 	friend class		CEntityManager;

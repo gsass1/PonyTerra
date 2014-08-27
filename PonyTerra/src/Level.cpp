@@ -304,6 +304,8 @@ void CLevel::Draw()
 
 bool CLevel::PlaceGrass(int x, int y)
 {
+    CTile *t1 = GetTile(x, y);
+    CTile *t2 = GetTile(x, y - 1);
     if(y == height) {
         GetTile(x, y)->type = ETileType::GRASS;
         return false;
@@ -330,6 +332,7 @@ void CLevel::AllocTileData()
         for(int j = 0; j < height; j++) {
             (&tileMemPool[width * j + i])->x = i * TILE_SIZE;
             (&tileMemPool[width * j + i])->y = j * TILE_SIZE;
+            (&tileMemPool[width * j + i])->type = ETileType::AIR;
         }
     }
 	common->Printf("Done!\n");
@@ -341,6 +344,7 @@ void CLevel::DisposeTileData()
 		return;
 	}
 
+    // ??? causes assert fail in VCRT on standalone build
     delete[] tileMemPool;
 
     tileMemPool = nullptr;

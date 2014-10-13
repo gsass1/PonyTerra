@@ -245,7 +245,7 @@ void CConsole::Draw()
         }
         graphics->DrawText(resMgr->GetFont("data/res/font/sys.fnt"), CVector2f(0.0f, (graphics->GetSize().y - (float)i * (float)CONSOLE_TEXT_SPACING) - (float)CONSOLE_TEXT_SPACING), CColor::white, textBuffer[i]);
     }
-    graphics->DrawText(resMgr->GetFont("data/res/font/sys.fnt"), CVector2f(0.0f, (graphics->GetSize().y - (float)GetTextBufferLatestIndex() * (float)CONSOLE_TEXT_SPACING) - (float)CONSOLE_TEXT_SPACING), CColor::white, StrUtl::FormatString(">%s", prompt.c_str()).c_str());
+    graphics->DrawText(resMgr->GetFont("data/res/font/sys.fnt"), CVector2f(0.0f, (graphics->GetSize().y - (float)GetTextBufferLatestIndex() * (float)CONSOLE_TEXT_SPACING) - (float)CONSOLE_TEXT_SPACING), CColor::white, StrUtl::FormatString(">%s_", prompt.c_str()).c_str());
 }
 
 unsigned int CConsole::GetTextBufferLatestIndex()

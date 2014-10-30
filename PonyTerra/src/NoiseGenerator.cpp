@@ -1,5 +1,6 @@
 #include "MathUtil.h"
 #include "NoiseGenerator.h"
+#include <limits.h>
 
 CNoiseGenerator::CNoiseGenerator()
 {

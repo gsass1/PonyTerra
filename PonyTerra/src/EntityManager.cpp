@@ -1,5 +1,8 @@
 #include "Entity.h"
 #include "EntityManager.h"
+#include "Game.h"
+#include "Component_Physical.h"
+#include "IGraphics.h"
 
 CEntityManager entityMgr;
 
@@ -60,6 +63,10 @@ void CEntityManager::DrawAll()
 	for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
 		if (entities[i] != NULL) {
 			entities[i]->Draw();
+			auto phys = GetComponent<CComponent_Physical>(entities[i]);
+			if(phys && game_local.showBoundingBoxes) {
+				graphics->DrawRect(CRect(phys->rect.pos - game_local.GetViewRect().pos, phys->rect.width, phys->rect.height), CColor(255, 0, 255, 128));
+			}
 		}
 	}
 }

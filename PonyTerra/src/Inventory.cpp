@@ -10,6 +10,7 @@ CInventory::CInventory(CEntity *owner, int size) : owner(owner), size(size) {
 		items[i] = nullptr;
 	}
 	currentSelected = 0;
+	open = false;
 }
 
 CInventory::~CInventory() {
@@ -20,6 +21,14 @@ void CInventory::Initialize() {
 }
 
 void CInventory::DrawFull() {
+	for(int i = 0; i < 9; i++) {
+		float spacing = 8.0f;
+		float tileWidth = 32.0f;
+		float widthPerTile = tileWidth + spacing;
+		float paddingX = (graphics->GetSize().x - widthPerTile * 9.0f) / 2.0f;
+		float paddingY = widthPerTile * 4.0f + (38.0f * (float)i);
+		DrawItemRow(CVector2f(paddingX, paddingY), i);
+	}
 }
 
 void CInventory::DrawBar() {
@@ -28,16 +37,33 @@ void CInventory::DrawBar() {
 	float widthPerTile = tileWidth + spacing;
 	float paddingX = (graphics->GetSize().x - widthPerTile * 9.0f) / 2.0f;
 	float paddingY = widthPerTile;
-	for(int i = 0; i < 9; i++) {
+	DrawItemRow(CVector2f(paddingX, paddingY), 0);
+}
+
+void CInventory::DrawItemRow(CVector2f pos, int rowIndex) {
+	float spacing = 8.0f;
+	float tileWidth = 32.0f;
+	float widthPerTile = tileWidth + spacing;
+	int index = rowIndex * 9;
+	for(int j = 0; j < 9; j++) {
+		int i = index + j;
 		CItem *item = GetItem(i);
-		CVector2f pos = CVector2f(paddingX + (float)i * widthPerTile, paddingY);
-		graphics->DrawTilesheet(tilesheet, pos, 16, 16, 16, 64, 64, tileWidth, tileWidth);
+		CVector2f tilePos = CVector2f(pos.x + (float)j * widthPerTile, pos.y);
+		graphics->DrawTilesheet(tilesheet, tilePos, 16, 16, 16, 64, 64, tileWidth, tileWidth);
 		if(item) {
-			item->Draw(pos);
+			item->Draw(tilePos);
 		}
 		if(i == currentSelected) {
-			graphics->DrawRect(CRect(pos, 32, 32), CColor(255, 255, 255, 128));
+			graphics->DrawRect(CRect(tilePos, 32, 32), CColor(255, 255, 255, 128));
 		}
+	}
+}
+
+void CInventory::Draw() {
+	if(open) {
+		DrawFull();
+	} else {
+		DrawBar();
 	}
 }
 
@@ -78,4 +104,15 @@ void CInventory::UseCurrentItem() {
 		items[currentSelected]->OnUse();
 		RemoveItem(currentSelected);
 	}
+}
+
+void CInventory::Update(float dtTime) {
+	if(!open) {
+		return;
+	}
+
+}
+
+void CInventory::SwitchOpen() {
+	open = !open;
 }

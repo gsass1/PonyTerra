@@ -1,3 +1,4 @@
+#include "Component_Attributes.h"
 #include "Component_Physical.h"
 #include "Component_PlayerInput.h"
 #include "Component_Inventory.h"
@@ -13,11 +14,8 @@
 #include "Level.h"
 #include "IResourceManager.h"
 #include "ITexture.h"
-#include "Component_Attributes.h"
-
 #include "MutexLock.h"
 #include "VersionNumber.h"
-
 #include "StringUtils.h"
 
 CGame game_local;
@@ -27,6 +25,7 @@ CGame::CGame()
 	gameState = EGameState::NONE;
 	playerEntity = NULL;
     showIngameMenu = false;
+	showBoundingBoxes = false;
 }
 
 CGame::~CGame()
@@ -158,13 +157,19 @@ void CGame::UpdateGame(float dtTime)
     if(input->KeyPressed(NSKey::NSK_F2, true)) {
         GetComponent<CComponent_PlayerInput>(playerEntity)->ToggleNoClip();
     }
+
 	for(int i = 0; i <= 9; i++) {
 		if(input->KeyPressed((NSKey)((int)NSKey::NSK_0 + i), true)) {
 			GetComponent<CComponent_Inventory>(playerEntity)->inventory->currentSelected = i - 1;
 		}
 	}
+
 	if(input->GetMouseStateDelta().buttonMask & EMouseButton::EMouseButton_LEFT) {
 		GetComponent<CComponent_Inventory>(playerEntity)->inventory->UseCurrentItem();
+	}
+
+	if(KeyPressedIngame(NSKey::NSK_TAB, true)) {
+		GetComponent<CComponent_Inventory>(playerEntity)->inventory->SwitchOpen();
 	}
 }
 
@@ -190,6 +195,9 @@ void CGame::DrawMenu()
 
 void CGame::DrawGame()
 {
+	// Background
+	graphics->DrawRect(CRect(CVector2f(), graphics->GetWidth(), graphics->GetHeight()), CColor(30, 100, 220));
+
     level.Draw();
 
     entityMgr.DrawAll();
@@ -211,7 +219,7 @@ void CGame::DrawGame()
 	// Inventory
 	CComponent_Inventory *playerInventory = playerEntity->GetComponents()->Get<CComponent_Inventory>();
 	if(playerInventory) {
-		playerInventory->inventory->DrawBar();
+		playerInventory->inventory->Draw();
 	}
 
 	// Health & Mana

@@ -11,6 +11,12 @@
 #include "Level.h"
 #include <vector>
 
+CONSOLE_COMMAND(viewboundingbox)
+{
+	game_local.showBoundingBoxes = !game_local.showBoundingBoxes;
+	return 0;
+}
+
 CONSOLE_COMMAND(loadlevel)
 {
     if(args.size() != 2) {
@@ -111,6 +117,7 @@ CConsole::~CConsole()
 void CConsole::Initialize()
 {
     Clear();
+	RegisterCommand("viewboundingbox", Cmd_viewboundingbox);
     RegisterCommand("clear", Cmd_clear);
     RegisterCommand("say", Cmd_say);
     RegisterCommand("exit", Cmd_exit);

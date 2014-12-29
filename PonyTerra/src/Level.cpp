@@ -372,7 +372,7 @@ bool CLevel::IsCollidingWithTiles(const CRect &rect)
 		return false;
 	}
 
-	for (int x = (int)rect.pos.x / TILE_SIZE; x < ((int)rect.pos.x / TILE_SIZE) + (rect.width / TILE_SIZE) + 1; x++) {
+	for (int x = (int)rect.pos.x / TILE_SIZE; x < ((int)rect.pos.x / TILE_SIZE) + (rect.width / TILE_SIZE) + 2; x++) {
 		for (int y = (int)rect.pos.y / TILE_SIZE; y < ((int)rect.pos.y / TILE_SIZE) + (rect.height / TILE_SIZE) + 1; y++) {
 			if(x < 0 || x >= width || y < 0 || y >= height) {
 				continue;

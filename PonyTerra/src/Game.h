@@ -57,6 +57,8 @@ public:
 
 	CEntity *	playerEntity;
 
+	bool		showBoundingBoxes;
+
 private:
 	CRect		viewRect;
     bool        showIngameMenu;

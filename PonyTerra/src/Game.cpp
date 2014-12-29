@@ -1,5 +1,6 @@
 #include "Component_Physical.h"
 #include "Component_PlayerInput.h"
+#include "Component_Inventory.h"
 #include "Console.h"
 #include "ICommon.h"
 #include "IFont.h"
@@ -156,6 +157,14 @@ void CGame::UpdateGame(float dtTime)
     if(input->KeyPressed(NSKey::NSK_F2, true)) {
         GetComponent<CComponent_PlayerInput>(playerEntity)->ToggleNoClip();
     }
+	for(int i = 0; i <= 9; i++) {
+		if(input->KeyPressed((NSKey)((int)NSKey::NSK_0 + i), true)) {
+			GetComponent<CComponent_Inventory>(playerEntity)->inventory->currentSelected = i - 1;
+		}
+	}
+	if(input->GetMouseStateDelta().buttonMask & EMouseButton::EMouseButton_LEFT) {
+		GetComponent<CComponent_Inventory>(playerEntity)->inventory->UseCurrentItem();
+	}
 }
 
 void CGame::Draw()
@@ -195,6 +204,12 @@ void CGame::DrawGame()
         playerPhysical->rect.pos.y,
         viewRect.pos.x,
         viewRect.pos.y).c_str());
+
+	// Inventory
+	CComponent_Inventory *playerInventory = playerEntity->GetComponents()->Get<CComponent_Inventory>();
+	if(playerInventory) {
+		playerInventory->inventory->DrawBar();
+	}
 
     if(showIngameMenu) {
         guiManager.Draw();

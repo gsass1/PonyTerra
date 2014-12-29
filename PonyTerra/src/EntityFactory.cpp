@@ -1,6 +1,9 @@
 #include "Component_Animation.h"
 #include "Component_Physical.h"
 #include "Component_PlayerInput.h"
+#include "Component_Inventory.h"
+#include "Component_Attributes.h"
+#include "Item.h"
 
 #include "Entity.h"
 #include "EntityFactory.h"
@@ -27,6 +30,8 @@ CEntity *CEntityFactory::CreatePlayer()
 	entity->GetComponents()->Add(physical);
 
 	entity->GetComponents()->Add(new CComponent_PlayerInput());
+	entity->GetComponents()->Add(new CComponent_Inventory());
+	entity->GetComponents()->Add(new CComponent_Attributes());
 
 	CComponent_Animation *animation = new CComponent_Animation();
 
@@ -35,6 +40,10 @@ CEntity *CEntityFactory::CreatePlayer()
 	entity->GetComponents()->Add(animation);
 
 	entity->Initialize();
+
+
+	auto inventory = GetComponent<CComponent_Inventory>(entity);
+	inventory->inventory->AddItem(CItem::CreateFromID(entity, 0));
 
 	return entity;
 }

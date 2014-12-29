@@ -1,6 +1,10 @@
 set(PONYTERRA_SOURCES
 	src/Component_Animation.cpp
 	src/Component_Animation.h
+	src/Component_Attributes.cpp
+	src/Component_Attributes.h
+	src/Component_Inventory.cpp
+	src/Component_Inventory.h
 	src/Component_Physical.cpp
 	src/Component_Physical.h
 	src/Component_PlayerInput.cpp
@@ -28,6 +32,12 @@ set(PONYTERRA_SOURCES
 	src/GUI_NewWorld.h
 	src/GUIManager.cpp
 	src/GUIManager.h
+	src/Inventory.cpp
+	src/Inventory.h
+	src/Item.cpp
+	src/Item.h
+	src/Item_HealthPotion.cpp
+	src/Item_HealthPotion.h
 	src/Level.cpp
 	src/Level.h
 	src/main.cpp

@@ -15,6 +15,9 @@ public:
 	bool UseHealth(int health);
 	bool UseMana(int mana);
 
+	float GetHealthPercentage() const;
+	float GetManaPercentage() const;
+
 	int currentHealth;
 	int currentMana;
 	int maxHealth;

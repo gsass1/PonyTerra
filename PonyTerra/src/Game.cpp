@@ -13,6 +13,7 @@
 #include "Level.h"
 #include "IResourceManager.h"
 #include "ITexture.h"
+#include "Component_Attributes.h"
 
 #include "MutexLock.h"
 #include "VersionNumber.h"
@@ -205,13 +206,34 @@ void CGame::DrawGame()
         viewRect.pos.x,
         viewRect.pos.y).c_str());
 
+	/* PLAYER STATUS BAR */
+
 	// Inventory
 	CComponent_Inventory *playerInventory = playerEntity->GetComponents()->Get<CComponent_Inventory>();
 	if(playerInventory) {
 		playerInventory->inventory->DrawBar();
 	}
 
-    if(showIngameMenu) {
+	// Health & Mana
+	auto attributes = GetComponent<CComponent_Attributes>(playerEntity);
+
+	float paddingX = (graphics->GetSize().x - 40.0f * 9.0f) / 2.0f;
+
+	float healthPerc = attributes->GetHealthPercentage();
+	float manaPerc = attributes->GetManaPercentage();
+
+	// Total width of the bar
+	float totalWidth = 360.0f;
+	float attrBarWidth = totalWidth / 2.0f - 16.0f;
+
+	graphics->DrawText(resMgr->GetFont("data/res/font/sys.fnt"), CVector2f(paddingX, 104.0f + 12.0f), CColor::white, "Health");
+	graphics->DrawRect(CRect(CVector2f(paddingX, 104.0f), (int)(attrBarWidth * healthPerc), 2), CColor(255, 0, 0));
+
+	// TODO: position "Mana" text correctly derp
+	graphics->DrawText(resMgr->GetFont("data/res/font/sys.fnt"), CVector2f(paddingX + totalWidth - resMgr->GetFont("data/res/font/sys.fnt")->GetTextSize("Mana").x, 104.0f + 12.0f), CColor::white, "Mana");
+	graphics->DrawRect(CRect(CVector2f(paddingX + totalWidth / 2.0f + 8.0f, 104.0f), (int)(attrBarWidth * manaPerc), 2), CColor(0, 0, 255));
+
+	if(showIngameMenu) {
         guiManager.Draw();
     }
 }

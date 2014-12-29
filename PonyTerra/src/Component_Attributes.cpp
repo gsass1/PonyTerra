@@ -41,3 +41,12 @@ bool CComponent_Attributes::UseMana(int mana) {
 		return false;
 	}
 }
+
+
+float CComponent_Attributes::GetHealthPercentage() const {
+	return ((float)currentHealth / (float)maxHealth);
+}
+
+float CComponent_Attributes::GetManaPercentage() const {
+	return ((float)currentMana / (float)maxMana);
+}

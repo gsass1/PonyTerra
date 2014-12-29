@@ -11,6 +11,15 @@
 #include "Level.h"
 #include <vector>
 
+CONSOLE_COMMAND(settime)
+{
+	if(args.size() != 2) {
+		console.Print("Usage: settime <time>");
+		return 1;
+	}
+	game_local.time = atof(args[1].c_str());
+}
+
 CONSOLE_COMMAND(viewboundingbox)
 {
 	game_local.showBoundingBoxes = !game_local.showBoundingBoxes;
@@ -19,10 +28,10 @@ CONSOLE_COMMAND(viewboundingbox)
 
 CONSOLE_COMMAND(loadlevel)
 {
-    if(args.size() != 2) {
-        console.Print("Usage: loadlevel <filename>");
-        return 1;
-    }
+	if(args.size() != 2) {
+		console.Print("Usage: loadlevel <filename>");
+		return 1;
+	}
 
     game_local.LoadLevel(args[1]);
     return 0;
@@ -117,6 +126,7 @@ CConsole::~CConsole()
 void CConsole::Initialize()
 {
     Clear();
+	RegisterCommand("settime", Cmd_settime);
 	RegisterCommand("viewboundingbox", Cmd_viewboundingbox);
     RegisterCommand("clear", Cmd_clear);
     RegisterCommand("say", Cmd_say);

@@ -267,7 +267,7 @@ void CLevel::Generate(int width, int height)
 			}
 		}
 
-		// Place terrain
+		// Place grass
 		GetTile(x, height - lheight)->type = ETileType::GRASS;
 
 		for(int y = 0; y < height; y++) {

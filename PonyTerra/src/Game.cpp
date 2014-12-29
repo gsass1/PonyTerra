@@ -26,6 +26,7 @@ CGame::CGame()
 	playerEntity = NULL;
     showIngameMenu = false;
 	showBoundingBoxes = false;
+	time = 0.0f;
 }
 
 CGame::~CGame()
@@ -159,7 +160,7 @@ void CGame::UpdateGame(float dtTime)
     }
 
 	for(int i = 0; i <= 9; i++) {
-		if(input->KeyPressed((NSKey)((int)NSKey::NSK_0 + i), true)) {
+		if(KeyPressedIngame((NSKey)((int)NSKey::NSK_0 + i), true)) {
 			GetComponent<CComponent_Inventory>(playerEntity)->inventory->currentSelected = i - 1;
 		}
 	}
@@ -170,6 +171,12 @@ void CGame::UpdateGame(float dtTime)
 
 	if(KeyPressedIngame(NSKey::NSK_TAB, true)) {
 		GetComponent<CComponent_Inventory>(playerEntity)->inventory->SwitchOpen();
+	}
+
+	// Update the time
+	time += TIME_PER_SECOND * dtTime;
+	if(time > TIME_TOTAL) {
+		time = 0.0f;
 	}
 }
 
@@ -202,17 +209,32 @@ void CGame::DrawGame()
 
     entityMgr.DrawAll();
 
+	// TODO: replace the values with the corresponding macros
+	// 0 - (8000 - 10000) - (18000 - 2000)
+	float alpha = 0.0f;
+	if(time > 8000.0f && time < 10000.0f) {
+		alpha = ((time - 8000.0f) / 2000.0f) * 220.0f;
+	} else if(time >= 10000.0f && time < 18000.0f) {
+		alpha = 222.0f;
+	} else if(time >= 18000.0f && time < 20000.0f) {
+		alpha = 222.0f - ((time - 18000.0f) / 2000.0f) * 220.0f;
+	}
+
+	graphics->DrawRect(CRect(CVector2f(), graphics->GetWidth(), graphics->GetHeight()), CColor(0, 0, 0, (byte)alpha));
+
     CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>();
 
     graphics->DrawText(
         resMgr->GetFont("data/res/font/sys.fnt"),
         CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f),
         CColor::white,
-        StrUtl::FormatString("Pos: (x: %f y: %f) Cam Pos: (x: %f y: %f)",
+        StrUtl::FormatString("Pos: (x: %f y: %f) Cam Pos: (x: %f y: %f) Time: %.2f",
         playerPhysical->rect.pos.x,
         playerPhysical->rect.pos.y,
         viewRect.pos.x,
-        viewRect.pos.y).c_str());
+        viewRect.pos.y,
+		time).c_str()
+		);
 
 	/* PLAYER STATUS BAR */
 

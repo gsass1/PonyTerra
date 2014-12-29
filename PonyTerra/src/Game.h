@@ -6,6 +6,11 @@
 #include "Rect.h"
 #include "IInput.h"
 
+#define TIME_DAY 10000.0f
+#define TIME_NIGHT 10000.0f
+#define TIME_TOTAL 20000.0f
+#define TIME_PER_SECOND 166.6666f
+
 enum class EGameState {
 	NONE = 0,
 	MENU,
@@ -58,6 +63,8 @@ public:
 	CEntity *	playerEntity;
 
 	bool		showBoundingBoxes;
+
+	float		time;
 
 private:
 	CRect		viewRect;

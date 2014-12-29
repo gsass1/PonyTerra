@@ -260,12 +260,15 @@ void CLevel::Generate(int width, int height)
 
 		lheight = Math::Clamp(lheight, groundLevel / 4, groundLevel);
 
+		// Place terrain
 		for(int y = 0; y < height; y++) {
 			if(y < height - lheight && y > groundLevel - 1) {
-                PlaceGrass(x, y);
-				//tileData[x][y]->type = ETileType::DIRT;
+				GetTile(x, y)->type = ETileType::DIRT;
 			}
 		}
+
+		// Place terrain
+		GetTile(x, height - lheight)->type = ETileType::GRASS;
 
 		for(int y = 0; y < height; y++) {
 			int h = lheight + Math::Random(30) + 10;

@@ -10,7 +10,7 @@
 #define CONSOLE_TEXT_SPACING 10
 #define CONSOLE_PROMPT_BUFFER_SIZE 1024
 
-#define CONSOLE_COMMAND(cmd) static int Cmd_##cmd##(cmdArgs_t args)
+#define CONSOLE_COMMAND(X) static int Cmd_##X(cmdArgs_t args)
 
 typedef std::vector<std::string> cmdArgs_t;
 typedef int(*consoleCmd_t)(cmdArgs_t);

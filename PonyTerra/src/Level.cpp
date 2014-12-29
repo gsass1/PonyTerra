@@ -345,7 +345,7 @@ void CLevel::DisposeTileData()
 	}
 
     // ??? causes assert fail in VCRT on standalone build
-    delete[] tileMemPool;
+    delete tileMemPool;
 
     tileMemPool = nullptr;
 	isLoaded = false;

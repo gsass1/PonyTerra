@@ -55,9 +55,10 @@ public:
 
 	EGameState	gameState;
 
+	CEntity *	playerEntity;
+
 private:
 	CRect		viewRect;
-	CEntity *	playerEntity;
     bool        showIngameMenu;
 };
 

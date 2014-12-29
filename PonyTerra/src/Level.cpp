@@ -7,6 +7,7 @@
 #include "NoiseGenerator.h"
 #include "IResourceManager.h"
 #include "ITexture.h"
+#include "Component_Physical.h"
 
 #include "MutexLock.h"
 
@@ -167,6 +168,9 @@ void CLevel::Load(const char *filepath)
 		common->Error("Corrupt Level File\n");
 	}
 
+	game_local.playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.x = file->ReadFloat();
+	game_local.playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.y = file->ReadFloat();
+
 	AllocTileData();
 
     SetLoadingText("Loading level");
@@ -199,7 +203,10 @@ void CLevel::Save(const char *filepath)
 
     file->WriteInt32(width);
     file->WriteInt32(height);
-    
+
+	file->WriteFloat(GetComponent<CComponent_Physical>(game_local.playerEntity)->rect.pos.x);
+	file->WriteFloat(GetComponent<CComponent_Physical>(game_local.playerEntity)->rect.pos.y);
+
     double perc = 0.0;
 
     for(int i = 0; i < width; i++) {
@@ -288,7 +295,7 @@ void CLevel::Draw()
 	int viewX = (int)viewRect.pos.x;
 	int viewY = (int)viewRect.pos.y;
 
-	for(int x = viewX / TILE_SIZE; x < (viewX / TILE_SIZE) + (viewRect.width / TILE_SIZE) + 1; x++) {
+	for(int x = viewX / TILE_SIZE; x < (viewX / TILE_SIZE) + (viewRect.width / TILE_SIZE) + 2; x++) {
 		for(int y = viewY / TILE_SIZE; y < (viewY / TILE_SIZE) + (viewRect.height / TILE_SIZE) + 1; y++) {
 			if(x < 0 || x >= width || y < 0 || y >= height) {
 				continue;

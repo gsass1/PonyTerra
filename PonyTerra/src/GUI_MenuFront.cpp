@@ -9,6 +9,7 @@
 #include "ITexture.h"
 #include "Widget_Button.h"
 #include "IInput.h"
+#include "Game.h"
 
 CGUI_MenuFront::CGUI_MenuFront() {
 	bg = nullptr;
@@ -63,6 +64,10 @@ void CGUI_MenuFront::Update(float dtTime) {
 
 	if(btNewWorld->IsClicked()) {
 		guiManager.Push(GetGUI("NewWorld"));
+	}
+
+	if(btLoadWorld->IsClicked()) {
+		game_local.LoadLevel("noname");
 	}
 
 	if(btExit->IsClicked()) {

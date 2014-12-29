@@ -96,13 +96,14 @@ void CGame::Update(float dtTime)
                 InitializeGame();
             } else if(curProcType == ELevelProcessType::UNLOAD) {
                 gameState = EGameState::MENU;
+				entityMgr.RemoveAll();
             } else if(curProcType == ELevelProcessType::SAVE) {
                 gameState = EGameState::INGAME;
             } else if(curProcType == ELevelProcessType::SAVE_UNLOAD) {
                 gameState = EGameState::MENU;
+				entityMgr.RemoveAll();
             } else if(curProcType == ELevelProcessType::LOAD || curProcType == ELevelProcessType::UNLOAD_LOAD) {
                 gameState = EGameState::INGAME;
-                InitializeGame();
             }
         }
     }
@@ -249,6 +250,7 @@ void CGame::UnloadLevel()
 
 void CGame::LoadLevel(const std::string &filepath)
 {
+	InitializeGame();
     gameState = EGameState::MENU;
     guiManager.Push(GetGUI("Loading"));
     levelFilename = filepath;
@@ -270,7 +272,6 @@ void CGame::SaveLevel(const std::string &filepath)
 
 void CGame::SaveLevelAndExit(const std::string &filepath)
 {
-    entityMgr.RemoveAll();
     gameState = EGameState::MENU;
     guiManager.Push(GetGUI("Loading"));
     levelFilename = filepath;

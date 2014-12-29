@@ -168,6 +168,8 @@ void CLevel::Load(const char *filepath)
 		common->Error("Corrupt Level File\n");
 	}
 
+	game_local.time = file->ReadFloat();
+
 	game_local.playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.x = file->ReadFloat();
 	game_local.playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.y = file->ReadFloat();
 
@@ -203,6 +205,8 @@ void CLevel::Save(const char *filepath)
 
     file->WriteInt32(width);
     file->WriteInt32(height);
+
+	file->WriteFloat(game_local.time);
 
 	file->WriteFloat(GetComponent<CComponent_Physical>(game_local.playerEntity)->rect.pos.x);
 	file->WriteFloat(GetComponent<CComponent_Physical>(game_local.playerEntity)->rect.pos.y);

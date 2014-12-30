@@ -17,7 +17,8 @@ CONSOLE_COMMAND(settime)
 		console.Print("Usage: settime <time>");
 		return 1;
 	}
-	game_local.time = atof(args[1].c_str());
+	game_local.time = (float)atof(args[1].c_str());
+	return 0;
 }
 
 CONSOLE_COMMAND(viewboundingbox)

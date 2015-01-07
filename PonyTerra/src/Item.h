@@ -11,7 +11,7 @@ public:
 	virtual ~CItem() {}
 
 	virtual void Initialize() = 0;
-	virtual void OnUse() = 0;
+	virtual bool OnUse() = 0;
 
 	virtual void Draw(CVector2f pos) = 0;
 

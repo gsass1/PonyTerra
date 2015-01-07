@@ -17,6 +17,7 @@ public:
 	void		DrawTileHighlight();
 
 	CTile *		currentSelectedTile;
+	CVector2i	currentSelectedTilePos;
 	CVector2f	pos;
 };
 

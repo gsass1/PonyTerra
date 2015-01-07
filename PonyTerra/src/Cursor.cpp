@@ -29,8 +29,10 @@ void CCursor::Update(float dtTime)
 	auto inWorldSpace = game_local.ToWorldSpace(pos);
 	auto tile = level.GetTileInWorldSpace(inWorldSpace);
 
-	if(tile && tile->type != ETileType::AIR) {
+	if(tile) {
 		currentSelectedTile = tile;
+		currentSelectedTilePos.x = tile->x / TILE_SIZE;
+		currentSelectedTilePos.y = tile->y / TILE_SIZE;
 	} else {
 		currentSelectedTile = nullptr;
 	}

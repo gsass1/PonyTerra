@@ -4,6 +4,7 @@
 #include "Component_Inventory.h"
 #include "Component_Attributes.h"
 #include "Item.h"
+#include "Item_Tile.h"
 
 #include "Entity.h"
 #include "EntityFactory.h"
@@ -44,6 +45,11 @@ CEntity *CEntityFactory::CreatePlayer()
 
 	auto inventory = GetComponent<CComponent_Inventory>(entity);
 	inventory->inventory->AddItem(CItem::CreateFromID(entity, 0));
+
+	auto tileItem = new CItem_Tile(entity, 1);
+	tileItem->Initialize();
+
+	inventory->inventory->AddItem(tileItem);
 
 	return entity;
 }

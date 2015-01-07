@@ -101,8 +101,9 @@ void CInventory::RemoveItem(int index) {
 
 void CInventory::UseCurrentItem() {
 	if(items[currentSelected]) {
-		items[currentSelected]->OnUse();
-		RemoveItem(currentSelected);
+		if(items[currentSelected]->OnUse()) {
+			RemoveItem(currentSelected);
+		}
 	}
 }
 

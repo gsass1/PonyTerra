@@ -11,11 +11,14 @@ void CItem_HealthPotion::Initialize() {
 	tilesheet = resMgr->GetTexture("data/res/tex/tilesheet.png");
 }
 
-void CItem_HealthPotion::OnUse() {
+bool CItem_HealthPotion::OnUse() {
 	auto attributes = GetComponent<CComponent_Attributes>(owner);
 	if(attributes) {
-		attributes->UseHealth(20);
+		if(attributes->UseHealth(20)) {
+			return true;
+		}
 	}
+	return false;
 }
 
 void CItem_HealthPotion::Draw(CVector2f pos) {

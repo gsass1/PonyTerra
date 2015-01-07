@@ -1,13 +1,14 @@
-#ifndef ITEM_HEALTHPOTION_H
-#define ITEM_HEALTHPOTION_H
+#ifndef ITEM_TILE_H
+#define ITEM_TILE_H
 
 #include "Item.h"
 
 class ITexture;
 
-class CItem_HealthPotion : public CItem {
+class CItem_Tile : public CItem
+{
 public:
-	CItem_HealthPotion(CEntity *owner);
+	CItem_Tile(CEntity *owner, int tileID);
 
 	void Initialize();
 	bool OnUse();
@@ -15,6 +16,7 @@ public:
 	void Draw(CVector2f pos);
 
 private:
+	int tileID;
 	ITexture *tilesheet;
 };
 

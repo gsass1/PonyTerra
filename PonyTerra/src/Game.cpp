@@ -158,7 +158,7 @@ void CGame::UpdateGame(float dtTime)
 
 	if(input->GetMouseStateDelta().buttonMask & EMouseButton_LEFT) {
 		if(cursor.currentSelectedTile) {
-			level.RemoveTile(cursor.currentSelectedTile);
+			//level.RemoveTile(cursor.currentSelectedTile);
 		}
 	}
 

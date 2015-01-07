@@ -134,6 +134,13 @@ public:
 
 	bool		IsCollidingWithTiles(const CRect &rect);
 
+	CTile *		GetTile(int x, int y);
+	CTile *		GetTileInWorldSpace(const CVector2f &pos);
+
+	void		RemoveTileInWorldSpace(const CVector2f &pos);
+	void		RemoveTile(int x, int y);
+	void		RemoveTile(CTile *tile);
+
 	int			width;
 	int			height;
 
@@ -155,11 +162,6 @@ private:
 	void		DisposeTileData();
 
 	void		SetLoadingText(const char * text, double perc = 0.0);
-
-    inline CTile *GetTile(int x, int y)
-    {
-        return &(tileMemPool[width * y + x]);
-    }
 };
 
 extern CLevel level;

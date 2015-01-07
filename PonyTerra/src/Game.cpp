@@ -3,6 +3,7 @@
 #include "Component_PlayerInput.h"
 #include "Component_Inventory.h"
 #include "Console.h"
+#include "Cursor.h"
 #include "ICommon.h"
 #include "IFont.h"
 #include "EntityFactory.h"
@@ -54,6 +55,7 @@ void CGame::InitializeGame()
 	gameState = EGameState::INGAME;
 	playerEntity = entityFactory.CreatePlayer();
 	entityMgr.AddEntity(playerEntity);
+	cursor.Initialize();
 }
 
 void CGame::Quit()
@@ -152,6 +154,14 @@ void CGame::UpdateGame(float dtTime)
 
     }
 
+	cursor.Update(dtTime);
+
+	if(input->GetMouseStateDelta().buttonMask & EMouseButton_LEFT) {
+		if(cursor.currentSelectedTile) {
+			level.RemoveTile(cursor.currentSelectedTile);
+		}
+	}
+
     entityMgr.UpdateAll(dtTime);
     LookAt(GetComponent<CComponent_Physical>(playerEntity)->rect);
 
@@ -221,6 +231,9 @@ void CGame::DrawGame()
 	}
 
 	graphics->DrawRect(CRect(CVector2f(), graphics->GetWidth(), graphics->GetHeight()), CColor(0, 0, 0, (byte)alpha));
+
+	// TODO: if a tool is selected
+	cursor.DrawTileHighlight();
 
     CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>();
 
@@ -363,4 +376,14 @@ bool CGame::KeyPressedIngame(NSKey key, bool once)
     } else {
         return false;
     }
+}
+
+CVector2f CGame::ToScreenSpace(const CVector2f &pos) const
+{
+	return pos - viewRect.pos;
+}
+
+CVector2f CGame::ToWorldSpace(const CVector2f &pos) const
+{
+	return pos + viewRect.pos;
 }

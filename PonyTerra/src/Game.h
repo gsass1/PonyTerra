@@ -58,6 +58,9 @@ public:
 
     bool        KeyPressedIngame(NSKey key, bool once = false);
 
+	CVector2f	ToScreenSpace(const CVector2f &pos) const;
+	CVector2f	ToWorldSpace(const CVector2f &pos) const;
+
 	EGameState	gameState;
 
 	CEntity *	playerEntity;

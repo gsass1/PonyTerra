@@ -399,3 +399,38 @@ bool CLevel::IsCollidingWithTiles(const CRect &rect)
 
 	return false;
 }
+
+CTile *CLevel::GetTile(int x, int y)
+{
+	if(x < 0 || x > width || y < 0 || y > height) {
+		return nullptr;
+	}
+	return &(tileMemPool[width * y + x]);
+}
+
+CTile *CLevel::GetTileInWorldSpace(const CVector2f &pos)
+{
+	int x = (int)(pos.x / (float)TILE_SIZE);
+	int y = (int)(pos.y / (float)TILE_SIZE);
+
+	return GetTile(x, y);
+}
+
+void CLevel::RemoveTileInWorldSpace(const CVector2f &pos)
+{
+	auto tile = GetTileInWorldSpace(pos);
+	RemoveTile(tile);
+}
+
+void CLevel::RemoveTile(int x, int y)
+{
+	auto tile = GetTile(x, y);
+	RemoveTile(tile);
+}
+
+void CLevel::RemoveTile(CTile *tile)
+{
+	if(tile) {
+		tile->type = ETileType::AIR;
+	}
+}

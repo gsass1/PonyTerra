@@ -11,6 +11,8 @@ set(PONYTERRA_SOURCES
 	src/Component_PlayerInput.h
 	src/Console.cpp
 	src/Console.h
+	src/Cursor.cpp
+	src/Cursor.h
 	src/DrawQuery.cpp
 	src/DrawQuery.h
 	src/Entity.h
@@ -38,6 +40,7 @@ set(PONYTERRA_SOURCES
 	src/Item.h
 	src/Item_HealthPotion.cpp
 	src/Item_HealthPotion.h
+	src/ISaveable.h
 	src/Level.cpp
 	src/Level.h
 	src/main.cpp

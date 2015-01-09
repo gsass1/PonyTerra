@@ -7,19 +7,19 @@ class IFont;
 
 class CWidget_Button : public CWidget {
 public:
-					CWidget_Button(const char *text, CVector2f pos);
-					~CWidget_Button();
+                    CWidget_Button(const char *text, CVector2f pos);
+                    ~CWidget_Button();
 
-	void			Initialize();
+    void            Initialize();
 
-	void			Update(float dtTime);
-	void			Draw();
+    void            Update(float dtTime);
+    void            Draw();
 
-	CRect			GetRect() const;
+    CRect           GetRect() const;
 
 private:
-	const IFont *	font;
-	char			text[256];
+    const IFont *   font;
+    char            text[256];
 };
 
 #endif

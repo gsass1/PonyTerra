@@ -4,26 +4,26 @@
 class CNoiseGenerator
 {
 public:
-			CNoiseGenerator();
-			~CNoiseGenerator();
+            CNoiseGenerator();
+            ~CNoiseGenerator();
 
-	void	Set(int octaves, double amplitude, double frequency, double persistence);
+    void    Set(int octaves, double amplitude, double frequency, double persistence);
 
-	double	Noise(int x, int y);
+    double  Noise(int x, int y);
 
-	double	Noise1D(int x);
+    double  Noise1D(int x);
 
-	double	NoiseGeneration(int x, int y);
+    double  NoiseGeneration(int x, int y);
 
-	double	Smooth(double x, double y);
+    double  Smooth(double x, double y);
 
-	double	Interpolate(double x, double y, double a);
+    double  Interpolate(double x, double y, double a);
 
-	int		seed;
-	int		octaves;
-	double	amplitude;
-	double	persistence;
-	double	frequency;
+    int     seed;
+    int     octaves;
+    double  amplitude;
+    double  persistence;
+    double  frequency;
 };
 
 #endif

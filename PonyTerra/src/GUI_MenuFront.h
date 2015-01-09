@@ -8,24 +8,24 @@ class CWidget_Button;
 
 class CGUI_MenuFront : public IGUI {
 public:
-				CGUI_MenuFront();
-				~CGUI_MenuFront();
+                CGUI_MenuFront();
+                ~CGUI_MenuFront();
 
-	void		Initialize();
-	void		Dispose();
+    void        Initialize();
+    void        Dispose();
 
-	void		OnResize();
+    void        OnResize();
 
-	void		Update(float dtTime);
-	void		Draw();
+    void        Update(float dtTime);
+    void        Draw();
 
 private:
-	ITexture *	bg;
+    ITexture *  bg;
 
-	CWidget_Button *btNewWorld;
-	CWidget_Button *btLoadWorld;
-	CWidget_Button *btOptions;
-	CWidget_Button *btExit;
+    CWidget_Button *btNewWorld;
+    CWidget_Button *btLoadWorld;
+    CWidget_Button *btOptions;
+    CWidget_Button *btExit;
 };
 
 #endif

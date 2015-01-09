@@ -10,21 +10,21 @@ class CComponent_Physical;
 class CComponent_PlayerInput : public CComponentBase
 {
 public:
-							CComponent_PlayerInput();
+                            CComponent_PlayerInput();
 
-	void					Initialize(CEntity *parent);
+    void                    Initialize(CEntity *parent);
 
-	void					Update(float dtTime);
+    void                    Update(float dtTime);
 
-	void					SetNoClip(bool noclip);
-	bool					ToggleNoClip();
+    void                    SetNoClip(bool noclip);
+    bool                    ToggleNoClip();
 
 private:
-	CComponent_Animation *	animation;
-	CComponent_Physical *	physical;
-	bool					noclip;
+    CComponent_Animation *  animation;
+    CComponent_Physical *   physical;
+    bool                    noclip;
 
-	void					UpdateNoClip(float dtTime);
+    void                    UpdateNoClip(float dtTime);
 };
 
 #endif

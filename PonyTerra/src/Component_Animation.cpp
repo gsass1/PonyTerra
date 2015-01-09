@@ -13,108 +13,108 @@
 
 CComponent_Animation::CComponent_Animation()
 {
-	currentFrame = 0;
-	lastFrameTicks = 0;
-	physical = NULL;
+    currentFrame = 0;
+    lastFrameTicks = 0;
+    physical = NULL;
 }
 
 void CComponent_Animation::Initialize(CEntity *parent)
 {
-	CComponentBase::Initialize(parent);
+    CComponentBase::Initialize(parent);
 
-	physical = parent->GetComponents()->Get<CComponent_Physical>();
+    physical = parent->GetComponents()->Get<CComponent_Physical>();
 }
 
 void CComponent_Animation::Load(const std::string &filepath)
 {
-	TiXmlDocument doc;
-	
-	bool load = doc.LoadFile((StrUtl::FormatString("%s/data/res/tex/%s/%s", fileSystem->GetBasePath().c_str(), filepath.c_str(), ANIMCONF_DEFAULT_NAME)).c_str());
+    TiXmlDocument doc;
+    
+    bool load = doc.LoadFile((StrUtl::FormatString("%s/data/res/tex/%s/%s", fileSystem->GetBasePath().c_str(), filepath.c_str(), ANIMCONF_DEFAULT_NAME)).c_str());
 
-	ASSERT(load);
+    ASSERT(load);
 
-	TiXmlElement *animRoot = (TiXmlElement *)doc.FirstChild();
+    TiXmlElement *animRoot = (TiXmlElement *)doc.FirstChild();
 
-	std::string animName = animRoot->Attribute("Name");
+    std::string animName = animRoot->Attribute("Name");
 
-	TiXmlElement *sequence;
-	FOR_EACH_ELEM(animRoot, sequence) {
-		animation_t animation;
+    TiXmlElement *sequence;
+    FOR_EACH_ELEM(animRoot, sequence) {
+        animation_t animation;
 
-		std::string sequenceName = sequence->Attribute("Name");
+        std::string sequenceName = sequence->Attribute("Name");
 
-		animation.frameInterval = atoi(sequence->Attribute("FrameInterval"));
+        animation.frameInterval = atoi(sequence->Attribute("FrameInterval"));
 
-		TiXmlElement *frameElem;
-		FOR_EACH_ELEM(sequence, frameElem) {
-			int id = atoi(frameElem->Attribute("ID"));
-			std::string path = frameElem->Attribute("Path");
+        TiXmlElement *frameElem;
+        FOR_EACH_ELEM(sequence, frameElem) {
+            int id = atoi(frameElem->Attribute("ID"));
+            std::string path = frameElem->Attribute("Path");
 
-			frame_t frame;
-			frame.id = id;
-			frame.texture = resMgr->GetTexture(StrUtl::FormatString("data/res/tex/%s/%s", filepath.c_str(), path.c_str()), CColor(255, 0, 255));
+            frame_t frame;
+            frame.id = id;
+            frame.texture = resMgr->GetTexture(StrUtl::FormatString("data/res/tex/%s/%s", filepath.c_str(), path.c_str()), CColor(255, 0, 255));
 
-			std::string flags;
+            std::string flags;
 
-			if (frameElem->Attribute("Flags") != NULL) {
-				flags = frameElem->Attribute("Flags");
-			}
+            if (frameElem->Attribute("Flags") != NULL) {
+                flags = frameElem->Attribute("Flags");
+            }
 
-			if(flags.find("hrev") != std::string::npos) {
-				frame.hrev = true;
-			}
+            if(flags.find("hrev") != std::string::npos) {
+                frame.hrev = true;
+            }
 
-			if (frameElem->Attribute("OffsetX") != NULL) {
-				frame.offsetX = (float)atoi(frameElem->Attribute("OffsetX"));
-			}
+            if (frameElem->Attribute("OffsetX") != NULL) {
+                frame.offsetX = (float)atoi(frameElem->Attribute("OffsetX"));
+            }
 
-			if (frameElem->Attribute("OffsetY") != NULL) {
-				frame.offsetY = (float)atoi(frameElem->Attribute("OffsetY"));
-			}
+            if (frameElem->Attribute("OffsetY") != NULL) {
+                frame.offsetY = (float)atoi(frameElem->Attribute("OffsetY"));
+            }
 
-			animation_t::framePair_t framePair(id, frame);
-			animation.frames.insert(framePair);
-		}
+            animation_t::framePair_t framePair(id, frame);
+            animation.frames.insert(framePair);
+        }
 
-		animation.maxFrames = (int)animation.frames.size();
-		animMap.insert(animMapPair_t(sequenceName, animation));
-	}
+        animation.maxFrames = (int)animation.frames.size();
+        animMap.insert(animMapPair_t(sequenceName, animation));
+    }
 }
 
 void CComponent_Animation::AdvanceFrame()
 {
-	if (common->GetTicks() - lastFrameTicks >= (unsigned int)animMap[currentAnimState].frameInterval) {
-		currentFrame++;
-		if (currentFrame == animMap[currentAnimState].maxFrames) {
-			currentFrame = 0;
-		}
-		lastFrameTicks = common->GetTicks();
-	}
+    if (common->GetTicks() - lastFrameTicks >= (unsigned int)animMap[currentAnimState].frameInterval) {
+        currentFrame++;
+        if (currentFrame == animMap[currentAnimState].maxFrames) {
+            currentFrame = 0;
+        }
+        lastFrameTicks = common->GetTicks();
+    }
 }
 
 void CComponent_Animation::ChangeAnimationState(const std::string &name)
 {
-	if(currentAnimState == name) {
-		return;
-	}
-	currentFrame = 0;
-	currentAnimState = name;
-	lastFrameTicks = common->GetTicks();
+    if(currentAnimState == name) {
+        return;
+    }
+    currentFrame = 0;
+    currentAnimState = name;
+    lastFrameTicks = common->GetTicks();
 }
 
 void CComponent_Animation::Draw()
 {
-	frame_t frame = animMap[currentAnimState].frames[currentFrame];
+    frame_t frame = animMap[currentAnimState].frames[currentFrame];
 
-	if (frame.hrev) {
-		graphics->SetOrtho(graphics->GetWidth(), 0, 0, graphics->GetHeight());
-	}
+    if (frame.hrev) {
+        graphics->SetOrtho(graphics->GetWidth(), 0, 0, graphics->GetHeight());
+    }
 
-	CVector2f pos = (physical->rect.pos + CVector2f(frame.offsetX, frame.offsetY)) - game_local.GetViewRect().pos;
+    CVector2f pos = (physical->rect.pos + CVector2f(frame.offsetX, frame.offsetY)) - game_local.GetViewRect().pos;
 
-	graphics->DrawTexture(frame.texture, pos);
+    graphics->DrawTexture(frame.texture, pos);
 
-	if (frame.hrev) {
-		graphics->ResetOrtho();
-	}
+    if (frame.hrev) {
+        graphics->ResetOrtho();
+    }
 }

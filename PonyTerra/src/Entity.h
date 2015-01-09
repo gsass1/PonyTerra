@@ -7,19 +7,19 @@
 
 enum class EMessageType
 {
-	NONE,
+    NONE,
 };
 
 class CMessage
 {
 public:
-						CMessage();
-						~CMessage();
+                        CMessage();
+                        ~CMessage();
 
-	EMessageType		GetType() const;
+    EMessageType        GetType() const;
 
 private:
-	EMessageType		type;
+    EMessageType        type;
 };
 
 class CEntity;
@@ -27,103 +27,103 @@ class CEntity;
 class CComponentBase
 {
 public:
-						CComponentBase();
-	virtual				~CComponentBase();
+                        CComponentBase();
+    virtual             ~CComponentBase();
 
-	virtual void		Initialize(CEntity *parent);
+    virtual void        Initialize(CEntity *parent);
 
-	virtual void		Destroy();
+    virtual void        Destroy();
 
-	virtual void		Update(float dtTime);
+    virtual void        Update(float dtTime);
 
-	virtual void		Draw();
+    virtual void        Draw();
 
-	CEntity *			GetParent() const;
+    CEntity *           GetParent() const;
 
-	virtual void		HandleMessage(const CMessage *msg);
+    virtual void        HandleMessage(const CMessage *msg);
 
 protected:
-	CEntity *			parent;
+    CEntity *           parent;
 };
 
 class CComponentContainer
 {
 public:
-						CComponentContainer(CEntity *parent);
-						~CComponentContainer();
+                        CComponentContainer(CEntity *parent);
+                        ~CComponentContainer();
 
-	void				CoupleAll();
+    void                CoupleAll();
 
-	template<class T>
-	void				Add(T *component)
-	{
-		Add(component, typeid(component).name());
-	}
+    template<class T>
+    void                Add(T *component)
+    {
+        Add(component, typeid(component).name());
+    }
 
-	void				Add(CComponentBase *component, std::string key);
+    void                Add(CComponentBase *component, std::string key);
 
-	template<class T>
-	void				Remove()
-	{
-		Remove(typeid(T).name());
-	}
+    template<class T>
+    void                Remove()
+    {
+        Remove(typeid(T).name());
+    }
 
-	void				Remove(const std::string &id);
+    void                Remove(const std::string &id);
 
-	void				DestroyAll();
+    void                DestroyAll();
 
-	template<class T> T *Get()
-	{
-		return dynamic_cast<T *>(Get(typeid(T*).name()));
-	}
+    template<class T> T *Get()
+    {
+        return dynamic_cast<T *>(Get(typeid(T*).name()));
+    }
 
-	CComponentBase *	Get(const std::string &id);
+    CComponentBase *    Get(const std::string &id);
 
-	void				UpdateAll(float dtTime);
+    void                UpdateAll(float dtTime);
 
-	void				DrawAll();
+    void                DrawAll();
 
-	void				HandleMessage(const CMessage *msg);
+    void                HandleMessage(const CMessage *msg);
 
 private:
-	CEntity *			parent;
-	typedef std::map<std::string, CComponentBase *> componentList_t;
-	typedef componentList_t::iterator componentListItr_t;
-	typedef std::pair<std::string, CComponentBase *> componentPair_t;
-	componentList_t		componentList;
+    CEntity *           parent;
+    typedef std::map<std::string, CComponentBase *> componentList_t;
+    typedef componentList_t::iterator componentListItr_t;
+    typedef std::pair<std::string, CComponentBase *> componentPair_t;
+    componentList_t     componentList;
 };
 
 class CEntity
 {
 public:
-						CEntity();
-						~CEntity();
+                        CEntity();
+                        ~CEntity();
 
-	void				Initialize();
+    void                Initialize();
 
-	void				Destroy();
+    void                Destroy();
 
-	void				Update(float dtTime);
+    void                Update(float dtTime);
 
-	void				Draw();
+    void                Draw();
 
-	CComponentContainer *GetComponents();
-	const CComponentContainer *GetComponents() const;
+    CComponentContainer *GetComponents();
+    const CComponentContainer *GetComponents() const;
 
-	unsigned int		GetID() const;
+    unsigned int        GetID() const;
 
 private:
-	friend class		CEntityManager;
+    friend class        CEntityManager;
 
-	unsigned int		id;
+    unsigned int        id;
 
-	CComponentContainer *componentContainer;
+    CComponentContainer *componentContainer;
 };
 
 template<typename T>
 T *GetComponent(CEntity *entity)
 {
-	return entity->GetComponents()->Get<T>();
+    return entity->GetComponents()->Get<T>();
 }
 
 #endif

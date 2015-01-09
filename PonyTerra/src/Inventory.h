@@ -9,36 +9,36 @@ class ITexture;
 
 class CInventory {
 public:
-					CInventory(CEntity *owner, int size = 81);
-					~CInventory();
+                    CInventory(CEntity *owner, int size = 81);
+                    ~CInventory();
 
-	void			Initialize();
-	void			DrawFull();
-	void			DrawBar();
-	void			DrawItemRow(CVector2f pos, int rowIndex);
-	void			Draw();
+    void            Initialize();
+    void            DrawFull();
+    void            DrawBar();
+    void            DrawItemRow(CVector2f pos, int rowIndex);
+    void            Draw();
 
-	bool			AddItem(CItem *item);
+    bool            AddItem(CItem *item);
 
-	CItem *			GetItem(int index);
-	const CItem *	GetItem(int index) const;
+    CItem *         GetItem(int index);
+    const CItem *   GetItem(int index) const;
 
-	void			RemoveItem(int index);
+    void            RemoveItem(int index);
 
-	void			UseCurrentItem();
+    void            UseCurrentItem();
 
-	void			Update(float dtTime);
+    void            Update(float dtTime);
 
-	void			SwitchOpen();
+    void            SwitchOpen();
 
-	int				currentSelected;
+    int             currentSelected;
 
 private:
-	bool			open;
-	int				size;
-	CItem **		items;
-	CEntity *		owner;
-	ITexture *		tilesheet;
+    bool            open;
+    int             size;
+    CItem **        items;
+    CEntity *       owner;
+    ITexture *      tilesheet;
 };
 
 #endif

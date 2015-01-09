@@ -7,16 +7,16 @@
 class CComponent_Physical : public CComponentBase
 {
 public:
-				CComponent_Physical();
+                CComponent_Physical();
 
-	void		Update(float dtTime);
+    void        Update(float dtTime);
 
-	void		AddVelocity(const CVector2f &v);
+    void        AddVelocity(const CVector2f &v);
 
-	CRect		rect;
-	CVector2f	velocity;
-	bool		isInAir;
-	bool		disableMotion;
+    CRect       rect;
+    CVector2f   velocity;
+    bool        isInAir;
+    bool        disableMotion;
 };
 
 #endif

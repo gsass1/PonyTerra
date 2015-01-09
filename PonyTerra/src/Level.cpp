@@ -128,13 +128,13 @@ CLevel level;
 
 CLevel::CLevel()
 {
-	width = height = 0;
-	tilesheetTex = nullptr;
-	tileMemPool = nullptr;
-	time = 0;
-	isBossSummoned = false;
+    width = height = 0;
+    tilesheetTex = nullptr;
+    tileMemPool = nullptr;
+    time = 0;
+    isBossSummoned = false;
 
-	isLoaded = false;
+    isLoaded = false;
 }
 
 CLevel::~CLevel()
@@ -143,7 +143,7 @@ CLevel::~CLevel()
 
 void CLevel::Initialize()
 {
-	tilesheetTex = resMgr->GetTexture("data/res/tex/tilesheet.png");
+    tilesheetTex = resMgr->GetTexture("data/res/tex/tilesheet.png");
 }
 
 void CLevel::Clear()
@@ -153,27 +153,27 @@ void CLevel::Clear()
 
 void CLevel::Load(const char *filepath)
 {
-	if(isLoaded) {
-		common->Error("%s", "Cannot load new level while a level is already loaded!\n");
-	}
+    if(isLoaded) {
+        common->Error("%s", "Cannot load new level while a level is already loaded!\n");
+    }
 
-	IFile *file = fileSystem->OpenFile(filepath, EFileMode::READ);
+    IFile *file = fileSystem->OpenFile(filepath, EFileMode::READ);
 
     ASSERT(file);
 
-	width = file->ReadInt32();
-	height = file->ReadInt32();
+    width = file->ReadInt32();
+    height = file->ReadInt32();
 
-	if(!width || !height || width < 0 || height < 0) {
-		common->Error("Corrupt Level File\n");
-	}
+    if(!width || !height || width < 0 || height < 0) {
+        common->Error("Corrupt Level File\n");
+    }
 
-	game_local.time = file->ReadFloat();
+    game_local.time = file->ReadFloat();
 
-	game_local.playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.x = file->ReadFloat();
-	game_local.playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.y = file->ReadFloat();
+    game_local.playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.x = file->ReadFloat();
+    game_local.playerEntity->GetComponents()->Get<CComponent_Physical>()->rect.pos.y = file->ReadFloat();
 
-	AllocTileData();
+    AllocTileData();
 
     SetLoadingText("Loading level");
 
@@ -190,7 +190,7 @@ void CLevel::Load(const char *filepath)
         }
     }
 
-	isLoaded = true;
+    isLoaded = true;
 }
 
 void CLevel::Save(const char *filepath)
@@ -206,10 +206,10 @@ void CLevel::Save(const char *filepath)
     file->WriteInt32(width);
     file->WriteInt32(height);
 
-	file->WriteFloat(game_local.time);
+    file->WriteFloat(game_local.time);
 
-	file->WriteFloat(GetComponent<CComponent_Physical>(game_local.playerEntity)->rect.pos.x);
-	file->WriteFloat(GetComponent<CComponent_Physical>(game_local.playerEntity)->rect.pos.y);
+    file->WriteFloat(GetComponent<CComponent_Physical>(game_local.playerEntity)->rect.pos.x);
+    file->WriteFloat(GetComponent<CComponent_Physical>(game_local.playerEntity)->rect.pos.y);
 
     double perc = 0.0;
 
@@ -227,93 +227,93 @@ void CLevel::Save(const char *filepath)
 
 void CLevel::Generate(int width, int height)
 {
-	this->width = width;
-	this->height = height;
+    this->width = width;
+    this->height = height;
 
-	AllocTileData();
+    AllocTileData();
 
-	CNoiseGenerator noiseGen;
+    CNoiseGenerator noiseGen;
 
-	noiseGen.Set(16, 22, 0.085, 0.3);
-	int groundLevel = 200;
+    noiseGen.Set(16, 22, 0.085, 0.3);
+    int groundLevel = 200;
 
-	for (int x = 0; x < width; x++) {
-		for(int y = 0; y < height; y++) {
-			if(y < groundLevel) {
-				GetTile(x, y)->type = ETileType::DIRT;
-			}
-		}
-	}
+    for (int x = 0; x < width; x++) {
+        for(int y = 0; y < height; y++) {
+            if(y < groundLevel) {
+                GetTile(x, y)->type = ETileType::DIRT;
+            }
+        }
+    }
 
-	SetLoadingText("Generating Overworld");
+    SetLoadingText("Generating Overworld");
 
     double perc = 0.0;
 
-	int lheight = groundLevel / 2;
-	for (int x = 0; x < width; x++) {
+    int lheight = groundLevel / 2;
+    for (int x = 0; x < width; x++) {
         perc = (double)x / (double)width;
         SetLoadingText("Generating Overworld", perc);
 
-		if(Math::Random(7) == 0) {
-			if(Math::Random(2) == 1) {
-				lheight += 1 + Math::Random(2);
-			} else {
-				lheight -= 1 + Math::Random(2);
-			}
-		}
+        if(Math::Random(7) == 0) {
+            if(Math::Random(2) == 1) {
+                lheight += 1 + Math::Random(2);
+            } else {
+                lheight -= 1 + Math::Random(2);
+            }
+        }
 
-		lheight = Math::Clamp(lheight, groundLevel / 4, groundLevel);
+        lheight = Math::Clamp(lheight, groundLevel / 4, groundLevel);
 
-		// Place terrain
-		for(int y = 0; y < height; y++) {
-			if(y < height - lheight && y > groundLevel - 1) {
-				GetTile(x, y)->type = ETileType::DIRT;
-			}
-		}
+        // Place terrain
+        for(int y = 0; y < height; y++) {
+            if(y < height - lheight && y > groundLevel - 1) {
+                GetTile(x, y)->type = ETileType::DIRT;
+            }
+        }
 
-		// Place grass
-		GetTile(x, height - lheight)->type = ETileType::GRASS;
+        // Place grass
+        GetTile(x, height - lheight)->type = ETileType::GRASS;
 
-		for(int y = 0; y < height; y++) {
-			int h = lheight + Math::Random(30) + 10;
-			int l = Math::Random(5) - h;
+        for(int y = 0; y < height; y++) {
+            int h = lheight + Math::Random(30) + 10;
+            int l = Math::Random(5) - h;
 
-			if(y < lheight && y < l) {
-				for(int y1 = 0; y1 < lheight; y1++) {
-					if(y1 > h && y1 < l) {
-						//tileData[x][y1]->type = 10;
-					}
-				}
-			}
-		}
-	}
+            if(y < lheight && y < l) {
+                for(int y1 = 0; y1 < lheight; y1++) {
+                    if(y1 > h && y1 < l) {
+                        //tileData[x][y1]->type = 10;
+                    }
+                }
+            }
+        }
+    }
 
-	isLoaded = true;
+    isLoaded = true;
 }
 
 bool CLevel::IsLoaded() const
 {
-	return isLoaded;
+    return isLoaded;
 }
 
 void CLevel::Draw()
 {
-	CRect viewRect = game_local.GetViewRect();
-	int viewX = (int)viewRect.pos.x;
-	int viewY = (int)viewRect.pos.y;
+    CRect viewRect = game_local.GetViewRect();
+    int viewX = (int)viewRect.pos.x;
+    int viewY = (int)viewRect.pos.y;
 
-	for(int x = viewX / TILE_SIZE; x < (viewX / TILE_SIZE) + (viewRect.width / TILE_SIZE) + 2; x++) {
-		for(int y = viewY / TILE_SIZE; y < (viewY / TILE_SIZE) + (viewRect.height / TILE_SIZE) + 1; y++) {
-			if(x < 0 || x >= width || y < 0 || y >= height) {
-				continue;
-			}
-			
+    for(int x = viewX / TILE_SIZE; x < (viewX / TILE_SIZE) + (viewRect.width / TILE_SIZE) + 2; x++) {
+        for(int y = viewY / TILE_SIZE; y < (viewY / TILE_SIZE) + (viewRect.height / TILE_SIZE) + 1; y++) {
+            if(x < 0 || x >= width || y < 0 || y >= height) {
+                continue;
+            }
+            
             CTile *tile = GetTile(x, y);
-			if(tile != nullptr && tile->type != ETileType::AIR) {
-				graphics->DrawTilesheet(tilesheetTex, tile->GetPosition() - viewRect.pos, (int)tile->type, 16, 16, 64, 64, 64.0f, 64.0f);
-			}
-		}
-	}
+            if(tile != nullptr && tile->type != ETileType::AIR) {
+                graphics->DrawTilesheet(tilesheetTex, tile->GetPosition() - viewRect.pos, (int)tile->type, 16, 16, 64, 64, 64.0f, 64.0f);
+            }
+        }
+    }
 }
 
 bool CLevel::PlaceGrass(int x, int y)
@@ -334,7 +334,7 @@ bool CLevel::PlaceGrass(int x, int y)
 
 void CLevel::AllocTileData()
 {
-	SetLoadingText("Allocating tile data");
+    SetLoadingText("Allocating tile data");
 
     tileMemPool = new CTile[width * height]();
 
@@ -349,25 +349,25 @@ void CLevel::AllocTileData()
             (&tileMemPool[width * j + i])->type = ETileType::AIR;
         }
     }
-	common->Printf("Done!\n");
+    common->Printf("Done!\n");
 }
 
 void CLevel::DisposeTileData()
 {
     if(!tileMemPool) {
-		return;
-	}
+        return;
+    }
 
     // ??? causes assert fail in VCRT on standalone build
     delete tileMemPool;
 
     tileMemPool = nullptr;
-	isLoaded = false;
+    isLoaded = false;
 }
 
 void CLevel::SetLoadingText(const char *text, double perc)
 {
-	CGUI_Loading *guiLoading = reinterpret_cast<CGUI_Loading *>(guiManager.Current());
+    CGUI_Loading *guiLoading = reinterpret_cast<CGUI_Loading *>(guiManager.Current());
     if(guiLoading) {
         guiLoading->SetStatusText(text, perc);
     }
@@ -375,62 +375,62 @@ void CLevel::SetLoadingText(const char *text, double perc)
 
 bool CLevel::IsCollidingWithTiles(const CRect &rect)
 {
-	if(!isLoaded) {
-		return false;
-	}
+    if(!isLoaded) {
+        return false;
+    }
 
-	for (int x = (int)rect.pos.x / TILE_SIZE; x < ((int)rect.pos.x / TILE_SIZE) + (rect.width / TILE_SIZE) + 2; x++) {
-		for (int y = (int)rect.pos.y / TILE_SIZE; y < ((int)rect.pos.y / TILE_SIZE) + (rect.height / TILE_SIZE) + 1; y++) {
-			if(x < 0 || x >= width || y < 0 || y >= height) {
-				continue;
-			}
+    for (int x = (int)rect.pos.x / TILE_SIZE; x < ((int)rect.pos.x / TILE_SIZE) + (rect.width / TILE_SIZE) + 2; x++) {
+        for (int y = (int)rect.pos.y / TILE_SIZE; y < ((int)rect.pos.y / TILE_SIZE) + (rect.height / TILE_SIZE) + 1; y++) {
+            if(x < 0 || x >= width || y < 0 || y >= height) {
+                continue;
+            }
 
-			CTile *tile = GetTile(x, y);
+            CTile *tile = GetTile(x, y);
 
-			if(tile->type == ETileType::AIR) {
-				continue;
-			}
+            if(tile->type == ETileType::AIR) {
+                continue;
+            }
 
-			if(CRect(tile->GetPosition(), TILE_SIZE, TILE_SIZE).Collides(rect)) {
-				return true;
-			}
-		}
-	}
+            if(CRect(tile->GetPosition(), TILE_SIZE, TILE_SIZE).Collides(rect)) {
+                return true;
+            }
+        }
+    }
 
-	return false;
+    return false;
 }
 
 CTile *CLevel::GetTile(int x, int y)
 {
-	if(x < 0 || x > width || y < 0 || y > height) {
-		return nullptr;
-	}
-	return &(tileMemPool[width * y + x]);
+    if(x < 0 || x > width || y < 0 || y > height) {
+        return nullptr;
+    }
+    return &(tileMemPool[width * y + x]);
 }
 
 CTile *CLevel::GetTileInWorldSpace(const CVector2f &pos)
 {
-	int x = (int)(pos.x / (float)TILE_SIZE);
-	int y = (int)(pos.y / (float)TILE_SIZE);
+    int x = (int)(pos.x / (float)TILE_SIZE);
+    int y = (int)(pos.y / (float)TILE_SIZE);
 
-	return GetTile(x, y);
+    return GetTile(x, y);
 }
 
 void CLevel::RemoveTileInWorldSpace(const CVector2f &pos)
 {
-	auto tile = GetTileInWorldSpace(pos);
-	RemoveTile(tile);
+    auto tile = GetTileInWorldSpace(pos);
+    RemoveTile(tile);
 }
 
 void CLevel::RemoveTile(int x, int y)
 {
-	auto tile = GetTile(x, y);
-	RemoveTile(tile);
+    auto tile = GetTile(x, y);
+    RemoveTile(tile);
 }
 
 void CLevel::RemoveTile(CTile *tile)
 {
-	if(tile) {
-		tile->type = ETileType::AIR;
-	}
+    if(tile) {
+        tile->type = ETileType::AIR;
+    }
 }

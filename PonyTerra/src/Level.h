@@ -23,8 +23,8 @@
 
 enum class ETileType
 {
-	AIR = 0,
-	DIRT,
+    AIR = 0,
+    DIRT,
     GRASS,
 };
 
@@ -33,10 +33,10 @@ enum class ETileType
 class CTile
 {
 public:
-	int x;
-	int y;
+    int x;
+    int y;
 
-	ETileType type;
+    ETileType type;
 
     int flags;
 
@@ -48,17 +48,17 @@ public:
         type = ETileType::AIR;
     }
 
-	CTile(int x, int y, ETileType type)
+    CTile(int x, int y, ETileType type)
     {
-		this->x = x;
-		this->y = y;
-		this->type = type;
-	}
+        this->x = x;
+        this->y = y;
+        this->type = type;
+    }
 
-	CVector2f GetPosition() const
+    CVector2f GetPosition() const
     {
-		return CVector2f((float)x, (float)y);
-	}
+        return CVector2f((float)x, (float)y);
+    }
 };
 
 
@@ -81,27 +81,27 @@ enum class ELevelProcessType
 class CLevelProcess
 {
 public:
-						CLevelProcess() { processType = ELevelProcessType::NONE; curStatusPerc = 0.0; finishSignal = false;  }
+                        CLevelProcess() { processType = ELevelProcessType::NONE; curStatusPerc = 0.0; finishSignal = false;  }
 
-    void				StartProcess(ELevelProcessType type);
+    void                StartProcess(ELevelProcessType type);
 
-    ELevelProcessType	StopThreadIfFinished();
+    ELevelProcessType   StopThreadIfFinished();
 
-    void				SetStatus(ELevelProcessType type) {
+    void                SetStatus(ELevelProcessType type) {
         CMutexLock lock(&statusLock);
         processType = type;
     }
 
-    ELevelProcessType	GetStatus() {
+    ELevelProcessType   GetStatus() {
         CMutexLock lock(&statusLock);
         return processType;
     }
 
-    bool				finishSignal;
-	std::mutex			statusLock;
-    std::thread *		thread;
-    ELevelProcessType	processType;
-    double				curStatusPerc;
+    bool                finishSignal;
+    std::mutex          statusLock;
+    std::thread *       thread;
+    ELevelProcessType   processType;
+    double              curStatusPerc;
 };
 
 extern CLevelProcess levelProcess;
@@ -113,55 +113,55 @@ class ITexture;
 class CLevel
 {
 public:
-				CLevel();
-				~CLevel();
+                CLevel();
+                ~CLevel();
 
-	void		Initialize();
+    void        Initialize();
 
     void        Clear();
 
-	void		Load(const char *filepath);
+    void        Load(const char *filepath);
 
     void        Save(const char *filepath);
 
-	void		Generate(int width, int height);
+    void        Generate(int width, int height);
 
     bool        PlaceGrass(int x, int y);
-	
-	bool		IsLoaded() const;
+    
+    bool        IsLoaded() const;
 
-	void		Draw();
+    void        Draw();
 
-	bool		IsCollidingWithTiles(const CRect &rect);
+    bool        IsCollidingWithTiles(const CRect &rect);
 
-	CTile *		GetTile(int x, int y);
-	CTile *		GetTileInWorldSpace(const CVector2f &pos);
+    CTile *     GetTile(int x, int y);
+    CTile *     GetTileInWorldSpace(const CVector2f &pos);
 
-	void		RemoveTileInWorldSpace(const CVector2f &pos);
-	void		RemoveTile(int x, int y);
-	void		RemoveTile(CTile *tile);
+    void        RemoveTileInWorldSpace(const CVector2f &pos);
+    void        RemoveTile(int x, int y);
+    void        RemoveTile(CTile *tile);
 
-	int			width;
-	int			height;
+    int         width;
+    int         height;
 
 private:
-	friend class CLevelGenerate;
+    friend class CLevelGenerate;
 
-	ITexture *	tilesheetTex;
+    ITexture *  tilesheetTex;
 
-    CTile *		tileMemPool;
+    CTile *     tileMemPool;
 
-	double		time;
-	bool		isBossSummoned;
+    double      time;
+    bool        isBossSummoned;
 
-	bool		isLoaded;
+    bool        isLoaded;
 
-	CVector2f	spawnPos;
+    CVector2f   spawnPos;
 
-	void		AllocTileData();
-	void		DisposeTileData();
+    void        AllocTileData();
+    void        DisposeTileData();
 
-	void		SetLoadingText(const char * text, double perc = 0.0);
+    void        SetLoadingText(const char * text, double perc = 0.0);
 };
 
 extern CLevel level;

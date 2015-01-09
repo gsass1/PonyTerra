@@ -9,23 +9,23 @@ IGUI *GetGUI(const char *name);
 
 class CGUIManager {
 public:
-					CGUIManager();
-					~CGUIManager();
-	
-	void			Initialize();
+                    CGUIManager();
+                    ~CGUIManager();
+    
+    void            Initialize();
     void            ClearStack();
 
-	void			Push(IGUI *gui);
-	void			Pop();
+    void            Push(IGUI *gui);
+    void            Pop();
 
-	void			Update(float dtTime);
-	void			Draw();
+    void            Update(float dtTime);
+    void            Draw();
 
-	IGUI *			Current();
-	unsigned int	GetStackSize() const;
+    IGUI *          Current();
+    unsigned int    GetStackSize() const;
 
 private:
-	std::vector<IGUI *> guiStack;
+    std::vector<IGUI *> guiStack;
 };
 
 extern CGUIManager guiManager;

@@ -21,35 +21,35 @@ CEntityFactory::~CEntityFactory()
 
 CEntity *CEntityFactory::CreatePlayer()
 {
-	CEntity *entity = new CEntity();
+    CEntity *entity = new CEntity();
 
-	CComponent_Physical *physical = new CComponent_Physical();
+    CComponent_Physical *physical = new CComponent_Physical();
 
-	physical->rect.width = 120;
-	physical->rect.height = 60;
+    physical->rect.width = 120;
+    physical->rect.height = 60;
 
-	entity->GetComponents()->Add(physical);
+    entity->GetComponents()->Add(physical);
 
-	entity->GetComponents()->Add(new CComponent_PlayerInput());
-	entity->GetComponents()->Add(new CComponent_Inventory());
-	entity->GetComponents()->Add(new CComponent_Attributes());
+    entity->GetComponents()->Add(new CComponent_PlayerInput());
+    entity->GetComponents()->Add(new CComponent_Inventory());
+    entity->GetComponents()->Add(new CComponent_Attributes());
 
-	CComponent_Animation *animation = new CComponent_Animation();
+    CComponent_Animation *animation = new CComponent_Animation();
 
-	animation->Load("twilight_sparkle");
+    animation->Load("twilight_sparkle");
 
-	entity->GetComponents()->Add(animation);
+    entity->GetComponents()->Add(animation);
 
-	entity->Initialize();
+    entity->Initialize();
 
 
-	auto inventory = GetComponent<CComponent_Inventory>(entity);
-	inventory->inventory->AddItem(CItem::CreateFromID(entity, 0));
+    auto inventory = GetComponent<CComponent_Inventory>(entity);
+    inventory->inventory->AddItem(CItem::CreateFromID(entity, 0));
 
-	auto tileItem = new CItem_Tile(entity, 1);
-	tileItem->Initialize();
+    auto tileItem = new CItem_Tile(entity, 1);
+    tileItem->Initialize();
 
-	inventory->inventory->AddItem(tileItem);
+    inventory->inventory->AddItem(tileItem);
 
-	return entity;
+    return entity;
 }

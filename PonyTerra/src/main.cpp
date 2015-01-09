@@ -39,14 +39,14 @@ ISoundSystem *soundSystem;
 
 extern "C" GAMEAPI void GameDLLExchange(EngineGlobals *eg, GameGlobals *gg) {
 #ifndef STANDALONE
-	::config = eg->config;
-	::common = eg->common;
-	::fileSystem = eg->filesystem;
-	::game = &game_local;
-	::graphics = eg->graphics;
-	::input = eg->input;
-	::resMgr = eg->resMgr;
-	::soundSystem = eg->soundSys;
+    ::config = eg->config;
+    ::common = eg->common;
+    ::fileSystem = eg->filesystem;
+    ::game = &game_local;
+    ::graphics = eg->graphics;
+    ::input = eg->input;
+    ::resMgr = eg->resMgr;
+    ::soundSystem = eg->soundSys;
 #endif
-	gg->game = &game_local;
+    gg->game = &game_local;
 }

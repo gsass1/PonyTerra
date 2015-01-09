@@ -16,16 +16,16 @@ namespace
 IGUI **staticGUIs;
 
 void InitStaticGUIs() {
-	staticGUIs = new IGUI*[32];
+    staticGUIs = new IGUI*[32];
 
-	staticGUIs[0] = new CGUI_MenuFront();
-	staticGUIs[0]->Initialize();
+    staticGUIs[0] = new CGUI_MenuFront();
+    staticGUIs[0]->Initialize();
 
-	staticGUIs[1] = new CGUI_NewWorld();
-	staticGUIs[1]->Initialize();
+    staticGUIs[1] = new CGUI_NewWorld();
+    staticGUIs[1]->Initialize();
 
-	staticGUIs[2] = new CGUI_Loading();
-	staticGUIs[2]->Initialize();
+    staticGUIs[2] = new CGUI_Loading();
+    staticGUIs[2]->Initialize();
 
     staticGUIs[3] = new CGUI_IngameMenu();
     staticGUIs[3]->Initialize();
@@ -34,17 +34,17 @@ void InitStaticGUIs() {
 }
 
 IGUI *GetGUI(const char *name) {
-	if(strcmp(name, "MenuFront") == 0) {
-		return staticGUIs[0];
-	}
+    if(strcmp(name, "MenuFront") == 0) {
+        return staticGUIs[0];
+    }
 
-	if(strcmp(name, "NewWorld") == 0) {
-		return staticGUIs[1];
-	}
+    if(strcmp(name, "NewWorld") == 0) {
+        return staticGUIs[1];
+    }
 
-	if(strcmp(name, "Loading") == 0) {
-		return staticGUIs[2];
-	}
+    if(strcmp(name, "Loading") == 0) {
+        return staticGUIs[2];
+    }
 
     if(strcmp(name, "IngameMenu") == 0) {
         return staticGUIs[3];
@@ -52,7 +52,7 @@ IGUI *GetGUI(const char *name) {
 
     ASSERT(false);
 
-	return NULL;
+    return NULL;
 }
 
 CGUIManager::CGUIManager() {
@@ -62,7 +62,7 @@ CGUIManager::~CGUIManager() {
 }
 
 void CGUIManager::Initialize() {
-	InitStaticGUIs();
+    InitStaticGUIs();
 }
 
 void CGUIManager::ClearStack()
@@ -71,31 +71,31 @@ void CGUIManager::ClearStack()
 }
 
 void CGUIManager::Push(IGUI *gui) {
-	guiStack.push_back(gui);
+    guiStack.push_back(gui);
 }
 
 void CGUIManager::Pop() {
-	ASSERT(guiStack.size() != 0);
-	guiStack.pop_back();
+    ASSERT(guiStack.size() != 0);
+    guiStack.pop_back();
 }
 
 void CGUIManager::Update(float dtTime) {
-	if (guiStack.size() != 0) {
-		guiStack.back()->Update(dtTime);
-	}
+    if (guiStack.size() != 0) {
+        guiStack.back()->Update(dtTime);
+    }
 }
 
 void CGUIManager::Draw() {
-	if (guiStack.size() != 0) {
-		guiStack.back()->Draw();
-	}
+    if (guiStack.size() != 0) {
+        guiStack.back()->Draw();
+    }
 }
 
 IGUI *CGUIManager::Current() {
-	ASSERT(guiStack.size() != 0);
-	return guiStack.back();
+    ASSERT(guiStack.size() != 0);
+    return guiStack.back();
 }
 
 unsigned int CGUIManager::GetStackSize() const {
-	return guiStack.size();
+    return guiStack.size();
 }

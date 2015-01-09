@@ -8,17 +8,17 @@ class CTile;
 class CCursor
 {
 public:
-				CCursor();
-				~CCursor();
+                CCursor();
+                ~CCursor();
 
-	void		Initialize();
+    void        Initialize();
 
-	void		Update(float dtTime);
-	void		DrawTileHighlight();
+    void        Update(float dtTime);
+    void        DrawTileHighlight();
 
-	CTile *		currentSelectedTile;
-	CVector2i	currentSelectedTilePos;
-	CVector2f	pos;
+    CTile *     currentSelectedTile;
+    CVector2i   currentSelectedTilePos;
+    CVector2f   pos;
 };
 
 extern CCursor cursor;

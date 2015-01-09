@@ -8,21 +8,21 @@ class CEntity;
 class CEntityManager
 {
 public:
-			CEntityManager();
-			~CEntityManager();
+            CEntityManager();
+            ~CEntityManager();
 
-	void	AddEntity(CEntity *entity);
+    void    AddEntity(CEntity *entity);
 
     void    RemoveAll();
 
-	void	RemoveEntity(unsigned int id);
+    void    RemoveEntity(unsigned int id);
 
-	void	UpdateAll(float dtTime);
+    void    UpdateAll(float dtTime);
 
-	void	DrawAll();
+    void    DrawAll();
 
 private:
-	CEntity *entities[MAX_ENTITIES];
+    CEntity *entities[MAX_ENTITIES];
 };
 
 extern CEntityManager entityMgr;

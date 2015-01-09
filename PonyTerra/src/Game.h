@@ -12,41 +12,41 @@
 #define TIME_PER_SECOND 166.6666f
 
 enum class EGameState {
-	NONE = 0,
-	MENU,
-	INGAME,
+    NONE = 0,
+    MENU,
+    INGAME,
 };
 
 class CGame : public IGame {
 public:
-				CGame();
-				~CGame();
+                CGame();
+                ~CGame();
 
-	void		Initialize();
+    void        Initialize();
 
-	void		InitializeGame();
+    void        InitializeGame();
 
-	void		Quit();
+    void        Quit();
 
-	const char *GetGameName();
+    const char *GetGameName();
 
     void        OnPrint(const char *msg);
 
-	void		PreloadMenuData();
-	void		ReleaseMenuData();
+    void        PreloadMenuData();
+    void        ReleaseMenuData();
 
-	void		Update(float dtTime);
+    void        Update(float dtTime);
     void        UpdateMenu(float dtTime);
     void        UpdateGame(float dtTime);
 
-	void		Draw();
+    void        Draw();
     void        DrawMenu();
     void        DrawGame();
 
-	CEntity *	GetPlayerEntity() const;
+    CEntity *   GetPlayerEntity() const;
 
-	void		LookAt(const CRect &rect);
-	CRect		GetViewRect() const;
+    void        LookAt(const CRect &rect);
+    CRect       GetViewRect() const;
 
     void        BeginLevelGenProccess(int levelWidth, int levelHeight);
     void        UnloadLevel();
@@ -58,19 +58,19 @@ public:
 
     bool        KeyPressedIngame(NSKey key, bool once = false);
 
-	CVector2f	ToScreenSpace(const CVector2f &pos) const;
-	CVector2f	ToWorldSpace(const CVector2f &pos) const;
+    CVector2f   ToScreenSpace(const CVector2f &pos) const;
+    CVector2f   ToWorldSpace(const CVector2f &pos) const;
 
-	EGameState	gameState;
+    EGameState  gameState;
 
-	CEntity *	playerEntity;
+    CEntity *   playerEntity;
 
-	bool		showBoundingBoxes;
+    bool        showBoundingBoxes;
 
-	float		time;
+    float       time;
 
 private:
-	CRect		viewRect;
+    CRect       viewRect;
     bool        showIngameMenu;
 };
 

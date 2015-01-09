@@ -8,25 +8,25 @@ class CWidget_Button;
 
 class CGUI_NewWorld : public IGUI {
 public:
-				CGUI_NewWorld();
-				~CGUI_NewWorld();
+                CGUI_NewWorld();
+                ~CGUI_NewWorld();
 
-	void		Initialize();
-	void		Dispose();
+    void        Initialize();
+    void        Dispose();
 
-	void		OnResize();
+    void        OnResize();
 
-	void		Update(float dtTime);
-	void		Draw();
+    void        Update(float dtTime);
+    void        Draw();
 
 private:
-	ITexture *	bg;
+    ITexture *  bg;
 
-	CWidget_Button *btSmallWorld;
-	CWidget_Button *btMediumWorld;
-	CWidget_Button *btBigWorld;
+    CWidget_Button *btSmallWorld;
+    CWidget_Button *btMediumWorld;
+    CWidget_Button *btBigWorld;
 
-	CWidget_Button *btBack;
+    CWidget_Button *btBack;
 };
 
 #endif

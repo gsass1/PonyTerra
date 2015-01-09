@@ -9,20 +9,20 @@ class CWidget_Button;
 
 class CGUI_IngameMenu : public IGUI {
 public:
-				CGUI_IngameMenu();
-				~CGUI_IngameMenu();
+                CGUI_IngameMenu();
+                ~CGUI_IngameMenu();
 
-    void		Initialize();
-    void		Dispose();
+    void        Initialize();
+    void        Dispose();
 
-    void		OnResize();
+    void        OnResize();
 
-    void		Update(float dtTime);
-    void		Draw();
+    void        Update(float dtTime);
+    void        Draw();
 
 private:
-    IFont *		font;
-    ITexture *	bgTex;
+    IFont *     font;
+    ITexture *  bgTex;
 
     CWidget_Button *btResume;
     CWidget_Button *btExit;

@@ -7,15 +7,15 @@ class ITexture;
 
 class CItem_HealthPotion : public CItem {
 public:
-				CItem_HealthPotion(CEntity *owner);
+                CItem_HealthPotion(CEntity *owner);
 
-	void		Initialize();
-	bool		OnUse();
+    void        Initialize();
+    bool        OnUse();
 
-	void		Draw(CVector2f pos);
+    void        Draw(CVector2f pos);
 
 private:
-	ITexture *	tilesheet;
+    ITexture *  tilesheet;
 };
 
 #endif

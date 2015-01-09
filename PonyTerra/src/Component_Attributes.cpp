@@ -1,52 +1,52 @@
 #include "Component_Attributes.h"
 
 CComponent_Attributes::CComponent_Attributes(int maxHealth, int maxMana) : maxHealth(maxHealth), maxMana(maxMana) {
-	currentHealth = maxHealth;
-	currentMana = maxMana;
+    currentHealth = maxHealth;
+    currentMana = maxMana;
 }
 
 void CComponent_Attributes::Initialize(CEntity *parent) {
-	CComponentBase::Initialize(parent);
+    CComponentBase::Initialize(parent);
 }
 
 void CComponent_Attributes::AddHealth(int health) {
-	currentHealth += health;
-	if(currentHealth > maxHealth) {
-		currentHealth = maxHealth;
-	}
+    currentHealth += health;
+    if(currentHealth > maxHealth) {
+        currentHealth = maxHealth;
+    }
 }
 
 void CComponent_Attributes::AddMana(int mana) {
-	currentMana += mana;
-	if(currentMana > maxMana) {
-		currentMana = maxMana;
-	}
+    currentMana += mana;
+    if(currentMana > maxMana) {
+        currentMana = maxMana;
+    }
 }
 
 bool CComponent_Attributes::UseHealth(int health) {
-	if(currentHealth >= health) {
-		currentHealth -= health;
-		return true;
-	} else {
-		return false;
-	}
+    if(currentHealth >= health) {
+        currentHealth -= health;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool CComponent_Attributes::UseMana(int mana) {
-	if(currentMana >= mana) {
-		currentMana -= mana;
-		return true;
-	}
-	else {
-		return false;
-	}
+    if(currentMana >= mana) {
+        currentMana -= mana;
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 
 float CComponent_Attributes::GetHealthPercentage() const {
-	return ((float)currentHealth / (float)maxHealth);
+    return ((float)currentHealth / (float)maxHealth);
 }
 
 float CComponent_Attributes::GetManaPercentage() const {
-	return ((float)currentMana / (float)maxMana);
+    return ((float)currentMana / (float)maxMana);
 }

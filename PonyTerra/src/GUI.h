@@ -3,15 +3,15 @@
 
 class IGUI {
 public:
-	virtual			~IGUI() {}
+    virtual         ~IGUI() {}
 
-	virtual void	Initialize() = 0;
-	virtual void	Dispose() = 0;
+    virtual void    Initialize() = 0;
+    virtual void    Dispose() = 0;
 
-	virtual void	OnResize() = 0;
+    virtual void    OnResize() = 0;
 
-	virtual void	Update(float dt) = 0;
-	virtual void	Draw() = 0;
+    virtual void    Update(float dt) = 0;
+    virtual void    Draw() = 0;
 };
 
 #endif

@@ -40,12 +40,12 @@ public:
 			offsetY = 0.0f;
 		}
 
-		int id;
-		ITexture *texture;
-		bool hrev;
+		int			id;
+		ITexture *	texture;
+		bool		hrev;
 
-		float offsetX;
-		float offsetY;
+		float		offsetX;
+		float		offsetY;
 	};
 
 	struct animation_t
@@ -57,15 +57,15 @@ public:
 		}
 
 		typedef std::pair<int, frame_t> framePair_t;
-		std::map<int, frame_t> frames;
-		int			maxFrames;
-		int			frameInterval;
+		std::map<int, frame_t>			frames;
+		int								maxFrames;
+		int								frameInterval;
 	};
 
 	typedef std::pair<std::string, animation_t> animMapPair_t;
-	typedef std::map<std::string, animation_t> animMap_t;
-	animMap_t animMap;
-	unsigned int lastFrameTicks;
+	typedef std::map<std::string, animation_t>	animMap_t;
+	animMap_t									animMap;
+	unsigned int								lastFrameTicks;
 };
 
 #endif

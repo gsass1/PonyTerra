@@ -6,9 +6,9 @@
 
 class CComponent_Inventory : public CComponentBase {
 public:
-	CComponent_Inventory();
+				CComponent_Inventory();
 
-	void Initialize(CEntity *parent);
+	void		Initialize(CEntity *parent);
 
 	CInventory *inventory;
 };

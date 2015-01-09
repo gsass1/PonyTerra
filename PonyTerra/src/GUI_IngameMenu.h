@@ -9,8 +9,8 @@ class CWidget_Button;
 
 class CGUI_IngameMenu : public IGUI {
 public:
-    CGUI_IngameMenu();
-    ~CGUI_IngameMenu();
+				CGUI_IngameMenu();
+				~CGUI_IngameMenu();
 
     void		Initialize();
     void		Dispose();

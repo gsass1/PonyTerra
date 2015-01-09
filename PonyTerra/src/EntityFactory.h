@@ -6,10 +6,10 @@ class CEntity;
 class CEntityFactory
 {
 public:
-	CEntityFactory();
-	~CEntityFactory();
+				CEntityFactory();
+				~CEntityFactory();
 
-	CEntity *CreatePlayer();
+	CEntity *	CreatePlayer();
 };
 
 extern CEntityFactory entityFactory;

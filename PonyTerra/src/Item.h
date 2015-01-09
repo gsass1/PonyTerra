@@ -7,18 +7,18 @@ class CEntity;
 
 class CItem {
 public:
-	CItem(CEntity *owner);
-	virtual ~CItem() {}
+					CItem(CEntity *owner);
+	virtual			~CItem() {}
 
-	virtual void Initialize() = 0;
-	virtual bool OnUse() = 0;
+	virtual void	Initialize() = 0;
+	virtual bool	OnUse() = 0;
 
-	virtual void Draw(CVector2f pos) = 0;
+	virtual void	Draw(CVector2f pos) = 0;
 
-	static CItem *CreateFromID(CEntity *owner, int id);
+	static CItem *	CreateFromID(CEntity *owner, int id);
 
 protected:
-	CEntity *owner;
+	CEntity *		owner;
 };
 
 #endif

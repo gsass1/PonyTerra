@@ -81,27 +81,27 @@ enum class ELevelProcessType
 class CLevelProcess
 {
 public:
-    CLevelProcess() { processType = ELevelProcessType::NONE; curStatusPerc = 0.0; finishSignal = false;  }
+						CLevelProcess() { processType = ELevelProcessType::NONE; curStatusPerc = 0.0; finishSignal = false;  }
 
-    void StartProcess(ELevelProcessType type);
+    void				StartProcess(ELevelProcessType type);
 
-    ELevelProcessType StopThreadIfFinished();
+    ELevelProcessType	StopThreadIfFinished();
 
-    void SetStatus(ELevelProcessType type) {
+    void				SetStatus(ELevelProcessType type) {
         CMutexLock lock(&statusLock);
         processType = type;
     }
 
-    ELevelProcessType GetStatus() {
+    ELevelProcessType	GetStatus() {
         CMutexLock lock(&statusLock);
         return processType;
     }
 
-    bool finishSignal;
-	std::mutex statusLock;
-    std::thread *thread;
-    ELevelProcessType processType;
-    double curStatusPerc;
+    bool				finishSignal;
+	std::mutex			statusLock;
+    std::thread *		thread;
+    ELevelProcessType	processType;
+    double				curStatusPerc;
 };
 
 extern CLevelProcess levelProcess;
@@ -149,7 +149,7 @@ private:
 
 	ITexture *	tilesheetTex;
 
-    CTile *tileMemPool;
+    CTile *		tileMemPool;
 
 	double		time;
 	bool		isBossSummoned;

@@ -7,7 +7,7 @@
 class CComponent_Physical : public CComponentBase
 {
 public:
-	CComponent_Physical();
+				CComponent_Physical();
 
 	void		Update(float dtTime);
 

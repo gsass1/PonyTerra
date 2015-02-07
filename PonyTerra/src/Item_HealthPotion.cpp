@@ -14,10 +14,9 @@ void CItem_HealthPotion::Initialize() {
 bool CItem_HealthPotion::OnUse() {
 	auto attributes = GetComponent<CComponent_Attributes>(owner);
 	if(attributes) {
-		if(attributes->UseHealth(20)) {
-			return true;
-		}
+		return attributes->UseHealth(20);
 	}
+
 	return false;
 }
 

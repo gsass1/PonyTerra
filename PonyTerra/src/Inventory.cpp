@@ -3,9 +3,10 @@
 #include "IResourceManager.h"
 #include "IGraphics.h"
 #include "Item.h"
+#include "StringUtils.h"
 
 CInventory::CInventory(CEntity *owner, int size) : owner(owner), size(size) {
-	items = new CItem*[size];
+	items = new SItemStack*[size];
 	for(int i = 0; i < size; i++) {
 		items[i] = nullptr;
 	}
@@ -17,6 +18,7 @@ CInventory::~CInventory() {
 }
 
 void CInventory::Initialize() {
+	font = resMgr->GetFont("data/res/font/info.fnt");
 	tilesheet = resMgr->GetTexture("data/res/tex/tilesheet.png");
 }
 
@@ -47,11 +49,11 @@ void CInventory::DrawItemRow(CVector2f pos, int rowIndex) {
 	int index = rowIndex * 9;
 	for(int j = 0; j < 9; j++) {
 		int i = index + j;
-		CItem *item = GetItem(i);
+		SItemStack *itemStack = GetItemStack(i);
 		CVector2f tilePos = CVector2f(pos.x + (float)j * widthPerTile, pos.y);
 		graphics->DrawTilesheet(tilesheet, tilePos, 16, 16, 16, 64, 64, tileWidth, tileWidth);
-		if(item) {
-			item->Draw(tilePos);
+		if(itemStack && itemStack->item) {
+			DrawItemStackTile(tilePos, itemStack);
 		}
 		if(i == currentSelected) {
 			graphics->DrawRect(CRect(tilePos, 32, 32), CColor(255, 255, 255, 128));
@@ -67,11 +69,15 @@ void CInventory::Draw() {
 	}
 }
 
-bool CInventory::AddItem(CItem *item) {
+bool CInventory::AddItem(CItem *item, int count) {
 	for(int i = 0; i < size; i++) {
 		if(items[i] == nullptr) {
-			items[i] = item;
+			items[i] = new SItemStack();
+			items[i]->count = count;
+			items[i]->item = item;
 			return true;
+		} else if(items[i]->item == item) {
+			items[i]->count += count;
 		}
 	}
 	return false;
@@ -81,14 +87,40 @@ CItem *CInventory::GetItem(int index) {
 	ASSERT(index >= 0);
 	ASSERT(index < size);
 
-	return items[index];
+	if(items[index]) {
+		return items[index]->item;
+	} else {
+		return nullptr;
+	}
 }
 
 const CItem *CInventory::GetItem(int index) const {
 	ASSERT(index >= 0);
 	ASSERT(index < size);
 
+	if(items[index]) {
+		return items[index]->item;
+	} else {
+		return nullptr;
+	}
+}
+
+SItemStack *CInventory::GetItemStack(int index)
+{
+	ASSERT(index >= 0);
+	ASSERT(index < size);
+
 	return items[index];
+}
+
+void CInventory::DecrementStack(int index)
+{
+	auto itemStack = GetItemStack(index);
+	if(--itemStack->count <= 0) {
+		delete itemStack->item;
+		delete itemStack;
+		items[index] = nullptr;
+	}
 }
 
 void CInventory::RemoveItem(int index) {
@@ -101,8 +133,8 @@ void CInventory::RemoveItem(int index) {
 
 void CInventory::UseCurrentItem() {
 	if(items[currentSelected]) {
-		if(items[currentSelected]->OnUse()) {
-			RemoveItem(currentSelected);
+		if(items[currentSelected]->item->OnUse()) {
+			DecrementStack(currentSelected);
 		}
 	}
 }
@@ -111,9 +143,18 @@ void CInventory::Update(float dtTime) {
 	if(!open) {
 		return;
 	}
-
 }
 
 void CInventory::SwitchOpen() {
 	open = !open;
+}
+
+void CInventory::DrawItemStackTile(const CVector2f &pos, SItemStack *itemStack)
+{
+	itemStack->item->Draw(pos);
+	
+	/* Do not display count when it is only one item */
+	if(itemStack->count != 1) {
+		graphics->DrawText(font, pos, CColor::white, StrUtl::FormatString("%d", itemStack->count));
+	}
 }

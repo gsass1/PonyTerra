@@ -42,14 +42,9 @@ CEntity *CEntityFactory::CreatePlayer()
 
 	entity->Initialize();
 
-
 	auto inventory = GetComponent<CComponent_Inventory>(entity);
-	inventory->inventory->AddItem(CItem::CreateFromID(entity, 0));
-
-	auto tileItem = new CItem_Tile(entity, 1);
-	tileItem->Initialize();
-
-	inventory->inventory->AddItem(tileItem);
+	inventory->inventory->AddItem(CItem::CreateFromID(entity, 256), 1);
+	inventory->inventory->AddItem(CItem::CreateFromID(entity, 1), 64);
 
 	return entity;
 }

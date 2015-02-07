@@ -56,6 +56,7 @@ void CGame::InitializeGame()
 	playerEntity = entityFactory.CreatePlayer();
 	entityMgr.AddEntity(playerEntity);
 	cursor.Initialize();
+	time = 0.0f;
 }
 
 void CGame::Quit()

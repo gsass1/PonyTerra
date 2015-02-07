@@ -5,7 +5,20 @@
 
 class CEntity;
 class CItem;
+class IFont;
 class ITexture;
+
+struct SItemStack
+{
+	SItemStack()
+	{
+		count = 0;
+		item = nullptr;
+	}
+
+	int count;
+	CItem *item;
+};
 
 class CInventory {
 public:
@@ -18,11 +31,14 @@ public:
 	void DrawItemRow(CVector2f pos, int rowIndex);
 	void Draw();
 
-	bool AddItem(CItem *item);
+	bool AddItem(CItem *item, int count = 1);
 
 	CItem *GetItem(int index);
 	const CItem *GetItem(int index) const;
 
+	SItemStack *GetItemStack(int index);
+
+	void DecrementStack(int index);
 	void RemoveItem(int index);
 
 	void UseCurrentItem();
@@ -36,9 +52,12 @@ public:
 private:
 	bool open;
 	int size;
-	CItem **items;
+	SItemStack **items;
 	CEntity *owner;
 	ITexture *tilesheet;
+	IFont *font;
+
+	void DrawItemStackTile(const CVector2f &pos, SItemStack *itemStack);
 };
 
 #endif

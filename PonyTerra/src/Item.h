@@ -13,6 +13,7 @@ public:
 	virtual void Initialize() = 0;
 	virtual bool OnUse() = 0;
 
+	virtual void Update(float dtTime) = 0;
 	virtual void Draw(CVector2f pos) = 0;
 
 	static CItem *CreateFromID(CEntity *owner, int id);

@@ -10,6 +10,8 @@ public:
 
 	void Initialize(CEntity *parent);
 
+	void Update(float dtTime);
+
 	CInventory *inventory;
 };
 

@@ -26,6 +26,11 @@ bool CItem_Tile::OnUse()
 	return false;
 }
 
+void CItem_Tile::Update(float dtTime)
+{
+
+}
+
 void CItem_Tile::Draw(CVector2f pos)
 {
 	graphics->DrawTilesheet(tilesheet, pos, tileID, 16, 16, 64, 64, 32.0f, 32.0f);

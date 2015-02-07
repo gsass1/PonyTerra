@@ -140,8 +140,11 @@ void CInventory::UseCurrentItem() {
 }
 
 void CInventory::Update(float dtTime) {
-	if(!open) {
-		return;
+	for(int i = 0; i < 9 * 9; i++) {
+		auto item = GetItem(i);
+		if(item) {
+			item->Update(dtTime);
+		}
 	}
 }
 

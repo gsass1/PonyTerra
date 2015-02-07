@@ -13,6 +13,7 @@ public:
 	void Initialize();
 	bool OnUse();
 
+	void Update(float dtTime);
 	void Draw(CVector2f pos);
 
 private:

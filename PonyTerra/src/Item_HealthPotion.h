@@ -12,10 +12,14 @@ public:
 	void Initialize();
 	bool OnUse();
 
+	void Update(float dtTime);
 	void Draw(CVector2f pos);
 
 private:
 	ITexture *tilesheet;
+
+	unsigned int lastTicks;
+	int animState;
 };
 
 #endif

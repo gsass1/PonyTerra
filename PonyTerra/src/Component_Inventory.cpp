@@ -10,3 +10,8 @@ void CComponent_Inventory::Initialize(CEntity *parent) {
 	inventory = new CInventory(parent, 9 * 9);
 	inventory->Initialize();
 }
+
+void CComponent_Inventory::Update(float dtTime)
+{
+	inventory->Update(dtTime);
+}

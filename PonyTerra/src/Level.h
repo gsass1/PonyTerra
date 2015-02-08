@@ -146,6 +146,10 @@ public:
 
 	int			GetNeighborTileDirections(int x, int y);
 
+	void		DestructTile(CTile *tile);
+
+	int			TileTypeToItemID(ETileType tileType);
+
 	int			width;
 	int			height;
 

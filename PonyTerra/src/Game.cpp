@@ -261,7 +261,6 @@ void CGame::DrawGame()
 		if(currentItem && currentItem->item) {
 			auto mouse = input->GetMouseState();
 			CVector2f pos = CVector2f((float)mouse.x, (float)mouse.y);
-			common->Printf("%f:%f\n", pos.x, pos.y);
 			currentItem->item->Draw(pos);
 		}
 		playerInventory->inventory->Draw();

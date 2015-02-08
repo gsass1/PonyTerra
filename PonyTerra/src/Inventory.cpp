@@ -69,17 +69,25 @@ void CInventory::Draw() {
 	}
 }
 
-bool CInventory::AddItem(CItem *item, int count) {
+bool CInventory::AddItem(int id, int count) {
+	for(int i = 0; i < size; i++) {
+		if(items[i]) {
+			if(items[i]->item->GetID() == id) {
+				items[i]->count += count;
+				return true;
+			}
+		}
+	}
+
 	for(int i = 0; i < size; i++) {
 		if(items[i] == nullptr) {
 			items[i] = new SItemStack();
 			items[i]->count = count;
-			items[i]->item = item;
+			items[i]->item = CItem::CreateFromID(owner, id);
 			return true;
-		} else if(items[i]->item == item) {
-			items[i]->count += count;
 		}
 	}
+
 	return false;
 }
 

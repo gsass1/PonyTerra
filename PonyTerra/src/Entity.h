@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <vector>
 #include <string>
 #include <map>
 #include <typeinfo>
@@ -44,6 +45,10 @@ public:
 
 protected:
 	CEntity *			parent;
+
+	bool				signalDeath;
+
+	friend class		CComponentContainer;
 };
 
 class CComponentContainer
@@ -77,7 +82,13 @@ public:
 		return dynamic_cast<T *>(Get(typeid(T*).name()));
 	}
 
+	template<class T> const T *Get() const
+	{
+		return dynamic_cast<T *>(Get(typeid(T*).name()));
+	}
+
 	CComponentBase *	Get(const std::string &id);
+	const CComponentBase *	Get(const std::string &id) const;
 
 	void				UpdateAll(float dtTime);
 
@@ -112,16 +123,32 @@ public:
 
 	unsigned int		GetID() const;
 
+	void				AddAttribute(std::string attr);
+	bool				HasAttribute(std::string attr) const;
+	void				RemoveAttribute(std::string attr);
+
+	void				SignalDeath();
+
 private:
 	friend class		CEntityManager;
 
 	unsigned int		id;
 
 	CComponentContainer *componentContainer;
+
+	std::vector<std::string> attributes;
+
+	bool				signalDeath;
 };
 
 template<typename T>
 T *GetComponent(CEntity *entity)
+{
+	return entity->GetComponents()->Get<T>();
+}
+
+template<typename T>
+const T *GetComponent(const CEntity *entity)
 {
 	return entity->GetComponents()->Get<T>();
 }

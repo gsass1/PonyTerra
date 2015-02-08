@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include <algorithm>
 
 CMessage::CMessage()
 {
@@ -18,6 +19,7 @@ EMessageType CMessage::GetType() const
 CComponentBase::CComponentBase()
 {
 	parent = NULL;
+	signalDeath = false;
 }
 
 CComponentBase::~CComponentBase()
@@ -110,6 +112,17 @@ CComponentBase *CComponentContainer::Get(const std::string &id)
 	}
 }
 
+const CComponentBase *CComponentContainer::Get(const std::string &id) const
+{
+	componentList_t::const_iterator itr = componentList.find(id);
+	if(itr != componentList.end()) {
+		return itr->second;
+	}
+	else {
+		return NULL;
+	}
+}
+
 void CComponentContainer::UpdateAll(float dtTime)
 {
 	for (componentListItr_t itr = componentList.begin();
@@ -146,6 +159,7 @@ CEntity::CEntity()
 {
 	id = 0;
 	componentContainer = new CComponentContainer(this);
+	signalDeath = false;
 }
 
 CEntity::~CEntity()
@@ -185,4 +199,24 @@ const CComponentContainer *CEntity::GetComponents() const
 unsigned int CEntity::GetID() const
 {
 	return id;
+}
+
+void CEntity::AddAttribute(std::string attr)
+{
+	attributes.push_back(attr);
+}
+
+bool CEntity::HasAttribute(std::string attr) const
+{
+	return std::find(attributes.begin(), attributes.end(), attr) != attributes.end();
+}
+
+void CEntity::RemoveAttribute(std::string attr)
+{
+	attributes.erase(std::remove(attributes.begin(), attributes.end(), attr), attributes.end());
+}
+
+void CEntity::SignalDeath()
+{
+	signalDeath = true;
 }

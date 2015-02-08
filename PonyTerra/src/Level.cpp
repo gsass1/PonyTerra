@@ -8,9 +8,9 @@
 #include "IResourceManager.h"
 #include "ITexture.h"
 #include "Component_Physical.h"
-
+#include "EntityManager.h"
+#include "EntityFactory.h"
 #include "MutexLock.h"
-
 #include "GUIManager.h"
 #include "GUI_Loading.h"
 
@@ -461,4 +461,32 @@ int CLevel::GetNeighborTileDirections(int x, int y)
 	}
 
 	return ret;
+}
+
+void CLevel::DestructTile(CTile *tile)
+{
+	if(tile->type == ETileType::AIR) {
+		return;
+	}
+
+	auto entity = entityFactory.CreateItemPickup(TileTypeToItemID(tile->type));
+	auto phys = GetComponent<CComponent_Physical>(entity);
+	phys->rect.pos.x = (float)tile->x;
+	phys->rect.pos.y = (float)tile->y;
+
+	entityMgr.AddEntity(entity);
+
+	RemoveTile(tile);
+}
+
+int	CLevel::TileTypeToItemID(ETileType tileType)
+{
+	switch(tileType) {
+		case ETileType::DIRT:
+		case ETileType::GRASS:
+			return 1;
+
+		default:
+			return (int)tileType;
+	}
 }

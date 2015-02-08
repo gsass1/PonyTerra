@@ -31,7 +31,7 @@ public:
 	void DrawItemRow(CVector2f pos, int rowIndex);
 	void Draw();
 
-	bool AddItem(CItem *item, int count = 1);
+	bool AddItem(int id, int count = 1);
 
 	CItem *GetItem(int index);
 	const CItem *GetItem(int index) const;

@@ -10,6 +10,7 @@ public:
 	~CEntityFactory();
 
 	CEntity *CreatePlayer();
+	CEntity *CreateItemPickup(int itemId);
 };
 
 extern CEntityFactory entityFactory;

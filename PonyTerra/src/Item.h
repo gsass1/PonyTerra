@@ -21,8 +21,14 @@ public:
 
 	static CItem *CreateFromID(CEntity *owner, int id);
 
+	int GetID() const
+	{
+		return id;
+	}
+
 protected:
 	CEntity *owner;
+	int id;
 };
 
 #endif

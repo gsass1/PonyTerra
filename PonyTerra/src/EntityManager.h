@@ -21,6 +21,8 @@ public:
 
 	void	DrawAll();
 
+	CEntity *GetNearbyEntity(CEntity *entity, float radius);
+
 private:
 	CEntity *entities[MAX_ENTITIES];
 };

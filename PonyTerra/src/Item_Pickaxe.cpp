@@ -48,7 +48,7 @@ void CItem_Pickaxe::Update(float dtTime)
 	unsigned int currentTicks = common->GetTicks();
 	if(currentTicks - miningTicks >= MINING_TIME_TICKS) {
 		/* TODO: drop tile pickup */
-		level.RemoveTile(miningTile);
+		level.DestructTile(miningTile);
 		StopMining();
 	}
 }

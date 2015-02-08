@@ -26,6 +26,7 @@ CItem *CItem::CreateFromID(CEntity *owner, int id) {
 	}
 	if(item) {
 		item->Initialize();
+		item->id = id;
 	}
 	return item;
 }

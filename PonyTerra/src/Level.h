@@ -61,7 +61,10 @@ public:
 	}
 };
 
-
+#define DIR_LEFT	1
+#define DIR_RIGHT	2
+#define DIR_UP		4
+#define DIR_DOWN	8
 
 //--------------------------------------------------
 
@@ -140,6 +143,8 @@ public:
 	void		RemoveTileInWorldSpace(const CVector2f &pos);
 	void		RemoveTile(int x, int y);
 	void		RemoveTile(CTile *tile);
+
+	int			GetNeighborTileDirections(int x, int y);
 
 	int			width;
 	int			height;

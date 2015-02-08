@@ -3,6 +3,7 @@
 #include "IResourceManager.h"
 #include "Cursor.h"
 #include "Level.h"
+#include "Game.h"
 
 CItem_Tile::CItem_Tile(CEntity *owner, int tileID) : CItem(owner), tileID(tileID)
 {
@@ -17,8 +18,7 @@ void CItem_Tile::Initialize()
 bool CItem_Tile::OnUse()
 {
 	if(cursor.currentSelectedTile && (cursor.currentSelectedTile->type == ETileType::AIR)) {
-		auto posUnder = cursor.currentSelectedTilePos - CVector2i(0, 1);
-		if(level.GetTile(posUnder.x, posUnder.y)) {
+		if(level.GetNeighborTileDirections(cursor.currentSelectedTile->x / TILE_SIZE, cursor.currentSelectedTile->y / TILE_SIZE)) {
 			cursor.currentSelectedTile->type = (ETileType)tileID;
 			return true;
 		}

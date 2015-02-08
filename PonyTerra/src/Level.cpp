@@ -434,3 +434,31 @@ void CLevel::RemoveTile(CTile *tile)
 		tile->type = ETileType::AIR;
 	}
 }
+
+int CLevel::GetNeighborTileDirections(int x, int y)
+{
+	int ret = 0;
+	CTile *tile;
+
+	tile = CLevel::GetTile(x - 1, y);
+	if(tile && tile->type != ETileType::AIR) {
+		ret |= DIR_LEFT;
+	}
+
+	tile = CLevel::GetTile(x + 1, y);
+	if(tile && tile->type != ETileType::AIR) {
+		ret |= DIR_RIGHT;
+	}
+
+	tile = CLevel::GetTile(x, y + 1);
+	if(tile && tile->type != ETileType::AIR) {
+		ret |= DIR_UP;
+	}
+
+	tile = CLevel::GetTile(x, y - 1);
+	if(tile && tile->type != ETileType::AIR) {
+		ret |= DIR_DOWN;
+	}
+
+	return ret;
+}

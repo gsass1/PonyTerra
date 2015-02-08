@@ -4,6 +4,7 @@
 class CEntity;
 
 #include "Vector2.h"
+#include <string>
 
 class CItem {
 public:
@@ -15,6 +16,8 @@ public:
 
 	virtual void Update(float dtTime) = 0;
 	virtual void Draw(CVector2f pos) = 0;
+
+	virtual std::string GetName() const = 0;
 
 	static CItem *CreateFromID(CEntity *owner, int id);
 

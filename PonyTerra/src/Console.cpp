@@ -196,11 +196,19 @@ bool CConsole::Exec(const std::string &cmd)
 
 void CConsole::Print(const std::string &msg)
 {
-    int index = GetTextBufferLatestIndex();
-    if(index == CONSOLE_BUFFER_H - 1) {
-        MoveTextUp();
-    }
-    strncpy(textBuffer[index], msg.c_str(), CONSOLE_BUFFER_W);
+	int index = GetTextBufferLatestIndex();
+	if(index == CONSOLE_BUFFER_H - 1) {
+		MoveTextUp();
+	}
+
+	strncpy(textBuffer[index], msg.c_str(), CONSOLE_BUFFER_W);
+
+	/* Replace all non-printable characters with space */
+	for(size_t i = 0; i < strlen(textBuffer[index]); i++) {
+		if(!isprint(textBuffer[index][i])) {
+			textBuffer[index][i] = ' ';
+		}
+	}
 }
 
 void CConsole::Update(float dtTime)

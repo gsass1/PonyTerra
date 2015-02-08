@@ -152,6 +152,10 @@ void CInventory::SwitchOpen() {
 	open = !open;
 }
 
+SItemStack *CInventory::GetCurrentSelectedItemStack() {
+	return items[currentSelected];
+}
+
 void CInventory::DrawItemStackTile(const CVector2f &pos, SItemStack *itemStack)
 {
 	itemStack->item->Draw(pos);

@@ -36,3 +36,8 @@ void CItem_HealthPotion::Update(float dtTime)
 void CItem_HealthPotion::Draw(CVector2f pos) {
 	graphics->DrawTilesheet(tilesheet, pos, 32 + animState, 16, 16, 64, 64, 32.0f, 32.0f);
 }
+
+std::string CItem_HealthPotion::GetName() const
+{
+	return "Health Potion";
+}

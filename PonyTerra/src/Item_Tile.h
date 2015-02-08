@@ -16,6 +16,8 @@ public:
 	void Update(float dtTime);
 	void Draw(CVector2f pos);
 
+	std::string GetName() const;
+
 private:
 	int tileID;
 	ITexture *tilesheet;

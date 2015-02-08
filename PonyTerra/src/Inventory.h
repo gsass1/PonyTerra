@@ -47,6 +47,8 @@ public:
 
 	void SwitchOpen();
 
+	SItemStack *GetCurrentSelectedItemStack();
+
 	int currentSelected;
 
 private:

@@ -45,6 +45,7 @@ CEntity *CEntityFactory::CreatePlayer()
 	auto inventory = GetComponent<CComponent_Inventory>(entity);
 	inventory->inventory->AddItem(CItem::CreateFromID(entity, 256), 1);
 	inventory->inventory->AddItem(CItem::CreateFromID(entity, 1), 64);
+	inventory->inventory->AddItem(CItem::CreateFromID(entity, 257));
 
 	return entity;
 }

@@ -35,3 +35,8 @@ void CItem_Tile::Draw(CVector2f pos)
 {
 	graphics->DrawTilesheet(tilesheet, pos, tileID, 16, 16, 64, 64, 32.0f, 32.0f);
 }
+
+std::string CItem_Tile::GetName() const
+{
+	return std::string("Tile ID: ") + std::to_string(tileID);
+}

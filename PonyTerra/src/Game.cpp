@@ -225,8 +225,7 @@ void CGame::DrawGame()
 
 	graphics->DrawRect(CRect(CVector2f(), graphics->GetWidth(), graphics->GetHeight()), CColor(0, 0, 0, (byte)alpha));
 
-	// TODO: if a tool is selected
-	cursor.DrawTileHighlight();
+	DrawTileHighlight();
 
     CComponent_Physical *playerPhysical = playerEntity->GetComponents()->Get<CComponent_Physical>();
 
@@ -291,6 +290,15 @@ void CGame::LookAt(const CRect &rect)
 
     //viewRect.pos.x = Math::Clamp(viewRect.pos.x, 0.0f, (float)level.width * (float)TILE_SIZE);
     //viewRect.pos.y = Math::Clamp(viewRect.pos.y, 0.0f, (float)level.height * (float)TILE_SIZE);
+}
+
+void CGame::DrawTileHighlight()
+{
+	auto inventory = GetComponent<CComponent_Inventory>(playerEntity)->inventory;
+
+	if(inventory->GetCurrentSelectedItemStack()->item->IsTool()) {
+		cursor.DrawTileHighlight();
+	}
 }
 
 CRect CGame::GetViewRect() const

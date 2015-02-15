@@ -26,6 +26,8 @@ public:
 		return id;
 	}
 
+	virtual bool IsTool() const = 0;
+
 protected:
 	CEntity *owner;
 	int id;

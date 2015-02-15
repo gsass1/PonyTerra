@@ -17,6 +17,8 @@ public:
 
 	std::string GetName() const;
 
+	bool IsTool() const { return false; }
+
 private:
 	ITexture *tilesheet;
 

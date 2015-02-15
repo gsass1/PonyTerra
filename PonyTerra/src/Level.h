@@ -40,8 +40,11 @@ public:
 
     int flags;
 
+	char damage;
+
     CTile()
     {
+		damage = 0;
         x = 0;
         y = 0;
         flags = 0;
@@ -149,6 +152,8 @@ public:
 	void		DestructTile(CTile *tile);
 
 	int			TileTypeToItemID(ETileType tileType);
+
+	void		SetTileDamageLevel(int x, int y, char damage);
 
 	int			width;
 	int			height;

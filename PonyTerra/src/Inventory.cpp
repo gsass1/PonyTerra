@@ -4,6 +4,7 @@
 #include "IGraphics.h"
 #include "Item.h"
 #include "StringUtils.h"
+#include "IInput.h"
 
 CInventory::CInventory(CEntity *owner, int size) : owner(owner), size(size) {
 	items = new SItemStack*[size];
@@ -142,7 +143,14 @@ void CInventory::RemoveItem(int index) {
 
 void CInventory::UseCurrentItem() {
 	if(items[currentSelected]) {
-		if(items[currentSelected]->item->OnUse()) {
+		bool clicked = false;
+		if(items[currentSelected]->item->IsTool()) {
+			clicked = input->GetMouseState().buttonMask & EMouseButton_LEFT;
+		} else {
+			clicked = input->GetMouseStateDelta().buttonMask & EMouseButton_LEFT;
+		}
+
+		if(clicked && items[currentSelected]->item->OnUse()) {
 			DecrementStack(currentSelected);
 		}
 	}

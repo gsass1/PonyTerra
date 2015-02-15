@@ -170,9 +170,7 @@ void CGame::UpdateGame(float dtTime)
 		}
 	}
 
-	if(input->GetMouseStateDelta().buttonMask & EMouseButton::EMouseButton_LEFT) {
-		GetComponent<CComponent_Inventory>(playerEntity)->inventory->UseCurrentItem();
-	}
+	GetComponent<CComponent_Inventory>(playerEntity)->inventory->UseCurrentItem();
 
 	if(KeyPressedIngame(NSKey::NSK_TAB, true)) {
 		GetComponent<CComponent_Inventory>(playerEntity)->inventory->SwitchOpen();

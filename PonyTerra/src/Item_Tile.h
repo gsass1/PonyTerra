@@ -18,6 +18,8 @@ public:
 
 	std::string GetName() const;
 
+	bool IsTool() const { return false; }
+
 private:
 	int tileID;
 	ITexture *tilesheet;

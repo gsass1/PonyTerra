@@ -310,7 +310,10 @@ void CLevel::Draw()
 			
             CTile *tile = GetTile(x, y);
 			if(tile != nullptr && tile->type != ETileType::AIR) {
-				graphics->DrawTilesheet(tilesheetTex, tile->GetPosition() - viewRect.pos, (int)tile->type, 16, 16, 64, 64, 64.0f, 64.0f);
+				graphics->DrawTilesheet(tilesheetTex, tile->GetPosition() - viewRect.pos, (int)tile->type, 16, 16, 64, 64, (float)TILE_SIZE, (float)TILE_SIZE);
+				if(tile->damage != 0) {
+					graphics->DrawRect(CRect(tile->GetPosition() - viewRect.pos, TILE_SIZE, TILE_SIZE), CColor(255, 0, 0, tile->damage * 63));
+				}
 			}
 		}
 	}
@@ -489,4 +492,10 @@ int	CLevel::TileTypeToItemID(ETileType tileType)
 		default:
 			return (int)tileType;
 	}
+}
+
+void CLevel::SetTileDamageLevel(int x, int y, char damage)
+{
+	auto tile = GetTile(x, y);
+	tile->damage = damage;
 }

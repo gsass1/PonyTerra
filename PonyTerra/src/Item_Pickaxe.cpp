@@ -46,6 +46,10 @@ void CItem_Pickaxe::Update(float dtTime)
 	}
 
 	unsigned int currentTicks = common->GetTicks();
+	unsigned int damageStatus = (currentTicks - miningTicks) / (MINING_TIME_TICKS / 4) + 1;
+
+	level.SetTileDamageLevel(miningTile->x / TILE_SIZE, miningTile->y / TILE_SIZE, (char)damageStatus);
+
 	if(currentTicks - miningTicks >= MINING_TIME_TICKS) {
 		/* TODO: drop tile pickup */
 		level.DestructTile(miningTile);
@@ -55,12 +59,18 @@ void CItem_Pickaxe::Update(float dtTime)
 
 void CItem_Pickaxe::StopMining()
 {
+	/* Reset damage */
+	level.SetTileDamageLevel(miningTile->x / TILE_SIZE, miningTile->y / TILE_SIZE, 0);
 	mining = false;
 	miningTile = nullptr;
 }
 
 bool CItem_Pickaxe::OnUse()
 {
+	if(mining) {
+		return false;
+	}
+
 	if(!cursor.currentSelectedTile) {
 		return false;
 	}

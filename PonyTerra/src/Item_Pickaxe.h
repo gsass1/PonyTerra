@@ -23,6 +23,8 @@ public:
 
 	std::string GetName() const;
 
+	bool IsTool() const { return true; }
+
 private:
 	ITexture *tilesheet;
 	CTile *miningTile;

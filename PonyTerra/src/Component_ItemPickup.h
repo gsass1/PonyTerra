@@ -22,6 +22,7 @@ private:
 	int itemId;
 	ITexture *tilesheet;
 	CComponent_Physical *phys;
+	unsigned int birthTicks;
 };
 
 #endif

@@ -15,6 +15,7 @@ CInventory::CInventory(CEntity *owner, int size) : owner(owner), size(size) {
 }
 
 CInventory::~CInventory() {
+	delete [] items;
 }
 
 void CInventory::Initialize() {

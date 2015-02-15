@@ -48,6 +48,7 @@ void CGUI_NewWorld::Update(float dtTime) {
 	btBigWorld->Update(dtTime);
 	btBack->Update(dtTime);
 
+	/* TODO: let the user choose this */
     levelFilename = "noname";
 
 	if(btSmallWorld->IsClicked()) {

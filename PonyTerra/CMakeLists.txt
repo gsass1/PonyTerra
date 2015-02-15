@@ -5,6 +5,8 @@ set(PONYTERRA_SOURCES
 	src/Component_Attributes.h
 	src/Component_Inventory.cpp
 	src/Component_Inventory.h
+	src/Component_ItemPickup.cpp
+	src/Component_ItemPickup.h
 	src/Component_Physical.cpp
 	src/Component_Physical.h
 	src/Component_PlayerInput.cpp
@@ -100,7 +102,7 @@ endif()
 
 if(STANDALONE)
 
-target_link_libraries(Game NSUtilLib CRT)
+target_link_libraries(Game NSUtilLib)
 
 else()
 

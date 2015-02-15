@@ -153,16 +153,9 @@ void CGame::UpdateGame(float dtTime)
         if(gameState == EGameState::MENU) {
             return;
         }
-
     }
 
 	cursor.Update(dtTime);
-
-	if(input->GetMouseStateDelta().buttonMask & EMouseButton_LEFT) {
-		if(cursor.currentSelectedTile) {
-			//level.RemoveTile(cursor.currentSelectedTile);
-		}
-	}
 
     entityMgr.UpdateAll(dtTime);
     LookAt(GetComponent<CComponent_Physical>(playerEntity)->rect);

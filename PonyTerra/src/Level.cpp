@@ -471,7 +471,7 @@ void CLevel::DestructTile(CTile *tile)
 
 	auto entity = entityFactory.CreateItemPickup(TileTypeToItemID(tile->type));
 	auto phys = GetComponent<CComponent_Physical>(entity);
-	phys->rect.pos.x = (float)tile->x;
+	phys->rect.pos.x = (float)tile->x + (float)Math::Random(32) - 16;
 	phys->rect.pos.y = (float)tile->y;
 
 	entityMgr.AddEntity(entity);

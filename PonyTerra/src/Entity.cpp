@@ -96,7 +96,7 @@ void CComponentContainer::DestroyAll()
 		itr++)
 	{
 		itr->second->Destroy();
-		delete itr->second;
+		//delete itr->second;
 	}
 	componentList.clear();
 }

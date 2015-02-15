@@ -9,7 +9,25 @@
 #include <iterator>
 #include "Game.h"
 #include "Level.h"
+#include "Component_Inventory.h"
 #include <vector>
+
+CONSOLE_COMMAND(give)
+{
+	if(args.size() < 2) {
+		console.Print("Usage: give <id> <amount=1>");
+		return 1;
+	}
+
+	int itemId = atoi(args[1].c_str());
+	int amount = 1;
+	if(args.size() == 3) {
+		amount = atoi(args[2].c_str());
+	}
+
+	GetComponent<CComponent_Inventory>(game_local.playerEntity)->inventory->AddItem(itemId, amount);
+	return 0;
+}
 
 CONSOLE_COMMAND(settime)
 {
@@ -127,6 +145,7 @@ CConsole::~CConsole()
 void CConsole::Initialize()
 {
     Clear();
+	RegisterCommand("give", Cmd_give);
 	RegisterCommand("settime", Cmd_settime);
 	RegisterCommand("viewboundingbox", Cmd_viewboundingbox);
     RegisterCommand("clear", Cmd_clear);

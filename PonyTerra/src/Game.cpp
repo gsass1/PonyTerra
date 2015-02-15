@@ -295,6 +295,11 @@ void CGame::LookAt(const CRect &rect)
 void CGame::DrawTileHighlight()
 {
 	auto inventory = GetComponent<CComponent_Inventory>(playerEntity)->inventory;
+	auto itemStack = inventory->GetCurrentSelectedItemStack();
+
+	if(!itemStack) {
+		return;
+	}
 
 	if(inventory->GetCurrentSelectedItemStack()->item->IsTool()) {
 		cursor.DrawTileHighlight();

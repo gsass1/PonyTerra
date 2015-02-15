@@ -18,6 +18,10 @@ public:
 	CVector2f	velocity;
 	bool		isInAir;
 	bool		disableMotion;
+	bool		noGravity;
+
+private:
+	void		SendCollideMessage();
 };
 
 #endif

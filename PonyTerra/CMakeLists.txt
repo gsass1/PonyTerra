@@ -11,6 +11,8 @@ set(PONYTERRA_SOURCES
 	src/Component_Physical.h
 	src/Component_PlayerInput.cpp
 	src/Component_PlayerInput.h
+	src/Component_Projectile.cpp
+	src/Component_Projectile.h
 	src/Console.cpp
 	src/Console.h
 	src/Cursor.cpp
@@ -85,7 +87,7 @@ add_library(Game SHARED ${PONYTERRA_SOURCES})
 endif()
 
 set(LIBRARIES
-	${TINYXML_LIBRARIES}
+	tinyxml
 )
 
 if(NOT STANDALONE)

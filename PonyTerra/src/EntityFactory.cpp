@@ -4,6 +4,7 @@
 #include "Component_Inventory.h"
 #include "Component_ItemPickup.h"
 #include "Component_Attributes.h"
+#include "Component_Projectile.h"
 #include "Item.h"
 #include "Item_Tile.h"
 #include "Entity.h"
@@ -66,6 +67,26 @@ CEntity *CEntityFactory::CreateItemPickup(int itemId)
 
 	entity->GetComponents()->Add(phys);
 	entity->GetComponents()->Add(new CComponent_ItemPickup(itemId));
+
+	entity->Initialize();
+
+	return entity;
+}
+
+CEntity *CEntityFactory::CreateSpellbookProjectile(CEntity *shooter)
+{
+	CEntity *entity = new CEntity();
+
+	entity->AddAttribute("projectile");
+
+	CComponent_Physical *phys = new CComponent_Physical();
+
+	phys->rect.width = 16;
+	phys->rect.height = 8;
+	phys->noGravity = true;
+
+	entity->GetComponents()->Add(phys);
+	entity->GetComponents()->Add(new CComponent_Projectile(20, shooter));
 
 	entity->Initialize();
 

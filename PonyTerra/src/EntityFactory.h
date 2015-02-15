@@ -11,6 +11,7 @@ public:
 
 	CEntity *CreatePlayer();
 	CEntity *CreateItemPickup(int itemId);
+	CEntity *CreateSpellbookProjectile(CEntity *shooter);
 };
 
 extern CEntityFactory entityFactory;

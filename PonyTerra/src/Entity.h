@@ -6,21 +6,33 @@
 #include <map>
 #include <typeinfo>
 
+class CEntity;
+
 enum class EMessageType
 {
 	NONE,
+	COLLIDE,
+	COLLIDE_WITH_ENTITY,
 };
 
 class CMessage
 {
 public:
-						CMessage();
-						~CMessage();
+						CMessage(EMessageType type) : type(type) {}
+	virtual				~CMessage() {}
 
-	EMessageType		GetType() const;
+	EMessageType		GetType() const { return type; }
 
 private:
 	EMessageType		type;
+};
+
+class CMessage_CollideWithEntity : public CMessage
+{
+public:
+	CMessage_CollideWithEntity() : CMessage(EMessageType::COLLIDE_WITH_ENTITY) {}
+
+	CEntity *entity;
 };
 
 class CEntity;
@@ -41,7 +53,7 @@ public:
 
 	CEntity *			GetParent() const;
 
-	virtual void		HandleMessage(const CMessage *msg);
+	virtual void		HandleMessage(CMessage *msg);
 
 protected:
 	CEntity *			parent;
@@ -94,7 +106,7 @@ public:
 
 	void				DrawAll();
 
-	void				HandleMessage(const CMessage *msg);
+	void				HandleMessage(CMessage *msg);
 
 private:
 	CEntity *			parent;

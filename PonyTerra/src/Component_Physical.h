@@ -9,6 +9,7 @@ class CComponent_Physical : public CComponentBase
 public:
 	CComponent_Physical();
 
+	void		Initialize(CEntity *parent);
 	void		Update(float dtTime);
 
 	void		AddVelocity(const CVector2f &v);

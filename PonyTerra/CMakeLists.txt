@@ -44,6 +44,8 @@ set(PONYTERRA_SOURCES
 	src/Item_HealthPotion.h
 	src/Item_Pickaxe.cpp
 	src/Item_Pickaxe.h
+	src/Item_Spellbook.cpp
+	src/Item_Spellbook.h
 	src/Item_Tile.cpp
 	src/Item_Tile.h
 	src/ISaveable.h

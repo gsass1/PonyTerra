@@ -43,6 +43,8 @@ public:
     void        DrawMenu();
     void        DrawGame();
 
+	void		DrawTileHighlight();
+
 	CEntity *	GetPlayerEntity() const;
 
 	void		LookAt(const CRect &rect);

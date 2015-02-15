@@ -57,6 +57,30 @@ void CEntityManager::UpdateAll(float dtTime)
 			entities[i]->Update(dtTime);
 			if(entities[i]->signalDeath) {
 				RemoveEntity(i);
+				continue;
+			}
+
+			for(unsigned int j = 0; j < MAX_ENTITIES; j++) {
+				if(entities[j] != NULL) {
+					/* Do not compare to itself */
+					if(entities[j] == entities[i]) {
+						continue;
+					}
+					auto phys = GetComponent<CComponent_Physical>(entities[i]);
+					if(phys) {
+						auto entityPhys = GetComponent<CComponent_Physical>(entities[j]);
+						if(entityPhys) {
+							float xdist = entityPhys->rect.pos.x - phys->rect.pos.x;
+							float ydist = entityPhys->rect.pos.y - phys->rect.pos.y;
+							float dist = Math::Sqrtf(std::powf(xdist, 2) + std::powf(ydist, 2));
+							if(dist <= 64.0f) {
+								CMessage_CollideWithEntity msg;
+								msg.entity = entities[j];
+								entities[i]->GetComponents()->HandleMessage(&msg);
+							}
+						}
+					}
+				}
 			}
 		}
 	}

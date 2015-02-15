@@ -18,6 +18,8 @@ public:
 	void Update(float dtTime);
 	void Draw();
 
+	void HandleMessage(CMessage *msg);
+
 private:
 	int itemId;
 	ITexture *tilesheet;

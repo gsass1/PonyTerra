@@ -10,6 +10,11 @@ CComponent_Physical::CComponent_Physical()
 	disableMotion = false;
 }
 
+void CComponent_Physical::Initialize(CEntity *parent)
+{
+	CComponentBase::Initialize(parent);
+}
+
 void CComponent_Physical::Update(float dtTime)
 {
 	if(disableMotion) {

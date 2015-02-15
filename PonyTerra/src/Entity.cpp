@@ -1,19 +1,6 @@
 #include "Entity.h"
 #include <algorithm>
 
-CMessage::CMessage()
-{
-}
-
-CMessage::~CMessage()
-{
-}
-
-EMessageType CMessage::GetType() const
-{
-	return type;
-}
-
 //-------------------------------------------------
 
 CComponentBase::CComponentBase()
@@ -48,7 +35,7 @@ CEntity *CComponentBase::GetParent() const
 	return parent;
 }
 
-void CComponentBase::HandleMessage(const CMessage *msg)
+void CComponentBase::HandleMessage(CMessage *msg)
 {
 }
 
@@ -143,7 +130,7 @@ void CComponentContainer::DrawAll()
 	}
 }
 
-void CComponentContainer::HandleMessage(const CMessage *msg)
+void CComponentContainer::HandleMessage(CMessage *msg)
 {
 	for (componentListItr_t itr = componentList.begin();
 		itr != componentList.end();

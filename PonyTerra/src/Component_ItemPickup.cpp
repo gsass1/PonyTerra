@@ -25,32 +25,23 @@ void CComponent_ItemPickup::Initialize(CEntity *parent)
 
 void CComponent_ItemPickup::Update(float dtTime)
 {
-	CEntity *nearbyEntity = entityMgr.GetNearbyEntity(parent, 64.0f);
-	if(!nearbyEntity) {
-		return;
-	}
+}
 
-	/* Only players can pickup stuff? */
-	if(!(nearbyEntity->HasAttribute("player"))) {
-		return;
-	}
+void CComponent_ItemPickup::HandleMessage(CMessage *msg)
+{
+	if(msg->GetType() == EMessageType::COLLIDE_WITH_ENTITY) {
+		auto msgCollideWithEntity = (const CMessage_CollideWithEntity *)(msg);
+		ASSERT(msgCollideWithEntity);
 
-	auto phys = GetComponent<CComponent_Physical>(nearbyEntity);
-	if(!phys) {
-		return;
+		if(msgCollideWithEntity->entity->HasAttribute("player")) {
+			auto inv = GetComponent<CComponent_Inventory>(msgCollideWithEntity->entity);
+			if(inv) {
+				inv->inventory->AddItem(itemId);
+			}
+			/* Destroy self */
+			parent->SignalDeath();
+		}
 	}
-
-	if(!phys->rect.Collides(this->phys->rect)) {
-		return;
-	}
-
-	auto inv = GetComponent<CComponent_Inventory>(nearbyEntity);
-	if(inv) {
-		inv->inventory->AddItem(itemId);
-	}
-
-	/* Destroy self */
-	parent->SignalDeath();
 }
 
 void CComponent_ItemPickup::Draw()

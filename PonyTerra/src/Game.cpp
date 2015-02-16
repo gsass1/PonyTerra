@@ -233,12 +233,13 @@ void CGame::DrawGame()
         resMgr->GetFont("data/res/font/sys.fnt"),
         CVector2f(0.0f, (float)graphics->GetHeight() - 20.0f),
         CColor::white,
-        StrUtl::FormatString("Pos: (x: %f y: %f) Cam Pos: (x: %f y: %f) Time: %.2f",
+        StrUtl::FormatString("Pos: (x: %f y: %f) Cam Pos: (x: %f y: %f) Time: %.2f Entities: %u",
         playerPhysical->rect.pos.x,
         playerPhysical->rect.pos.y,
         viewRect.pos.x,
         viewRect.pos.y,
-		time).c_str()
+		time,
+		entityMgr.GetEntityCount()).c_str()
 		);
 
 	/* PLAYER STATUS BAR */
@@ -268,11 +269,11 @@ void CGame::DrawGame()
 	float totalWidth = 360.0f;
 	float attrBarWidth = totalWidth / 2.0f - 16.0f;
 
-	graphics->DrawText(resMgr->GetFont("data/res/font/sys.fnt"), CVector2f(paddingX, 104.0f + 12.0f), CColor::white, "Health");
+	graphics->DrawText(resMgr->GetFont("data/res/font/bar.fnt"), CVector2f(paddingX, 104.0f + 12.0f), CColor::white, "Health");
 	graphics->DrawRect(CRect(CVector2f(paddingX, 104.0f), (int)(attrBarWidth * healthPerc), 2), CColor(255, 0, 0));
 
 	// TODO: position "Mana" text correctly derp
-	graphics->DrawText(resMgr->GetFont("data/res/font/sys.fnt"), CVector2f(paddingX + totalWidth - resMgr->GetFont("data/res/font/sys.fnt")->GetTextSize("Mana").x, 104.0f + 12.0f), CColor::white, "Mana");
+	graphics->DrawText(resMgr->GetFont("data/res/font/bar.fnt"), CVector2f(paddingX + totalWidth - resMgr->GetFont("data/res/font/bar.fnt")->GetTextSize("Mana").x, 104.0f + 12.0f), CColor::white, "Mana");
 	graphics->DrawRect(CRect(CVector2f(paddingX + totalWidth / 2.0f + 8.0f, 104.0f), (int)(attrBarWidth * manaPerc), 2), CColor(0, 0, 255));
 
 	if(showIngameMenu) {

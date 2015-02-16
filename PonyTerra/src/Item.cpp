@@ -2,6 +2,7 @@
 #include "Item_HealthPotion.h"
 #include "Item_Pickaxe.h"
 #include "Item_Tile.h"
+#include "Item_Spellbook.h"
 
 CItem::CItem(CEntity *owner) : owner(owner) {
 }
@@ -15,6 +16,9 @@ CItem *CItem::CreateFromID(CEntity *owner, int id) {
 		break;
 	case 257:
 		item = new CItem_Pickaxe(owner);
+		break;
+	case 258:
+		item = new CItem_Spellbook(owner);
 		break;
 	default:
 		if(id < 256) {

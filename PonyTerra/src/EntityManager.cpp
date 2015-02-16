@@ -12,6 +12,7 @@ CEntityManager::CEntityManager()
 	for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
 		entities[i] = NULL;
 	}
+	count = 0;
 }
 
 CEntityManager::~CEntityManager()
@@ -24,6 +25,7 @@ void CEntityManager::AddEntity(CEntity *entity)
 		if(entities[i] == NULL) {
 			entities[i] = entity;
 			entity->id = i;
+			count++;
 			return;
 		}
 	}
@@ -38,6 +40,7 @@ void CEntityManager::RemoveAll()
             entities[i] = NULL;
         }
     }
+	count = 0;
 }
 
 void CEntityManager::RemoveEntity(unsigned int id)
@@ -47,6 +50,7 @@ void CEntityManager::RemoveEntity(unsigned int id)
 		entities[id]->Destroy();
 		delete entities[id];
 		entities[id] = NULL;
+		count--;
 	}
 }
 

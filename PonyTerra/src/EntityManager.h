@@ -23,8 +23,11 @@ public:
 
 	CEntity *GetNearbyEntity(CEntity *entity, float radius);
 
+	unsigned int GetEntityCount() const { return count; }
+
 private:
 	CEntity *entities[MAX_ENTITIES];
+	unsigned int count;
 };
 
 extern CEntityManager entityMgr;

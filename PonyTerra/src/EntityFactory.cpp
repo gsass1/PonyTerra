@@ -26,6 +26,7 @@ CEntity *CEntityFactory::CreatePlayer()
 
 	entity->AddAttribute("player");
 	entity->AddAttribute("human");
+	entity->AddAttribute("creature");
 
 	CComponent_Physical *physical = new CComponent_Physical();
 
@@ -46,10 +47,11 @@ CEntity *CEntityFactory::CreatePlayer()
 
 	entity->Initialize();
 
-	auto inventory = GetComponent<CComponent_Inventory>(entity);
-	inventory->inventory->AddItem(256, 1);
-	inventory->inventory->AddItem(1, 64);
-	inventory->inventory->AddItem(257);
+	auto inventory = GetComponent<CComponent_Inventory>(entity)->inventory;
+	inventory->AddItem(256, 1);
+	inventory->AddItem(1, 64);
+	inventory->AddItem(257);
+	inventory->AddItem(258);
 
 	return entity;
 }
@@ -73,7 +75,7 @@ CEntity *CEntityFactory::CreateItemPickup(int itemId)
 	return entity;
 }
 
-CEntity *CEntityFactory::CreateSpellbookProjectile(CEntity *shooter)
+CEntity *CEntityFactory::CreateSpellbookProjectile(CEntity *shooter, CVector2f pos, CVector2f dir)
 {
 	CEntity *entity = new CEntity();
 
@@ -84,9 +86,10 @@ CEntity *CEntityFactory::CreateSpellbookProjectile(CEntity *shooter)
 	phys->rect.width = 16;
 	phys->rect.height = 8;
 	phys->noGravity = true;
+	phys->rect.pos = pos;
 
 	entity->GetComponents()->Add(phys);
-	entity->GetComponents()->Add(new CComponent_Projectile(20, shooter));
+	entity->GetComponents()->Add(new CComponent_Projectile(20, shooter, dir));
 
 	entity->Initialize();
 

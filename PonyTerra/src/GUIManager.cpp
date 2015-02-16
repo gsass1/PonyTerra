@@ -5,6 +5,8 @@
 #include "GUI_Loading.h"
 #include "GUI_MenuFront.h"
 #include "GUI_NewWorld.h"
+#include "IGraphics.h"
+#include "Game.h"
 
 #include <string.h>
 
@@ -87,6 +89,10 @@ void CGUIManager::Update(float dtTime) {
 
 void CGUIManager::Draw() {
 	if (guiStack.size() != 0) {
+		if(!game_local.IsShowingIngameMenu()) {
+			/* TODO: draw background animation, put this code somewhere else */
+			graphics->DrawRect(CRect(CVector2f(), graphics->GetWidth(), graphics->GetHeight()), CColor(30, 100, 220));
+		}
 		guiStack.back()->Draw();
 	}
 }

@@ -20,6 +20,7 @@ public:
 	void		Draw();
 
 private:
+	IFont	* titleFont;
 	ITexture *	bg;
 
 	CWidget_Button *btNewWorld;

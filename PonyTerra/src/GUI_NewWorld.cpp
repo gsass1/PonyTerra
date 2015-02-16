@@ -69,8 +69,6 @@ void CGUI_NewWorld::Update(float dtTime) {
 }
 
 void CGUI_NewWorld::Draw() {
-	graphics->DrawTexture(bg, CVector2f(0.0f, 0.0f));
-
 	btSmallWorld->Draw();
 	btMediumWorld->Draw();
 	btBigWorld->Draw();

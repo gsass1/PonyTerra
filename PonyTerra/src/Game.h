@@ -57,6 +57,7 @@ public:
     void        SaveLevelAndExit(const std::string &filepath);
 
     void        ToggleShowIngameMenu();
+	bool		IsShowingIngameMenu() const { return showIngameMenu; }
 
     bool        KeyPressedIngame(NSKey key, bool once = false);
 

@@ -47,6 +47,8 @@ public:
 
 	void SwitchOpen();
 
+	bool IsOpen() const { return open; }
+
 	SItemStack *GetCurrentSelectedItemStack();
 
 	int currentSelected;

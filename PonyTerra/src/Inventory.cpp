@@ -24,14 +24,56 @@ void CInventory::Initialize() {
 	tilesheet = resMgr->GetTexture("data/res/tex/tilesheet.png");
 }
 
-void CInventory::DrawFull() {
+void CInventory::Update(float dtTime)
+{
+	for(int i = 0; i < 9 * 9; i++) {
+		auto item = GetItem(i);
+		if(item) {
+			item->Update(dtTime);
+		}
+	}
+
+	/* input->GetMouseState is ugly */
+	int selected;
+	CVector2f mousePos = CVector2f(input->GetMouseState().x, input->GetMouseState().y);
+	CRect mouseRect(mousePos, 1, 1);
+
+	float spacing = 8.0f;
+	float tileWidth = 32.0f;
+	float widthPerTile = tileWidth + spacing;
+	float paddingX = (graphics->GetSize().x - widthPerTile * 9.0f) / 2.0f;
 	for(int i = 0; i < 9; i++) {
-		float spacing = 8.0f;
-		float tileWidth = 32.0f;
-		float widthPerTile = tileWidth + spacing;
-		float paddingX = (graphics->GetSize().x - widthPerTile * 9.0f) / 2.0f;
 		float paddingY = widthPerTile * 4.0f + (38.0f * (float)i);
-		DrawItemRow(CVector2f(paddingX, paddingY), i);
+		for(int j = 0; j < 9; j++) {
+			int fullIndex = i * 9 + j;
+			CRect itemFrameRect(CVector2f(paddingX + i * 40.0f, paddingY + j * 40.0f), 32, 32);
+			if(mouseRect.Collides(itemFrameRect)) {
+				/* TODO: */
+			}
+		}
+	}
+}
+
+void CInventory::DrawFull() {
+	float spacing = 8.0f;
+	float tileWidth = 32.0f;
+	float widthPerTile = tileWidth + spacing;
+	float paddingX = (graphics->GetSize().x - widthPerTile * 9.0f) / 2.0f;
+	float paddingY = 140.0f;
+
+	graphics->DrawText(font, CVector2f(graphics->GetSize().x / 2.0f, paddingY + widthPerTile * 9.0f + 8.0f), CColor(0, 0, 0), "Inventory", true);
+	graphics->DrawRect(CRect(CVector2f(paddingX - 8.0f, paddingY - 8.0f), (int)widthPerTile * 9 + 8.0f, (int)widthPerTile * 9 + 8.0f), CColor::white);
+
+	for(int i = 0; i < 9; i++) {
+		for(int j = 0; j < 9; j++) {
+			int index = i * 9 + j;
+			SItemStack *itemStack = GetItemStack(index);
+			CVector2f tilePos = CVector2f(paddingX + (float)j * widthPerTile, paddingY + (float)i * widthPerTile);
+			graphics->DrawTilesheet(tilesheet, tilePos, 16, 16, 16, 64, 64, tileWidth, tileWidth);
+			if(itemStack && itemStack->item) {
+				DrawItemStackTile(tilePos, itemStack);
+			}
+		}
 	}
 }
 
@@ -41,6 +83,8 @@ void CInventory::DrawBar() {
 	float widthPerTile = tileWidth + spacing;
 	float paddingX = (graphics->GetSize().x - widthPerTile * 9.0f) / 2.0f;
 	float paddingY = widthPerTile;
+	
+	graphics->DrawRect(CRect(CVector2f(paddingX - 8.0f, paddingY - 8.0f), (int)widthPerTile * 9 + 8.0f, (int)widthPerTile + 8.0f), CColor::white);
 	DrawItemRow(CVector2f(paddingX, paddingY), 0);
 }
 
@@ -142,6 +186,10 @@ void CInventory::RemoveItem(int index) {
 }
 
 void CInventory::UseCurrentItem() {
+	if(IsOpen()) {
+		return;
+	}
+
 	if(items[currentSelected]) {
 		bool clicked = false;
 		if(items[currentSelected]->item->IsTool()) {
@@ -152,15 +200,6 @@ void CInventory::UseCurrentItem() {
 
 		if(clicked && items[currentSelected]->item->OnUse()) {
 			DecrementStack(currentSelected);
-		}
-	}
-}
-
-void CInventory::Update(float dtTime) {
-	for(int i = 0; i < 9 * 9; i++) {
-		auto item = GetItem(i);
-		if(item) {
-			item->Update(dtTime);
 		}
 	}
 }

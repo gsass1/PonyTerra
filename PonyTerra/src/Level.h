@@ -26,9 +26,12 @@ enum class ETileType
 	AIR = 0,
 	DIRT,
     GRASS,
+	WOOD = 11,
 };
 
 //--------------------------------------------------
+
+#define TILE_PASSABLE 0x00000001
 
 class CTile
 {
@@ -143,9 +146,12 @@ public:
 	CTile *		GetTile(int x, int y);
 	CTile *		GetTileInWorldSpace(const CVector2f &pos);
 
+	CTile *		GetBgTile(int x, int y);
+
 	void		RemoveTileInWorldSpace(const CVector2f &pos);
 	void		RemoveTile(int x, int y);
 	void		RemoveTile(CTile *tile);
+	void		RemoveBgTile(int x, int y);
 
 	int			GetNeighborTileDirections(int x, int y);
 
@@ -164,6 +170,7 @@ private:
 	ITexture *	tilesheetTex;
 
     CTile *tileMemPool;
+	CTile *bgTileMemPool;
 
 	double		time;
 	bool		isBossSummoned;
@@ -176,6 +183,8 @@ private:
 	void		DisposeTileData();
 
 	void		SetLoadingText(const char * text, double perc = 0.0);
+
+	void		PlaceTree(int x, int y, int height);
 };
 
 extern CLevel level;

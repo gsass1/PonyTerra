@@ -61,11 +61,11 @@ void CComponent_Physical::Update(float dtTime)
 						velocity.y = -MAX_GRAVITY;
 					}
 					else {
-						velocity.y *= 1.08f;
+						velocity.y *= 1.10f;
 					}
 				}
 				else {
-					velocity.y *= 0.85f;
+					velocity.y *= 0.75f;
 				}
 				if(!isInAir || (isInAir && velocity.y > -10.0f)) {
 					isInAir = true;

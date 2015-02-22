@@ -48,7 +48,6 @@ const char *CGUI_Loading::GetStatusText() {
 }
 
 void CGUI_Loading::Draw() {
-	graphics->DrawTexture(bgTex, CVector2f(0.0f, 0.0f));
 	if(statusText[0] != '\0') {
         graphics->DrawText(font, graphics->GetSize() / 2.0f, CColor(128, 128, 128), statusText, true);
 	}

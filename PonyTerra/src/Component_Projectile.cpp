@@ -24,10 +24,10 @@ void CComponent_Projectile::Initialize(CEntity *parent)
 void CComponent_Projectile::Update(float dtTime)
 {
 	/* TODO: put speed somewhere else? */
-	phys->AddVelocity(CVector2f(100.0f) * dir);
+	phys->AddVelocity(CVector2f(500.0f) * dir);
 
-	if(phys->velocity.x > 300.0f) {
-		phys->velocity.x = 300.0f;
+	if(phys->velocity.x > 1000.0f) {
+		phys->velocity.x = 1000.0f;
 	}
 }
 

@@ -204,6 +204,10 @@ bool CConsole::Exec(const std::string &cmd)
         }
     };
 
+	if(args.size() == 0) {
+		return false;
+	}
+
     cmdMap_t::iterator itr = cmdMap.find(args[0]);
     if(itr != cmdMap.end()) {
         return (*itr->second)(args) == 0;

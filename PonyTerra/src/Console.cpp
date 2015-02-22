@@ -237,13 +237,17 @@ void CConsole::Update(float dtTime)
     }
 
     for(unsigned int i = (unsigned int)NSKey::NSK_0; i < (unsigned int)NSKey::NSK_z + 1; i++) {
-        if(input->KeyPressed((NSKey)i, true)) {
-            if(isprint((int)i)) {
-                prompt += (char)i;
+		unsigned int key = i;
+        if(input->KeyPressed((NSKey)key, true)) {
+			if(input->KeyPressed(NSKey::NSK_RSHIFT)) {
+				key -= 32;
+			}
+            if(isprint((int)key)) {
+                prompt += (char)key;
             }
         }
     }
-
+	
     if(input->KeyPressed(NSKey::NSK_UP, true)) {
         if(promptBuffer.size() != 0 && promptBufferIndex != 0) {
             promptBufferIndex--;

@@ -26,7 +26,8 @@ enum class ETileType
 	AIR = 0,
 	DIRT,
     GRASS,
-	WOOD = 11,
+	WOOD = 12,
+	LEAF = 13,
 };
 
 //--------------------------------------------------

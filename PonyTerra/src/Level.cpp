@@ -296,7 +296,7 @@ void CLevel::Generate(int width, int height)
 
 		/* Place a tree */
 		if(Math::Random(20) == 0) {
-			int treeheight = Math::Random(10) + 4;
+			int treeheight = Math::Random(2) + 4;
 			PlaceTree(x, top, treeheight);
 		}
 
@@ -555,7 +555,6 @@ int	CLevel::TileTypeToItemID(ETileType tileType)
 		case ETileType::DIRT:
 		case ETileType::GRASS:
 			return 1;
-
 		default:
 			return (int)tileType;
 	}
@@ -572,5 +571,17 @@ void CLevel::PlaceTree(int x, int y, int height)
 	int top = y + height;
 	for(int i = y; i < top; i++) {
 		GetBgTile(x, i)->type = ETileType::WOOD;
+	}
+
+	/* Leaves */
+	GetBgTile(x, top)->type = ETileType::LEAF;
+	int ly = top;
+	for(int i = 3; i > 0; i--) {
+		for(int j = i; j > 0; j--) {
+			GetTile(x - j + 1, ly)->type = ETileType::LEAF;
+			GetTile(x + j - 1, ly)->type = ETileType::LEAF;
+		}
+
+		ly++;
 	}
 }

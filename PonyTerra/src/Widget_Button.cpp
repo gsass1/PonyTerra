@@ -27,6 +27,11 @@ void CWidget_Button::Update(float dtTime) {
 
 void CWidget_Button::Draw() {
 	CColor color = isMouseHovered ? CColor(255, 255, 255) : CColor(128, 128, 128);
+	if(isMouseHovered) {
+		CVector2f textSize = font->GetTextSize(text);
+		float selectWidth = textSize.x * 2.0f;
+		graphics->DrawRect(CRect(CVector2f(pos.x - selectWidth / 2, pos.y - (textSize.y / 2)), (int)selectWidth, 32), CColor(0, 0, 0, 128));
+	}
 	graphics->DrawText(font, pos, color, text, true);
 }
 

@@ -48,7 +48,12 @@ void CGame::Initialize()
 	level.Initialize();
 
 	guiManager.Initialize();
+
+#ifdef RELEASE
+	guiManager.Push(GetGUI("Credits"));
+#else
 	guiManager.Push(GetGUI("MenuFront"));
+#endif
 }
 
 void CGame::InitializeGame()
@@ -196,6 +201,8 @@ void CGame::Draw()
 	}
 
     console.Draw();
+
+	graphics->DrawText(resMgr->GetFont("data/res/font/info.fnt"), CVector2f(), CColor(0, 0, 0), "Copyright (C) 2015 Gian Sass");
 }
 
 void CGame::DrawMenu()

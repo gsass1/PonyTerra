@@ -5,10 +5,14 @@
 #include "GUI_Loading.h"
 #include "GUI_MenuFront.h"
 #include "GUI_NewWorld.h"
+#include "GUI_MenuBase.h"
 #include "IGraphics.h"
 #include "Game.h"
+#include "GUI_Credits.h"
 
 #include <string.h>
+
+#include "IResourceManager.h"
 
 CGUIManager guiManager;
 
@@ -31,6 +35,9 @@ void InitStaticGUIs() {
 
     staticGUIs[3] = new CGUI_IngameMenu();
     staticGUIs[3]->Initialize();
+
+	staticGUIs[4] = new CGUI_Credits();
+	staticGUIs[4]->Initialize();
 }
 
 }
@@ -52,6 +59,10 @@ IGUI *GetGUI(const char *name) {
         return staticGUIs[3];
     }
 
+	if(strcmp(name, "Credits") == 0) {
+		return staticGUIs[4];
+	}
+
     ASSERT(false);
 
 	return NULL;
@@ -65,6 +76,7 @@ CGUIManager::~CGUIManager() {
 
 void CGUIManager::Initialize() {
 	InitStaticGUIs();
+	menuBase.Initialize();
 }
 
 void CGUIManager::ClearStack()
@@ -82,6 +94,8 @@ void CGUIManager::Pop() {
 }
 
 void CGUIManager::Update(float dtTime) {
+	menuBase.Update(dtTime);
+
 	if (guiStack.size() != 0) {
 		guiStack.back()->Update(dtTime);
 	}
@@ -89,9 +103,8 @@ void CGUIManager::Update(float dtTime) {
 
 void CGUIManager::Draw() {
 	if (guiStack.size() != 0) {
-		if(!game_local.IsShowingIngameMenu()) {
-			/* TODO: draw background animation, put this code somewhere else */
-			graphics->DrawRect(CRect(CVector2f(), graphics->GetWidth(), graphics->GetHeight()), CColor(30, 100, 220));
+		if(game_local.gameState == EGameState::MENU) {
+			menuBase.Draw();
 		}
 		guiStack.back()->Draw();
 	}

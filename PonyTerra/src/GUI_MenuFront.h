@@ -20,8 +20,8 @@ public:
 	void		Draw();
 
 private:
-	IFont	* titleFont;
 	ITexture *	bg;
+	ITexture *	logo;
 
 	CWidget_Button *btNewWorld;
 	CWidget_Button *btLoadWorld;

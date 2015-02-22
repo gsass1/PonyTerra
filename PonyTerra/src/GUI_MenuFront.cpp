@@ -13,7 +13,7 @@
 
 CGUI_MenuFront::CGUI_MenuFront() {
 	bg = nullptr;
-	titleFont = nullptr;
+	logo = nullptr;
 	btNewWorld = new CWidget_Button("New World",
 		CVector2f((float)graphics->GetWidth() / 2.0f, 380.0f));
 
@@ -36,7 +36,7 @@ CGUI_MenuFront::~CGUI_MenuFront() {
 
 void CGUI_MenuFront::Initialize() {
 	bg = resMgr->GetTexture("data/res/tex/menu_bg.png");
-	titleFont = resMgr->GetFont("data/res/font/title.fnt");
+	logo = resMgr->GetTexture("data/res/tex/menu_logo.png");
 
 	btNewWorld->Initialize();
 	btLoadWorld->Initialize();
@@ -78,7 +78,7 @@ void CGUI_MenuFront::Update(float dtTime) {
 }
 
 void CGUI_MenuFront::Draw() {
-	graphics->DrawText(titleFont, CVector2f(graphics->GetSize().x / 2.0f, graphics->GetSize().y - titleFont->GetTextSize("PonyTerra").y - 64.0f), CColor::white, "PonyTerra", true);
+	graphics->DrawTexture(logo, CVector2f(graphics->GetSize().x / 2.0f - 256.0f, graphics->GetSize().y - 192.0f));
 
 	btNewWorld->Draw();
 	btLoadWorld->Draw();

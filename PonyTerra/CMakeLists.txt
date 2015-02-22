@@ -28,10 +28,14 @@ set(PONYTERRA_SOURCES
 	src/Game.cpp
 	src/Game.h
 	src/GUI.h
+	src/GUI_Credits.cpp
+	src/GUI_Credits.h
 	src/GUI_IngameMenu.cpp
 	src/GUI_IngameMenu.h
 	src/GUI_Loading.cpp
 	src/GUI_Loading.h
+	src/GUI_MenuBase.cpp
+	src/GUI_MenuBase.h
 	src/GUI_MenuFront.cpp
 	src/GUI_MenuFront.h
 	src/GUI_NewWorld.cpp

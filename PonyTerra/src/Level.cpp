@@ -124,6 +124,41 @@ ELevelProcessType CLevelProcess::StopThreadIfFinished()
 
 //--------------------------------------------------
 
+int GetTileTypeStrength(ETileType type)
+{
+	switch(type) {
+	case ETileType::AIR:
+		return 0;
+	case ETileType::DIRT:
+	case ETileType::GRASS:
+	case ETileType::LEAF:
+		return 100;
+	case ETileType::WOOD:
+		return 300;
+	}
+}
+
+unsigned int CalculateTileMiningTime(int tileStrength, int toolStrength)
+{
+	int time = tileStrength - (toolStrength / 2);
+	if(time < 8) {
+		time = 8;
+	}
+
+	return (unsigned int)time;
+}
+
+std::string GetTileTypeName(ETileType type)
+{
+	switch(type) {
+	case ETileType::DIRT:	return "Dirt";
+	case ETileType::GRASS:	return "Grass";
+	case ETileType::LEAF:	return "Leaves";
+	case ETileType::WOOD:	return "Wood";
+	default:				return "";
+	}
+}
+
 CLevel level;
 
 CLevel::CLevel()
@@ -480,6 +515,14 @@ CTile *CLevel::GetTileInWorldSpace(const CVector2f &pos)
 	return GetTile(x, y);
 }
 
+CTile *CLevel::GetBgTileInWorldSpace(const CVector2f &pos)
+{
+	int x = (int)(pos.x / (float)TILE_SIZE);
+	int y = (int)(pos.y / (float)TILE_SIZE);
+
+	return GetBgTile(x, y);
+}
+
 void CLevel::RemoveTileInWorldSpace(const CVector2f &pos)
 {
 	auto tile = GetTileInWorldSpace(pos);
@@ -496,6 +539,7 @@ void CLevel::RemoveTile(CTile *tile)
 {
 	if(tile) {
 		tile->type = ETileType::AIR;
+		tile->damage = 0;
 	}
 }
 
@@ -560,9 +604,8 @@ int	CLevel::TileTypeToItemID(ETileType tileType)
 	}
 }
 
-void CLevel::SetTileDamageLevel(int x, int y, char damage)
+void CLevel::SetTileDamageLevel(CTile *tile, char damage)
 {
-	auto tile = GetTile(x, y);
 	tile->damage = damage;
 }
 

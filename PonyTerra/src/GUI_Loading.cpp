@@ -49,7 +49,7 @@ const char *CGUI_Loading::GetStatusText() {
 
 void CGUI_Loading::Draw() {
 	if(statusText[0] != '\0') {
-        graphics->DrawText(font, graphics->GetSize() / 2.0f, CColor(128, 128, 128), statusText, true);
+        graphics->DrawText(font, graphics->GetSize() / 2.0f, CColor(0, 0, 0), statusText, true);
 	}
     if(procPerc != 0.0) {
         int length = (int)(procPerc * graphics->GetWidth());

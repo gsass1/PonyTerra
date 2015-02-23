@@ -20,7 +20,7 @@ CInventory::~CInventory() {
 }
 
 void CInventory::Initialize() {
-	font = resMgr->GetFont("data/res/font/info.fnt");
+	font = resMgr->GetFont("data/res/font/bar.fnt");
 	tilesheet = resMgr->GetTexture("data/res/tex/tilesheet.png");
 }
 
@@ -86,6 +86,11 @@ void CInventory::DrawBar() {
 	
 	graphics->DrawRect(CRect(CVector2f(paddingX - 8.0f, paddingY - 8.0f), (int)widthPerTile * 9 + 8.0f, (int)widthPerTile + 8.0f), CColor::white);
 	DrawItemRow(CVector2f(paddingX, paddingY), 0);
+
+	auto currentItem = GetItemStack(currentSelected);
+	if(currentItem && currentItem->item) {
+		graphics->DrawText(font, CVector2f(graphics->GetSize().x / 2.0f, paddingY + 80.0f), CColor::white, currentItem->item->GetName(), true);
+	}
 }
 
 void CInventory::DrawItemRow(CVector2f pos, int rowIndex) {

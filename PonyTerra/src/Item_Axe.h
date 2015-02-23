@@ -1,16 +1,16 @@
-#ifndef ITEM_PICKAXE_H
-#define ITEM_PICKAXE_H
+#ifndef ITEM_AXE_H
+#define ITEM_AXE_H
 
 #include "Item_MiningTool.h"
 
 class CTile;
 class ITexture;
 
-class CItem_Pickaxe : public CItem_MiningTool
+class CItem_Axe : public CItem_MiningTool
 {
 public:
-	CItem_Pickaxe(CEntity *owner);
-	~CItem_Pickaxe();
+	CItem_Axe(CEntity *owner);
+	~CItem_Axe();
 
 	void Initialize();
 	void Update(float dtTime);
@@ -19,7 +19,7 @@ public:
 
 	void Draw(CVector2f pos);
 
-	std::string GetName() const { return "Pickaxe"; }
+	std::string GetName() const { return "Axe"; }
 
 private:
 	ITexture *tilesheet;

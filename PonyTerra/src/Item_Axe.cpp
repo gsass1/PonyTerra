@@ -1,33 +1,33 @@
-#include "Item_Pickaxe.h"
-#include "IResourceManager.h"
-#include "IGraphics.h"
-#include "Cursor.h"
+#include "Item_Axe.h"
 #include "Level.h"
-#include "ICommon.h"
+#include "IGraphics.h"
+#include "IResourceManager.h"
 #include "IInput.h"
-#include "Game.h"
-#include <SDL\SDL_opengl.h>
+#include "Cursor.h"
+#include "ICommon.h"
 
-CItem_Pickaxe::CItem_Pickaxe(CEntity *owner) : CItem_MiningTool(owner, 300)
+#define MINING_TIME_TICKS 2500
+
+CItem_Axe::CItem_Axe(CEntity *owner) : CItem_MiningTool(owner, 250)
 {
 	tilesheet = nullptr;
 }
 
-CItem_Pickaxe::~CItem_Pickaxe()
+CItem_Axe::~CItem_Axe()
 {
 }
 
-void CItem_Pickaxe::Initialize()
+void CItem_Axe::Initialize()
 {
 	tilesheet = resMgr->GetTexture("data/res/tex/tilesheet.png");
 }
 
-void CItem_Pickaxe::Update(float dtTime)
+void CItem_Axe::Update(float dtTime)
 {
 	CItem_MiningTool::Update(dtTime);
 }
 
-bool CItem_Pickaxe::OnUse()
+bool CItem_Axe::OnUse()
 {
 	if(IsMining()) {
 		return false;
@@ -37,7 +37,7 @@ bool CItem_Pickaxe::OnUse()
 		return false;
 	}
 
-	if(cursor.currentSelectedTile->type == ETileType::AIR) {
+	if(cursor.currentSelectedTile->type != ETileType::WOOD) {
 		return false;
 	}
 
@@ -45,7 +45,7 @@ bool CItem_Pickaxe::OnUse()
 	return false;
 }
 
-void CItem_Pickaxe::Draw(CVector2f pos)
+void CItem_Axe::Draw(CVector2f pos)
 {
 	graphics->DrawTilesheet(tilesheet, pos, 48, 16, 16, 64, 64, 32.0f, 32.0f);
 }

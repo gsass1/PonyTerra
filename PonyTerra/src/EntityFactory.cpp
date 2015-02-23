@@ -52,6 +52,7 @@ CEntity *CEntityFactory::CreatePlayer()
 	inventory->AddItem(1, 64);
 	inventory->AddItem(257);
 	inventory->AddItem(258);
+	inventory->AddItem(259);
 
 	return entity;
 }

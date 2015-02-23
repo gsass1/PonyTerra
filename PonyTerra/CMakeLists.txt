@@ -46,8 +46,12 @@ set(PONYTERRA_SOURCES
 	src/Inventory.h
 	src/Item.cpp
 	src/Item.h
+	src/Item_Axe.cpp
+	src/Item_Axe.h
 	src/Item_HealthPotion.cpp
 	src/Item_HealthPotion.h
+	src/Item_MiningTool.cpp
+	src/Item_MiningTool.h
 	src/Item_Pickaxe.cpp
 	src/Item_Pickaxe.h
 	src/Item_Spellbook.cpp

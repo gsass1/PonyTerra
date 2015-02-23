@@ -257,9 +257,11 @@ void CGame::DrawGame()
 	if(playerInventory) {
 		auto currentItem = playerInventory->inventory->GetCurrentSelectedItemStack();
 		if(currentItem && currentItem->item) {
-			auto mouse = input->GetMouseState();
-			CVector2f pos = CVector2f((float)mouse.x, (float)mouse.y);
-			currentItem->item->Draw(pos);
+			if(currentItem->item->IsTool()) {
+				auto mouse = input->GetMouseState();
+				CVector2f pos = CVector2f((float)mouse.x, (float)mouse.y);
+				currentItem->item->Draw(pos);
+			}
 		}
 		playerInventory->inventory->Draw();
 	}

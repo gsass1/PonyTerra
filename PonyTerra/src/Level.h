@@ -1,6 +1,7 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
+#include "Rect.h"
 #include "MutexLock.h"
 #include "Vector2.h"
 #include <thread>
@@ -29,6 +30,10 @@ enum class ETileType
 	WOOD = 12,
 	LEAF = 13,
 };
+
+int GetTileTypeStrength(ETileType type);
+unsigned int CalculateTileMiningTime(int tileStrength, int toolStrength);
+std::string GetTileTypeName(ETileType type);
 
 //--------------------------------------------------
 
@@ -146,6 +151,7 @@ public:
 
 	CTile *		GetTile(int x, int y);
 	CTile *		GetTileInWorldSpace(const CVector2f &pos);
+	CTile *		GetBgTileInWorldSpace(const CVector2f &pos);
 
 	CTile *		GetBgTile(int x, int y);
 
@@ -160,7 +166,7 @@ public:
 
 	int			TileTypeToItemID(ETileType tileType);
 
-	void		SetTileDamageLevel(int x, int y, char damage);
+	void		SetTileDamageLevel(CTile *tile, char damage);
 
 	int			width;
 	int			height;

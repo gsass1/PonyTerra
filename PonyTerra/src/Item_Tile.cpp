@@ -19,7 +19,8 @@ bool CItem_Tile::OnUse()
 {
 	if(cursor.currentSelectedTile && (cursor.currentSelectedTile->type == ETileType::AIR)) {
 		if(level.GetNeighborTileDirections(cursor.currentSelectedTile->x / TILE_SIZE, cursor.currentSelectedTile->y / TILE_SIZE)) {
-			cursor.currentSelectedTile->type = (ETileType)tileID;
+			auto tile = level.GetTile(cursor.currentSelectedTile->x / TILE_SIZE, cursor.currentSelectedTile->y / TILE_SIZE);
+			tile->type = (ETileType)tileID;
 			return true;
 		}
 	}
@@ -28,7 +29,6 @@ bool CItem_Tile::OnUse()
 
 void CItem_Tile::Update(float dtTime)
 {
-
 }
 
 void CItem_Tile::Draw(CVector2f pos)
@@ -38,5 +38,5 @@ void CItem_Tile::Draw(CVector2f pos)
 
 std::string CItem_Tile::GetName() const
 {
-	return std::string("Tile ID: ") + std::to_string(tileID);
+	return GetTileTypeName((ETileType)tileID);
 }

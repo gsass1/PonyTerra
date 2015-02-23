@@ -30,13 +30,13 @@ void CComponent_PlayerInput::Update(float dtTime)
 
 	if(game_local.KeyPressedIngame(NSKey::NSK_a)) {
 
-		physical->AddVelocity(CVector2f(-50.0f, 0.0f));
+		physical->AddVelocity(CVector2f(-25.0f, 0.0f));
 		animation->ChangeAnimationState("Walk_Left");
 		animation->AdvanceFrame();
 
     } else if(game_local.KeyPressedIngame(NSKey::NSK_d)) {
 
-		physical->AddVelocity(CVector2f(50.0f, 0.0f));
+		physical->AddVelocity(CVector2f(25.0f, 0.0f));
 		animation->ChangeAnimationState("Walk_Right");
 		animation->AdvanceFrame();
 

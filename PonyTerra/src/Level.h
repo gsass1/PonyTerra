@@ -45,6 +45,8 @@ public:
 	int x;
 	int y;
 
+	char lightlevel;
+
 	ETileType type;
 
     int flags;
@@ -52,11 +54,12 @@ public:
 	char damage;
 
     CTile()
-    {
+	{
 		damage = 0;
         x = 0;
         y = 0;
-        flags = 0;
+		lightlevel = 0;
+		flags = 0;
         type = ETileType::AIR;
     }
 

@@ -6,6 +6,8 @@
 #include "Component_Physical.h"
 #include "EntityFactory.h"
 #include "EntityManager.h"
+#include "IInput.h"
+#include "Game.h"
 
 CItem_Spellbook::CItem_Spellbook(CEntity *owner) : CItem(owner)
 {
@@ -32,7 +34,12 @@ bool CItem_Spellbook::OnUse()
 	//if(attributes->UseMana(20)) {
 		/* TODO: fire projectile */
 		CVector2f pos = GetComponent<CComponent_Physical>(owner)->rect.pos;
-		auto proj = entityFactory.CreateSpellbookProjectile(owner, pos, CVector2f(1.0f, 0.0f));
+		auto ms = input->GetMouseState();
+		CVector2f mousePos = game_local.ToWorldSpace(CVector2f((float)ms.x, (float)ms.y));
+		float angle = atan2f(mousePos.x - pos.x, mousePos.y - pos.y);
+		float xv = Math::Sinf(angle);
+		float yv = Math::Cosf(angle);
+		auto proj = entityFactory.CreateSpellbookProjectile(owner, pos, CVector2f(xv, yv));
 		entityMgr.AddEntity(proj);
 	}
 	return false;

@@ -74,10 +74,7 @@ void CEntityManager::UpdateAll(float dtTime)
 					if(phys) {
 						auto entityPhys = GetComponent<CComponent_Physical>(entities[j]);
 						if(entityPhys) {
-							float xdist = entityPhys->rect.pos.x - phys->rect.pos.x;
-							float ydist = entityPhys->rect.pos.y - phys->rect.pos.y;
-							float dist = Math::Sqrtf(std::powf(xdist, 2) + std::powf(ydist, 2));
-							if(dist <= 64.0f) {
+							if(entityPhys->rect.Collides(phys->rect)) {
 								CMessage_CollideWithEntity msg;
 								msg.entity = entities[j];
 								entities[i]->GetComponents()->HandleMessage(&msg);

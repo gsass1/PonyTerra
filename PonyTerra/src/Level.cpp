@@ -14,6 +14,8 @@
 #include "GUIManager.h"
 #include "GUI_Loading.h"
 
+#include <SDL\SDL_opengl.h>
+
 //--------------------------------------------------
 
 CLevelProcess levelProcess;
@@ -135,6 +137,8 @@ int GetTileTypeStrength(ETileType type)
 		return 100;
 	case ETileType::WOOD:
 		return 300;
+	default:
+		return 0;
 	}
 }
 
@@ -374,6 +378,51 @@ void CLevel::Draw()
 				graphics->DrawTilesheet(tilesheetTex, tile->GetPosition() - viewRect.pos, (int)tile->type, 16, 16, 64, 64, (float)TILE_SIZE, (float)TILE_SIZE);
 				if(tile->damage != 0) {
 					graphics->DrawRect(CRect(tile->GetPosition() - viewRect.pos, TILE_SIZE, TILE_SIZE), CColor(255, 0, 0, tile->damage * 63));
+				}
+
+				/* raycasting code that we dont need right now */
+				if(false) {
+				//if(tile->lightlevel > 0) {
+					std::vector<CVector2f> rays;
+					const int maxrays = 256;
+					const float angleIncrease = 360.0f / (float)maxrays;
+					const float RAY_STEP = 4.0f;
+					const int RAY_INTERVAL = 256;
+					float currentAngle = 0.0f;
+					CVector2f origin((float)x * (float)TILE_SIZE, (float)y * (float)TILE_SIZE + 128.0f);
+					for(int i = 0; i < maxrays; i++) {
+						/* TODO: might need adjustment, so its in the center of the block*/
+						CVector2f ray = origin;
+						float xvel = Math::Sinf(currentAngle) * RAY_STEP;
+						float yvel = Math::Cosf(currentAngle) * RAY_STEP;
+						bool hit = false;
+						for(int j = 0; j < RAY_INTERVAL; j++) {
+							ray.x += xvel;
+							ray.y += yvel;
+							if(level.IsCollidingWithTiles(CRect(ray, 1, 1))) {
+								/* Add the ray, it hit */
+								rays.push_back(ray);
+								hit = true;
+								break;
+							}
+						}
+						if(!hit) {
+							/* Add it anyway */
+							//rays.push_back(ray);
+						}
+						currentAngle += angleIncrease;
+					}
+					/* Draw the rays! */
+					graphics->BindTexture(0);
+					glBegin(GL_LINES);
+						glColor4f(1.0f, 1.0f, 1.0f, 0.1f);
+						for(auto ray : rays) {
+							auto inScreenOrigin = game_local.ToScreenSpace(origin);
+							auto inScreenRay = game_local.ToScreenSpace(ray);
+							glVertex2f(inScreenOrigin.x, inScreenOrigin.y);
+							glVertex2f(inScreenRay.x, inScreenRay.y);
+						}
+					glEnd();
 				}
 			} else {
 				tile = GetBgTile(x, y);

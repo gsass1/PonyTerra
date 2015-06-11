@@ -5,6 +5,10 @@
 #include "Item.h"
 #include "StringUtils.h"
 #include "IInput.h"
+#include "EntityFactory.h"
+#include "EntityManager.h"
+#include "Entity.h"
+#include "Component_Physical.h"
 
 CInventory::CInventory(CEntity *owner, int size) : owner(owner), size(size) {
 	items = new SItemStack*[size];
@@ -13,10 +17,12 @@ CInventory::CInventory(CEntity *owner, int size) : owner(owner), size(size) {
 	}
 	currentSelected = 0;
 	open = false;
+	currentSelectedStack = nullptr;
 }
 
 CInventory::~CInventory() {
 	delete [] items;
+	delete currentSelectedStack;
 }
 
 void CInventory::Initialize() {
@@ -43,12 +49,27 @@ void CInventory::Update(float dtTime)
 	float widthPerTile = tileWidth + spacing;
 	float paddingX = (graphics->GetSize().x - widthPerTile * 9.0f) / 2.0f;
 	for(int i = 0; i < 9; i++) {
-		float paddingY = widthPerTile * 4.0f + (38.0f * (float)i);
+		float paddingY = 140.0f;
 		for(int j = 0; j < 9; j++) {
 			int fullIndex = i * 9 + j;
-			CRect itemFrameRect(CVector2f(paddingX + i * 40.0f, paddingY + j * 40.0f), 32, 32);
-			if(mouseRect.Collides(itemFrameRect)) {
-				/* TODO: */
+			CRect itemFrameRect(CVector2f(paddingX + j * 40.0f, paddingY + i * 40.0f), 32, 32);
+			if(mouseRect.Collides(itemFrameRect) && (input->GetMouseStateDelta().buttonMask & EMouseButton_LEFT)) {
+				auto itemStack = GetItemStack(fullIndex);
+				/* Switch items */
+				if(currentSelectedStack && itemStack) {
+					auto oldSelected = currentSelectedStack;
+					currentSelectedStack = itemStack;
+					items[fullIndex] = oldSelected;
+				/* Grab the current item */
+				} else if(!currentSelectedStack && itemStack) {
+					currentSelectedStack = itemStack;
+					/* Remove item but dont delete it */
+					items[fullIndex] = nullptr;
+				/* Place it in an empty slot*/
+				} else if(currentSelectedStack && !itemStack) {
+					items[fullIndex] = currentSelectedStack;
+					currentSelectedStack = nullptr;
+				}
 			}
 		}
 	}
@@ -117,6 +138,12 @@ void CInventory::Draw() {
 		DrawFull();
 	} else {
 		DrawBar();
+	}
+
+	if(currentSelectedStack) {
+		auto mouseState = input->GetMouseState();
+		CVector2f mousePos((float)mouseState.x, (float)mouseState.y);
+		DrawItemStackTile(mousePos, currentSelectedStack);
 	}
 }
 
@@ -211,6 +238,22 @@ void CInventory::UseCurrentItem() {
 
 void CInventory::SwitchOpen() {
 	open = !open;
+
+	/* Drop item */
+	if(!open && currentSelectedStack) {
+		for(int i = 0; i < currentSelectedStack->count; i++) {
+			auto entity = entityFactory.CreateItemPickup(currentSelectedStack->item->GetID());
+			CVector2f ownerPos;
+			CComponent_Physical *ownerPhysical = nullptr;
+			if(ownerPhysical = GetComponent<CComponent_Physical>(owner)) {
+				ownerPos = ownerPhysical->rect.pos;
+			}
+
+			entity->GetComponents()->Get<CComponent_Physical>()->rect.pos = ownerPos;
+			entityMgr.AddEntity(entity);
+		}
+		currentSelectedStack = nullptr;
+	}
 }
 
 SItemStack *CInventory::GetCurrentSelectedItemStack() {

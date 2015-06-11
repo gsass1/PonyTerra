@@ -8,10 +8,13 @@
 #include "ICommon.h"
 #include "MathUtil.h"
 
+const int PICKUP_DELAY_AFTER_BIRTH = 5000;
+
 CComponent_ItemPickup::CComponent_ItemPickup(int id) : CComponentBase()
 {
 	itemId = id;
 	birthTicks = 0;
+	pickingUpEntity = nullptr;
 }
 
 void CComponent_ItemPickup::Initialize(CEntity *parent)
@@ -25,6 +28,11 @@ void CComponent_ItemPickup::Initialize(CEntity *parent)
 
 void CComponent_ItemPickup::Update(float dtTime)
 {
+	if(pickingUpEntity) {
+		float angle = phys->rect.pos.AngleTo(GetComponent<CComponent_Physical>(pickingUpEntity)->rect.pos);
+		CVector2f dir(Math::Sinf(angle), Math::Cosf(angle));
+		phys->AddVelocity(dir * 10.0f);
+	}
 }
 
 void CComponent_ItemPickup::HandleMessage(CMessage *msg)
@@ -34,12 +42,23 @@ void CComponent_ItemPickup::HandleMessage(CMessage *msg)
 		ASSERT(msgCollideWithEntity);
 
 		if(msgCollideWithEntity->entity->HasAttribute("player")) {
-			auto inv = GetComponent<CComponent_Inventory>(msgCollideWithEntity->entity);
-			if(inv) {
-				inv->inventory->AddItem(itemId);
+			pickingUpEntity = msgCollideWithEntity->entity;
+			CVector2f dist = phys->rect.pos - GetComponent<CComponent_Physical>(msgCollideWithEntity->entity)->rect.pos;
+			float distance = Math::Sqrtf(std::powf(dist.x, 2.0f) + std::powf(dist.y, 2.0f));
+
+			if(distance > 100.0f) {
+				pickingUpEntity = nullptr;
+				return;
 			}
-			/* Destroy self */
-			parent->SignalDeath();
+
+			if(distance < 64.0f) {
+				auto inv = GetComponent<CComponent_Inventory>(msgCollideWithEntity->entity);
+				if(inv) {
+					inv->inventory->AddItem(itemId);
+				}
+				/* Destroy self */
+				parent->SignalDeath();
+			}
 		}
 	}
 }

@@ -25,6 +25,7 @@ private:
 	ITexture *tilesheet;
 	CComponent_Physical *phys;
 	unsigned int birthTicks;
+	CEntity *pickingUpEntity;
 };
 
 #endif

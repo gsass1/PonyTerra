@@ -61,6 +61,8 @@ private:
 	ITexture *tilesheet;
 	IFont *font;
 
+	SItemStack *currentSelectedStack;
+
 	void DrawItemStackTile(const CVector2f &pos, SItemStack *itemStack);
 };
 

@@ -37,7 +37,6 @@ void CItem_MiningTool::Update(float dtTime)
 	level.SetTileDamageLevel(miningTile, (char)damageStatus);
 
 	if(currentTicks - miningTicks >= miningTime) {
-		/* TODO: drop tile pickup */
 		level.DestructTile(miningTile);
 		StopMining();
 	}

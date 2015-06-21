@@ -14,7 +14,7 @@
 #include "GUIManager.h"
 #include "GUI_Loading.h"
 
-#include <SDL\SDL_opengl.h>
+#include <SDL/SDL_opengl.h>
 
 //--------------------------------------------------
 

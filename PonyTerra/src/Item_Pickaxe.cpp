@@ -6,7 +6,7 @@
 #include "ICommon.h"
 #include "IInput.h"
 #include "Game.h"
-#include <SDL\SDL_opengl.h>
+#include <SDL/SDL_opengl.h>
 
 CItem_Pickaxe::CItem_Pickaxe(CEntity *owner) : CItem_MiningTool(owner, 300)
 {

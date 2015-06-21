@@ -2,8 +2,10 @@
 #include "IResourceManager.h"
 #include "IGraphics.h"
 
+#ifdef _WIN32 
 #include <Windows.h>
 #include <shellapi.h>
+#endif
 
 CGUI_MenuBase menuBase;
 
@@ -39,9 +41,11 @@ void CGUI_MenuBase::Update(float dtTime)
 {
 	btWebsite->Update(dtTime);
 
+#ifdef _WIN32 
 	if(btWebsite->IsClicked()) {
 		ShellExecute(0, 0, "https://www.nukesoftware.de", 0, 0, SW_SHOW);
 	}
+#endif
 
 	for(auto entity : cloudEntities) {
 		entity->pos += entity->vel * dtTime;

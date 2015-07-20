@@ -114,7 +114,7 @@ CEntity *CEntityManager::GetNearbyEntity(CEntity *entity, float radius)
 				if(entityPhys) {
 					float xdist = entityPhys->rect.pos.x - phys->rect.pos.x;
 					float ydist = entityPhys->rect.pos.y - phys->rect.pos.y;
-					float dist = Math::Sqrtf(std::powf(xdist, 2) + std::powf(ydist, 2));
+					float dist = Math::Sqrtf(powf(xdist, 2) + powf(ydist, 2));
 					if(dist <= radius) {
 						return entities[i];
 					}

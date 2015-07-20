@@ -44,7 +44,7 @@ void CComponent_ItemPickup::HandleMessage(CMessage *msg)
 		if(msgCollideWithEntity->entity->HasAttribute("player")) {
 			pickingUpEntity = msgCollideWithEntity->entity;
 			CVector2f dist = phys->rect.pos - GetComponent<CComponent_Physical>(msgCollideWithEntity->entity)->rect.pos;
-			float distance = Math::Sqrtf(std::powf(dist.x, 2.0f) + std::powf(dist.y, 2.0f));
+			float distance = Math::Sqrtf(powf(dist.x, 2.0f) + powf(dist.y, 2.0f));
 
 			if(distance > 100.0f) {
 				pickingUpEntity = nullptr;
